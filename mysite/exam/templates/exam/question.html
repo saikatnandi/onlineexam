@@ -1,0 +1,30 @@
+<h1>in question.html page</h1>
+
+{{ question }}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<br> 
+<form action="{% url 'exam:result' %}" method="post">
+{% csrf_token %}
+{% for q in question %}
+   <li>
+	   	<h3> {{ q.question_text }}</h3>
+
+	   	<input type="radio" name="{{ q.id }}" id="choice{{ forloop.counter }}" value="{{ q.choice_a }}" />
+	    <label for="choice{{ forloop.counter }}">{{ q.choice_a }}  </label><br />
+
+	    <input type="radio" name="{{ q.id }}" id="choice{{ forloop.counter }}" value="{{ q.choice_b }}" />
+	    <label for="choice{{ forloop.counter }}">{{ q.choice_b }}  </label><br />
+
+		<input type="radio" name="{{ q.id }}" id="choice{{ forloop.counter }}" value="{{ q.choice_c }}" />
+	    <label for="choice{{ forloop.counter }}">{{ q.choice_c }}  </label><br />
+
+
+		<input type="radio" name="{{ q.id }}" id="choice{{ forloop.counter }}" value="{{ q.choice_d }}" />
+	    <label for="choice{{ forloop.counter }}">{{ q.choice_d }}  </label><br />
+
+
+
+   </li>
+{% endfor %}
+<input type="submit" value="Submit" />
+</form>

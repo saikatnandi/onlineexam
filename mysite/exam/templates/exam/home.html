@@ -1,0 +1,20 @@
+<h2>In home page</h2>
+
+
+
+{% for t in topic %}
+   <ul>
+	   	<h3>Topic:{{ forloop.counter }}  {{ t.topic_text }} </h3>
+
+	   	{% for qs in t.question_set_set.all %}
+	   		<ul> <a href="{% url 'exam:startexam' qs.id %}">{{ qs.question_set_text }}</a> </ul>
+
+
+	   	{% endfor %}
+
+	   	
+
+
+
+   </ul>
+{% endfor %}

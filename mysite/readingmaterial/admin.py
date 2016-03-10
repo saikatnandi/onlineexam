@@ -35,8 +35,7 @@ class SubTopic1_Admin(admin.ModelAdmin):
     inlines = [ReadingContentInline]
 
     def save_model(self, request, obj, form, change):
-    	print ("............saving subtopic\n\n****")
-       
+        print ("............saving subtopic\n\n****")       
         obj.save()
 
     

@@ -34,11 +34,7 @@ INSTALLED_APPS = [
     'qa1',
     'exam',
     'blog',
-    # 'guardian',
-    # 'django_select2',
-    
-    # 'mcq',
-    
+
     'readingmaterial',
     'question',
 
@@ -137,7 +133,7 @@ LOGIN_REDIRECT_URL='/exam/'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend', # default
-    'guardian.backends.ObjectPermissionBackend',
+   
 )
 
 ANONYMOUS_USER_ID = -1

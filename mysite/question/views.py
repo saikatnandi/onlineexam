@@ -156,12 +156,12 @@ def create_question_sub_topic_wise(request):
     form = create_question_sub_topic_wise_form()
     # print ("\n***** create_question_sub_topic_wise")
     if request.method == 'POST':
-    	print ("\n***** create_question****sub_topic_wise")
+        print ("\n***** create_question****sub_topic_wise")
         form = create_question_sub_topic_wise_form(request.POST)
 
         if form.is_valid():  
             for field in form:
-            	print ("*******form.field..")
+                print ("*******form.field..")
                 print (field)
 
             return HttpResponse('form submission is  successful')

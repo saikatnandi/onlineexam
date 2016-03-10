@@ -1,0 +1,27 @@
+{% include 'readingmaterial/include/mcq_question_javascript.html' %}
+
+
+<br><br><br>
+<input id='my_mcq' value="{{content_marked_mcq_string}}" type='hidden'>  </input>
+
+<ol class="list-group">
+	{% for mcq in mcq_question %}
+		<li class="list-group-item">
+
+
+    {% if request.user.is_authenticated %}
+    
+		<div align="right"><button id="question{{mcq.id}}" class="bmcq">Add To Favorite </button></div>
+
+ 	{% endif  %}
+
+	{% include 'readingmaterial/include/mcq_question_with_explanation.html' %}
+ 
+
+
+
+
+	 </li>
+	{% endfor %}
+</ol>
+		

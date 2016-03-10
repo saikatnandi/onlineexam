@@ -1,0 +1,46 @@
+{% include 'readingmaterial/include/head1' %}
+
+
+
+</head>
+
+</body>
+<div class="container">
+{% include 'readingmaterial/include/menubar.html' %}
+		<h1 align="center"> Reading Material Reading Content List </h1>
+		<!-- 
+		{{ subtopic1 }} -->
+
+
+		<ul  class="list-group">
+		{% for rcl in readingcontentlist %}
+			<li class="list-group-item">
+				<h4><a href="content/{{ rcl.id }}">{{ rcl.content_title }}</a></h4>
+
+			</li>
+		{% endfor %}
+		</ul>
+	
+
+
+</div>
+
+</body>
+</html>
+
+
+
+<!-- 
+
+<h1 align="center"> in reading material readingcontentlist.html page </h1>
+
+
+
+
+
+{% for rcl in readingcontentlist %}
+	<ul>
+		<a href="{{ rcl.id }}"><p> {{ rcl.content_title }} </p></a>
+
+	</ul>
+{% endfor %} -->

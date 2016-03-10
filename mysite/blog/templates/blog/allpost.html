@@ -1,0 +1,41 @@
+{% include 'readingmaterial/include/head1' %}
+
+
+</head>
+
+</body>
+<div class="container">
+
+{% include 'readingmaterial/include/menubar.html' %}
+
+
+
+
+
+	<h1 align="center"> All Blog Post </h1>
+	<p> blogs are listed here </p>
+
+
+
+	<ul  class="list-group">
+		{% for b in blog %}
+			<li class="list-group-item">
+				<a href="{% url 'blog:post_details' b.id %}"><p> {{ b.title_text }} </p></a>
+			</li>
+		{% endfor %}
+	</ul>
+
+
+</div>
+
+
+
+</body>
+</html>
+
+
+
+
+
+
+

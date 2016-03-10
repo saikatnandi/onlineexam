@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script>
+    function getCookie(c_name)
+	{
+	    if (document.cookie.length > 0)
+	    {
+	        c_start = document.cookie.indexOf(c_name + "=");
+	        if (c_start != -1)
+	        {
+	            c_start = c_start + c_name.length + 1;
+	            c_end = document.cookie.indexOf(";", c_start);
+	            if (c_end == -1) c_end = document.cookie.length;
+	            return unescape(document.cookie.substring(c_start,c_end));
+	        }
+	    }
+	    return "";
+	 }
+
+	function onSuccess(data, status, xhr)
+	{
+		// with our success handler, we're just logging the data...
+		console.log(data, status, xhr);
+		// but you can do something with it if you like - the JSON is deserialised into an object
+		console.log(String(data.value).toUpperCase());
+	//	$("#div1").text("value form ajax: " + String(data.value));
+		alert ("ajax successful");
+
+	}
+	$(document).ready(function(){
+
+		$(function () {
+		    $.ajaxSetup({
+		        headers: { "X-CSRFToken": getCookie("csrftoken") }
+		    });
+		});
+				
+
+		$("#bajax").click(function(){
+			var text = window.getSelection().toString();
+
+			if (text == "") {
+				text = "nothing is selected. Select some text to send ajax request";
+			} else {
+			  var  text2 = 'alamin';
+
+			//  alert (typeof(text.toString()));
+
+			  
+			   $.post('/exam/ajax/text/', { 'text2'  : text}, onSuccess);
+			   text += '<br> Above data has been sent through ajax';
+
+			}
+
+
+	    	$("#output").text(text);
+	       // $.ajax({
+        //          type:"POST",
+        //          url:"/exam/ajax/text/",
+        //          data: {
+        //                 'video': 'alamin'
+        //        // from form
+        //                 },
+        //          success: function(){
+        //             alert ("ajax successful");
+        //          }
+        //     });
+        //     return false; 
+
+	  //		text = "this is ajax from the file";
+	  		
+		});
+
+	});
+    
+</script>
+</head>
+<body>
+
+<h1>this is ajax test </h1>
+
+<p> alamin alamin alamin </p>
+
+<p>If you click on me, I will disappear.</p>
+<p>Click me away!</p>
+<p>Click me too!</p>
+<button id="bajax">Save Selected Text</button>
+<form action="" method="post">
+{% csrf_token %}
+<input type="submit" value="submit and ajax"></input>
+
+</form>
+
+
+<div id="output"> </div>
+
+</body>
+</html>

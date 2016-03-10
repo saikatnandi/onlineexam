@@ -1,0 +1,64 @@
+{% include 'readingmaterial/include/head1' %}
+
+
+<script>
+	$(document).ready(function(){
+		var tag = $("#tag").val() ;
+		$("#id_tag").val(tag) ;
+		
+	})
+
+
+	
+</script>
+
+</head>
+
+</body>
+<div class="container">
+
+{% include 'readingmaterial/include/menubar.html' %}
+
+
+
+
+	<h1 align="center"> UPLOAD Question Set FROM EXCEL </h1>
+
+
+
+<!-- 	<h2>  </h2> -->
+
+	<form action="" method="post" enctype="multipart/form-data">
+	    {% csrf_token %}
+	    {{ form.as_p }}
+
+	    <input type="hidden" value="{{tag}}" id="tag" name='tag'></input>
+
+	    
+	    <input type="submit" value="Submit" />
+	</form>
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

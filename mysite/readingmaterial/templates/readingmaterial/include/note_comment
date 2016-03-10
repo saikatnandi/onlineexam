@@ -1,0 +1,67 @@
+
+		<div class="col-sm-3">
+			<br><br><br>
+			{% if request.user.is_authenticated %}
+				<h4>Add New Notes</h4>
+				<input id='note' name='note' type='textarea' placeholder="Add A New Note " width="100%"></input>				<button id='bAddNote'>Add Note</button>
+
+
+			<br><br><br>
+
+			    
+			    <h4>My Notes: </h4>
+			<!-- 
+			    {{ note }} -->
+			    <ul id='my_notes' class="list-group">
+				    {% for n in note %}
+						<li class="list-group-item">
+							 {{ n.content_notes }}
+
+						</li>
+					{% endfor %}
+				</ul>
+
+			{% endif %}
+		</div>
+
+	</div>
+
+
+    <br><br><br>
+<br><br><br>
+
+    <br><br><br>
+<br><br><br>
+	<div class="container">	
+		<h4>Comments are:</h4>
+		<br><br>
+		<ul id='pre_comment' class='list-group'>
+			{% for c in comment %}
+				
+				<li class="list-group-item">	User: {{c.user.first_name}} {{ c.user.last_name }} comments ->:  {{ c.comment_text }}  
+				</li>
+				
+			{% endfor %}
+
+		</ul>
+
+		<br><br>
+
+		{% if request.user.is_authenticated %}
+			<h4>Add new comment</h4>
+			<input id='comment' name='comment' type='textarea' placeholder="'Write a new Comment' " width="100%"></input>
+			<button id='bAddComment'>Add Comment </button>
+
+		{% endif %}
+
+		<P>end of comments</P>
+
+	</div>
+
+
+
+<br><br>
+
+	<h1>MCQS:</h1>
+
+	

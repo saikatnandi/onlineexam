@@ -1,0 +1,17 @@
+	{% include 'readingmaterial/include/mcq_question' %}
+	
+
+		<div>
+		<button class='explanation_button'> Explanation </button>
+		<div class="jumbotron explanation">
+			<p> Answer Is: {{ mcq.mcq_answer }} </p>
+
+			{% if mcq.explanation_image %}			   
+				<img src="{{mcq.explanation_image.url}}" class="img-rounded" alt="image1" width="304" height="236">	<p>Image</p>					
+		    {% endif %}
+
+			<p> Explanation: {{ mcq.explanation_text }} </p>
+
+		</div>
+
+	</div>

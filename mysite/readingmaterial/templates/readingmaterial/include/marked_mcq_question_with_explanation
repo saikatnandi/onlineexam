@@ -1,0 +1,57 @@
+
+{% if mcq.mcq_question.mcq_image %}
+		<img src="{{mcq.mcq_question.mcq_image.url}}" class="img-rounded" alt="image1" width="304" height="236">	
+
+{% endif %}
+
+<h4 align="left">Question  {{ forloop.counter }} : {{ mcq.mcq_question.question_text }}  </h4>
+				
+<div>
+
+<h5>Choices: </h5>
+
+{% if mcq.mcq_question.choice_a %}
+   	<input type="radio" name="{{ mcq.mcq_question.id }}" id="choice{{ forloop.counter }}" value="{{ mcq.choice_a }}" />
+    <label for="choice{{ forloop.counter }}">{{ mcq.mcq_question.choice_a}}  </label><br />
+{% endif %}
+
+{% if mcq.mcq_question.choice_b %}
+     <input type="radio" name="{{ mcq.mcq_question.id }}" id="choice{{ forloop.counter }}" value="{{ mcq.mcq_question.choice_b }}" />
+    <label for="choice{{ forloop.counter }}">{{ mcq.mcq_question.choice_b }}  </label><br />
+{% endif %}
+
+{% if mcq.mcq_question.choice_c %}
+	<input type="radio" name="{{ mcq.mcq_question.id }}" id="choice{{ forloop.counter }}" value="{{ mcq.mcq_question.choice_c }}" />
+    <label for="choice{{ forloop.counter }}">{{ mcq.mcq_question.choice_c }}  </label><br />
+{% endif %}
+
+{% if mcq.mcq_question.choice_d %}
+	<input type="radio" name="{{ mcq.mcq_question.id }}" id="choice{{ forloop.counter }}" value="{{ mcq.mcq_question.choice_d }}" />
+    <label for="choice{{ forloop.counter }}">{{ mcq.mcq_question.choice_d }}  </label><br />
+{% endif %}
+
+{% if mcq.mcq_question.choice_e %}
+    <input type="radio" name="{{ mcq.mcq_question.id }}" id="choice{{ forloop.counter }}" value="{{ mcq.mcq_question.choice_e }}" />
+    <label for="choice{{ forloop.counter }}">{{ mcq.mcq_question.choice_e }}  </label><br />
+{% endif %}
+
+{% if mcq.mcq_question.choice_f %}
+    <input type="radio" name="{{ mcq.mcq_question.id }}" id="choice{{ forloop.counter }}" value="{{ mcq.mcq_question.choice_f }}" />
+    <label for="choice{{ forloop.counter }}">{{ mcq.mcq_question.choice_f }}  </label><br />
+{% endif %}
+
+
+<div>
+<button class="explanation_button"> Explanation </button>
+<div class="jumbotron explanation">
+	<p> Answer Is: {{ mcq.mcq_question.mcq_answer }} </p>
+
+	{% if mcq.mcq_question.explanation_image %}			   
+		<img src="{{mcq.mcq_question.explanation_image.url}}" class="img-rounded" alt="image1" width="304" height="236">	<p>Image</p>					
+    {% endif %}
+
+	<p> Explanation: {{ mcq.mcq_question.explanation_text }} </p>
+
+</div>
+
+</div>

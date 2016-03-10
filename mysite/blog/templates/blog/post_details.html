@@ -1,0 +1,120 @@
+{% include 'readingmaterial/include/head1' %}
+
+
+
+{% include 'blog/include/blog_comment_js.html' %}
+
+
+
+</head>
+</body>
+<div class="container"> 
+
+{% include 'readingmaterial/include/menubar.html' %}
+
+
+
+
+
+<input id='post_id' value="{{ post_id }}" type='hidden'>  </input>
+<input id='my_mcq' value="{{content_marked_mcq_string}}" type='hidden'>  </input>
+
+	<h1 align="center"> Blog Page </h1>
+	<h2 align="center">Title: {{ post.title_text }} </h2>
+
+	<br><br><br>
+	<h3>Tags:</h3>
+
+	<ul  class="list-group">
+	    {% for btag in blog_tag %}
+	    <div class="row" id="rowNote{{n.id}}">
+	    	<div align="left" class="col-sm-10">
+				<li class="list-group-item">
+					 {{ btag }}
+
+				</li>
+			</div>			
+		</div>
+		{% endfor %}
+	</ul>
+
+
+
+
+
+
+
+
+
+
+	<br><br><br><br>
+
+	<h4>Content: </h4>
+	<div align="center">
+		<p> {{ post.post_body }}</p>
+
+
+		{% if post.image1 %}			   
+			<img src="{{post.image1.url}}" class="img-rounded" alt="image1" width="304" height="236">						
+		{% endif %}
+
+		{% if post.image2 %}			   
+			<img src="{{post.image2.url}}" class="img-rounded" alt="image1" width="304" height="236">						
+		{% endif %}
+
+
+		{% if post.image3 %}			   
+			<img src="{{post.image3.url}}" class="img-rounded" alt="image1" width="304" height="236">						
+		{% endif %}
+
+
+
+	</div>
+
+
+
+	<br><br><br><br>
+
+	<h4>Comments are:</h4>
+
+
+	
+	<br><br><br><br>
+
+
+<!-- 	<ul>
+	{% for c in comment %}
+		
+		<li>	User: {{c.user.first_name}} {{ c.user.last_name }} comments ->:  {{ c.comment_text }}  </li>
+		
+	{% endfor %}
+
+	</ul>
+ -->
+
+
+
+{% include 'readingmaterial/include/comment.html' %}
+
+
+
+
+	<br><br><br><br>
+
+	{% if request.user.is_authenticated %}
+		<h4>Add new comment</h4>
+		<input id='comment'name='comment' type='textarea' placeholder="'Write a new comment' " width="100%"></input>
+		<button id='bAddComment'>Add Comment</button>
+
+
+	{% endif %}
+	
+
+
+
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+<table id='table_comment' class="table table-bordered" >
+	    <thead>
+	      <tr>
+	        <th>User</th>
+	        <th>Comment</th>
+	        <th>Date</th>
+	        
+	        
+		   </tr>
+		</thead>
+		    <tbody>
+
+			{% for c in comment %}
+			    <tr>
+			    	<td> {{c.user.first_name}}  {{ c.user.last_name }}</td>
+			    	<td> {{ c.comment_text }} </td>
+			    	<td>  {{ c.edit_date }}</td>
+
+
+			    </tr>
+
+
+			{% endfor %}
+
+
+
+
+		    </tbody>
+ </table>

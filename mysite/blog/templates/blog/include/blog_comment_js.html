@@ -1,0 +1,68 @@
+<script>
+	var comment ;
+    function getCookie(c_name)
+	{
+	    if (document.cookie.length > 0)
+	    {
+	        c_start = document.cookie.indexOf(c_name + "=");
+	        if (c_start != -1)
+	        {
+	            c_start = c_start + c_name.length + 1;
+	            c_end = document.cookie.indexOf(";", c_start);
+	            if (c_end == -1) c_end = document.cookie.length;
+	            return unescape(document.cookie.substring(c_start,c_end));
+	        }
+	    }
+	    return "";
+	 }
+
+	function onSuccess(data, status, xhr)
+	{
+		// with our success handler, we're just logging the data...
+		console.log(data, status, xhr);
+		// but you can do something with it if you like - the JSON is deserialised into an object
+		console.log(String(data.value).toUpperCase());
+	//	$("#div1").text("value form ajax: " + String(data.value));
+		// alert ("ajax successful");
+
+		if (data == 'comment') {
+
+			var td = '<td> </td>' 
+			td += '<td>' + comment + '</td>';
+			td += '<td> </td>';
+			$('#table_comment').append(td);
+
+		}
+
+	}
+
+
+	$(document).ready(function(){
+
+		$(function () {
+		    $.ajaxSetup({
+		        headers: { "X-CSRFToken": getCookie("csrftoken") }
+		    });
+		});
+				
+
+		$("#bAddComment").click(function(){	
+
+
+			comment = $('#comment').val();
+			var post_id = $('#post_id').val();
+			if (comment.length > 0) {
+				 $.post('/blog/ajax/addcomment/', { 'comment'  : comment, 'postId' : post_id}, onSuccess);
+
+			} else {
+				alert ("To make a comment write something in the comment box");
+			}		  
+		    
+	  		
+		});
+
+	});
+
+	
+    
+</script>

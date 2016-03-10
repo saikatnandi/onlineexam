@@ -1,0 +1,36 @@
+{% include 'readingmaterial/include/head1' %}
+
+
+</head>
+
+</body>
+<div class="container">
+
+{% include 'readingmaterial/include/menubar.html' %}
+
+
+
+
+	<h1 align="center"> In Question Index Page </h1>
+
+
+
+	<form action="" method="post" >
+	    {% csrf_token %}
+	    {{ form.as_p }}
+
+<!-- 	    <input type="hidden" value="{{tag}}" id="tag" name='tag'></input> -->
+
+	    
+	    <input type="submit" value="Submit" />
+	</form>
+	
+
+
+
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,174 @@
+<script>
+
+  var marked_span;
+
+    function getCookie(c_name)
+    {
+        if (document.cookie.length > 0)
+        {
+            c_start = document.cookie.indexOf(c_name + "=");
+            if (c_start != -1)
+            {
+                c_start = c_start + c_name.length + 1;
+                c_end = document.cookie.indexOf(";", c_start);
+                if (c_end == -1) c_end = document.cookie.length;
+                return unescape(document.cookie.substring(c_start,c_end));
+            }
+        }
+        return "";
+     }
+
+
+    function onSuccess_marked_text(data, status, xhr)
+    {
+        // with our success handler, we're just logging the data...
+        console.log(data, status, xhr);
+        // but you can do something with it if you like - the JSON is deserialised into an object
+        console.log(String(data.value).toUpperCase());
+    //  $("#div1").text("value form ajax: " + String(data.value));
+        // alert ("ajax successful");
+        
+        if (data = 'marked_text') {
+            // alert ("successful");
+            // marked_span.className += "selected_text";
+
+        }
+
+        else if (data == 'delete_marked_text'){
+                $('#textBody').find('span').contents().unwrap();
+
+        }
+
+
+               
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$(document).ready(function(){
+
+     
+
+        $(function () {
+            $.ajaxSetup({
+                headers: { "X-CSRFToken": getCookie("csrftoken") }
+            });
+        });
+            
+
+
+
+
+
+    function getSelectedText() {
+      t = (document.all) ? document.selection.createRange().text : document.getSelection();
+
+      return t;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    $("#bAddMarkedText").click(function(){
+
+        console.log("going to add marked text");
+
+        var selection = getSelectedText();
+        var selection_text = selection.toString();
+
+        if (selection_text.length <= 0) {
+
+            alert ("nothing is selected. Select some text to send ajax request");
+            
+
+        } else {
+
+
+       
+        
+        // How do I add a span around the selected text?
+        
+            var span = document.createElement('SPAN');
+            span.textContent = selection_text;
+            span.className += "selected_text";
+            marked_span = span;
+            
+            var range = selection.getRangeAt(0);
+            range.deleteContents();
+            range.insertNode(span);
+
+            var marked_text = $("#textBody").html();
+             var reading_content_id = $('#reading_content_id').val();
+            // console.log(marked_text);
+
+           $.post('/readingmaterial/ajax/addmarkedtext/', { 'text'  : marked_text,'postId' : reading_content_id}, onSuccess_marked_text);
+          // text += '<br> Above data has been sent through ajax';
+           console.log("request send complete");
+
+   }
+
+    });
+
+    $("#bResetMarkedText").click(function(){
+
+
+            var reading_content_id = $('#reading_content_id').val();
+
+            $.post('/readingmaterial/ajax/deletemarkedtext/', { 'text'  : marked_text,'postId' : reading_content_id}, onSuccess_marked_text);
+
+
+
+    });
+
+
+
+
+    // $('#textBody').mouseup(function(){
+
+    // });
+
+
+
+});
+
+
+</script>
+
+
+<style type="text/css">
+    #textBody {
+    padding-top: 0.5em;
+    z-index: 100;
+    }
+        
+    span.selected_text{
+        color: green;
+    }
+</style>

@@ -1,0 +1,192 @@
+
+
+<script>
+$(document).ready(function(){
+	$('.explanation').hide();
+
+	$('.btoggle_div').hide();
+
+    $(".explanation_button").click(function(){
+    	console.log("button has been pressed");
+        $(this).next('div').toggle();
+    });
+
+	$(".btoggle").click(function(){
+		console.log("button has been pressed");
+		$(this).next('div').toggle();
+	});
+
+
+
+
+
+
+});
+</script>
+
+
+
+<script type="text/javascript">
+
+
+    var question_id ;
+
+
+    function getCookie(c_name)
+	{
+	    if (document.cookie.length > 0)
+	    {
+	        c_start = document.cookie.indexOf(c_name + "=");
+	        if (c_start != -1)
+	        {
+	            c_start = c_start + c_name.length + 1;
+	            c_end = document.cookie.indexOf(";", c_start);
+	            if (c_end == -1) c_end = document.cookie.length;
+	            return unescape(document.cookie.substring(c_start,c_end));
+	        }
+	    }
+	    return "";
+	 }
+
+	function onSuccess_mcq(data, status, xhr)
+	{
+		// with our success handler, we're just logging the data...
+		console.log(data, status, xhr);
+		// but you can do something with it if you like - the JSON is deserialised into an object
+		console.log(String(data.value).toUpperCase());
+
+
+		if (data == 'mcq') {
+			$("#question"+question_id).text("Remove From Favotites");
+		}
+
+		if (data == 'deletemcq') {
+			$("#question"+question_id).text("Add To Favotites");
+		}
+
+
+	}
+
+
+	$(document).ready(function(){
+		// alert ("still okay");
+		$(function () {
+		    $.ajaxSetup({
+		        headers: { "X-CSRFToken": getCookie("csrftoken") }
+		    });
+		});
+			
+
+
+
+
+
+		$(".bmcq").click(function(){	
+			question_id = (this.id);
+			question_id = question_id.substring(8, question_id.length);
+// noteId = noteId.substring(4, noteId.length);
+// 			deleteNoteId = noteId;
+		//	alert ($(this).text());
+
+			var reading_content_id = $('#reading_content_id').val();
+
+		// 	comment = $('#comment').val();
+		// 	var reading_content_id = $('#reading_content_id').val();
+		// //	alert (comment)
+		    var t = $(this).text();
+		    t1 = t.indexOf('Add');
+		    t2 = t.indexOf('add');
+			if (!isNaN(question_id) && (t1 >=0 || t2 >= 0)) {
+				 // $.post('/readingmaterial/ajax/addmcq/', { 'qid'  : question_id, 'postId' : reading_content_id}, onSuccess_mcq);
+
+			 $.post('/readingmaterial/ajax/addmcq/', { 'qid'  : question_id}, onSuccess_mcq);
+
+
+			} else if (!isNaN(question_id)){
+				$.post('/readingmaterial/ajax/deletemcq/', { 'qid'  : question_id}, onSuccess_mcq);
+
+				// alert ("The question id is not found");
+			} else {
+
+			}
+	  		
+		});
+
+
+
+
+			
+
+
+	});
+</script>
+
+
+
+
+
+<script>
+
+	$(document).ready(function(){
+
+		    // var a = $('#2').text();
+		    // $('#2').text("Remove From Favotites");
+		    // alert (a);
+
+
+		    var mcq = $("#my_mcq").val();
+		    var my_mcq2 = mcq.split(',');
+		    var my_mcq = Array();
+
+		    for (var i=0; i < my_mcq2.length; i++){
+		    	my_mcq[i] = Number(my_mcq2[i]);
+		    	//  var id = "#"+ my_mcq[i];
+		    	// // $(id).text("Remove From Favotites");
+		    	// console.log (my_mcq[i]);
+		    	// console.log(id);
+		    	//console.log (type(my_mcq[i]));
+		    }
+
+		    // alert(my_mcq);
+
+		    // var my_mcq = [1, 2, 3, 4, 5];
+		//    alert(my_mcq[0]);
+
+		    for (var i=0; i < my_mcq.length; i++){
+		    	 var id = "#question"+ my_mcq[i];
+		    	 $(id).text("Remove From Favotites");
+		    //	console.log (my_mcq[i]);
+		    //	console.log(id);
+		    	//console.log (type(my_mcq[i]));
+		    }
+
+			
+			// $(".bmcq").click(function(){	
+
+			// 	alert ($(this.id));
+
+			// 	// note = $('#note').val();
+			// 	// var reading_content_id = $('#reading_content_id').val();
+			// 	// // alert (reading_content_id);
+			// 	// if (note.length > 0) {
+			// 	// 	 $.post('/readingmaterial/ajax/addnote/', { 'note'  : note, 'reading_content_id' : reading_content_id}, onSuccess);
+
+			// 	// } else {
+			// 	// 	alert ("To make a note write something in the note box");
+			// 	// }
+			  
+			    
+		  		
+			// });
+
+
+		});
+		
+
+</script>
+
+
+
+
+
+

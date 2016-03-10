@@ -1,0 +1,41 @@
+
+{% if mcq.mcq_image %}
+		<img src="{{mcq.mcq_image.url}}" class="img-rounded" alt="image1" width="304" height="236">	
+
+{% endif %}
+
+<h4 align="left">Question  {{ forloop.counter }} :   {{ mcq.question_text }}</h4>
+				
+				<div>
+
+				<h5>Choices: </h5>
+
+				{% if mcq.choice_a %}
+				   	<input type="radio" name="{{ mcq.id }}" id="choice{{ forloop.counter }}" value="{{ mcq.choice_a }}" />
+				    <label for="choice{{ forloop.counter }}">{{ mcq.choice_a }}  </label><br />
+				{% endif %}
+
+				{% if mcq.choice_b %}
+				     <input type="radio" name="{{ mcq.id }}" id="choice{{ forloop.counter }}" value="{{ mcq.choice_b }}" />
+				    <label for="choice{{ forloop.counter }}">{{ mcq.choice_b }}  </label><br />
+			    {% endif %}
+
+			    {% if mcq.choice_c %}
+					<input type="radio" name="{{ mcq.id }}" id="choice{{ forloop.counter }}" value="{{ mcq.choice_c }}" />
+				    <label for="choice{{ forloop.counter }}">{{ mcq.choice_c }}  </label><br />
+			    {% endif %}
+
+			    {% if mcq.choice_d %}
+					<input type="radio" name="{{ mcq.id }}" id="choice{{ forloop.counter }}" value="{{ mcq.choice_d }}" />
+				    <label for="choice{{ forloop.counter }}">{{ mcq.choice_d }}  </label><br />
+				{% endif %}
+
+			    {% if mcq.choice_e %}
+				    <input type="radio" name="{{ mcq.id }}" id="choice{{ forloop.counter }}" value="{{ mcq.choice_e }}" />
+				    <label for="choice{{ forloop.counter }}">{{ mcq.choice_e }}  </label><br />
+			    {% endif %}
+
+			    {% if mcq.choice_f %}
+				    <input type="radio" name="{{ mcq.id }}" id="choice{{ forloop.counter }}" value="{{ mcq.choice_f }}" />
+				    <label for="choice{{ forloop.counter }}">{{ mcq.choice_f }}  </label><br />
+			    {% endif %}

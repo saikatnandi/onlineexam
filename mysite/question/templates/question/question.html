@@ -1,0 +1,47 @@
+{% include 'readingmaterial/include/head1' %}
+
+
+</head>
+
+</body>
+<div class="container">
+
+
+{% include 'readingmaterial/include/menubar.html' %}
+
+
+
+	<h1 align="center"> Question Details Page</h1>
+
+<!-- 	{{ mcq_question }} -->
+
+	<h3>Individual Question Marks: {{ question_set.individual_mcq_marks }} </h3>
+	<h3>Negative Marking:  {{ question_set.negative_marking_percentage }} % Marks Will Be Deducted For Wrong Answer </h3>
+
+	<h2 align="center"> List Of Mcq Question </h2>
+
+	<form action="{{ request.get_full_path }}result/" method="post" >
+	{% csrf_token %}
+		<ol class="list-group">
+			{% for mcq in mcq_question %}
+				<li class="list-group-item">
+					<div>
+					<!-- <div align="right"><button id="question{{mcq.id}}" class="bmcq">Add To Favorite </button></div> -->
+					{% include 'readingmaterial/include/mcq_question' %}
+				 </li>
+				{% endfor %}
+		</ol>
+
+		<br><br><br>
+	 <input type="submit" class="btn btn-info" value="Submit Answer">
+	 <br><br>
+	 <br>
+    </form>
+
+
+</div>
+
+
+
+</body>
+</html>

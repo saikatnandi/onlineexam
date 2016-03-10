@@ -1,0 +1,63 @@
+{% include 'readingmaterial/include/head1' %}
+
+
+
+</head>
+
+</body>
+<div class="container">
+{% include 'readingmaterial/include/menubar.html' %}
+		<h1 align="center"> In Rading Material Index  Page </h1>
+		<!-- 
+		{{ subtopic1 }} -->
+
+
+		<ul  class="list-group">
+		{% for rt in reading_topic %}
+			<li class="list-group-item">
+				<h4><a href="{% url 'readingmaterial:subtopic1' rt.id %}">{{ rt.reading_topic_text }}</a></h4>
+
+			</li>
+		{% endfor %}
+		</ul>
+<!-- 	
+topic/{{ rt.id }} -->
+
+</div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+		<ul  class="list-group">
+		{% for st1 in subtopic1 %}
+			<li class="list-group-item">
+				<h4><a href="{{ st1.id }}"> {{ st1.subtopic1_text }} </a></h4>
+
+			</li>
+		{% endfor %}
+		</ul> -->

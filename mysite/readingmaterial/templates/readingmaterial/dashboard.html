@@ -1,0 +1,126 @@
+{% include 'readingmaterial/include/head1' %}
+
+
+
+</head>
+
+</body>
+<div class="container">
+{% include 'readingmaterial/include/menubar.html' %}
+	<h1 align="center">User DashBoard</h1>
+	<h3>Welcome: {{ request.user.first_name }} {{ request.last_name }}<br> Id:{{ request.user.id }} 
+	<br>Username: {{ request.user }}</h3>
+
+
+<br><br><br><br><br><br>
+	<h3> Your Notes </h3>
+
+
+	<ul  class="list-group">
+	{% for rt in reading_topic %}
+		<li class="list-group-item">
+			<h4 class="btoggle" >{{ rt.reading_topic_text }}</h4>
+			<div class="btoggle_div">
+
+
+			<ul  class="list-group">
+			{% for n in note %}
+			   {% ifequal n.content.subtopic1.topic rt%}
+				<li class="list-group-item">
+					<h4><a href="">{{ n.content_notes }}</a></h4>
+				</li>
+
+				{% endifequal %}
+			{% endfor %}
+			</ul>
+			</div>
+
+		</li>
+	{% endfor %}
+	</ul>
+
+
+
+
+{% include 'readingmaterial/include/mcq_question_javascript.html' %}
+<br><br><br>
+<input id='my_mcq' value="{{content_marked_mcq_string}}" type='hidden'>  </input>
+
+
+
+
+
+
+
+<br><br><br><br><br><br>
+<!-- <h2>marked mcq </h2> -->
+<!--  {{ marked_mcq }}
+ -->
+
+<br><br><br><br><br><br>
+<!-- {{ marked_mcq_topic }}
+ -->
+
+<h1>Your Topic Wise Marked Mcq</h1>
+
+<ul  class="list-group">
+{% for mct in marked_mcq_topic %}
+	<li class="list-group-item">
+		<h4 class="btoggle">{{ mct.reading_topic_text }}</h4>
+
+		<div class="btoggle_div">
+
+
+		<ul  class="list-group">
+		{% for mcq in marked_mcq %}
+
+		   {% ifequal mcq.content.subtopic1.topic mct%}
+		     <div align="right"><button id="question{{mcq.mcq_question.id}}" class="bmcq">Add To Favorite </button></div>
+		 
+
+
+				<li class="list-group-item">
+					    {% include 'readingmaterial/include/marked_mcq_question_with_explanation' %}
+						
+			   </li>			   
+
+			{% endifequal %}
+		{% endfor %}
+		</ul>
+
+		</div>
+
+	</li>
+{% endfor %}
+	</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+</div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+

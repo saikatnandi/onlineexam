@@ -1,0 +1,38 @@
+{% include 'readingmaterial/include/head1' %}
+
+</head>
+
+</body>
+<div class="container">
+
+{% include 'readingmaterial/include/menubar.html' %}
+
+
+
+	<h1 align="center"> Write A POST </h1>
+
+
+	<form action="/blog/writepost/" method="post" enctype="multipart/form-data">
+	    {% csrf_token %}
+
+	    {{ form.as_p }}
+
+	    <br><br><br>
+	    <input type="submit" value="Submit" />
+	</form>
+
+
+	</div>
+
+	<br><br><br><br>
+
+
+
+</body>
+</html>
+
+
+
+
+
+

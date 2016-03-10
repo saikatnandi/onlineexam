@@ -1,0 +1,217 @@
+ <script>
+    var note ;
+    var comment;
+    var question_id ;
+    var marked_text;
+    var deleteNoteId;
+    function getCookie(c_name)
+	{
+	    if (document.cookie.length > 0)
+	    {
+	        c_start = document.cookie.indexOf(c_name + "=");
+	        if (c_start != -1)
+	        {
+	            c_start = c_start + c_name.length + 1;
+	            c_end = document.cookie.indexOf(";", c_start);
+	            if (c_end == -1) c_end = document.cookie.length;
+	            return unescape(document.cookie.substring(c_start,c_end));
+	        }
+	    }
+	    return "";
+	 }
+
+	function onSuccess(data, status, xhr)
+	{
+		// with our success handler, we're just logging the data...
+		console.log(data, status, xhr);
+		// but you can do something with it if you like - the JSON is deserialised into an object
+		console.log(String(data.value).toUpperCase());
+	//	$("#div1").text("value form ajax: " + String(data.value));
+		// alert ("ajax successful");
+		if (data == 'note'){
+			var li = '<li class="list-group-item">' + note + '</li>';
+			$('#my_notes').prepend(li);
+
+			console.log("should have been appended to the list");
+
+
+
+
+			var li2 = '<div class="row" id="rowNote{{n.id}}">\
+				    	<div align="left" class="col-sm-10">\
+							<li class="list-group-item">\
+								 {{ n.content_notes }}\
+\
+							</li>\
+						</div>\
+						<div align="right" class="col-sm-2">\
+							<button id="note{{n.id}}" class="bNoteDelete">Delete</button>\
+							\
+						</div>\
+			</div>';
+
+
+
+
+		}
+		
+		if (data == 'comment') {
+			var li = '<li class="list-group-item">' + comment + '</li>';
+
+			var td = '<td> </td>' 
+			td += '<td>' + comment + '</td>';
+			td += '<td> </td>';
+			$('#table_comment').append(td);
+
+			$('#pre_comment').append(li);
+
+
+
+
+		}
+
+		if (data == 'mcq') {
+			$("#question"+question_id).text("Remove From Favotites");
+		}
+
+		if (data == 'deletemcq') {
+			$("#question"+question_id).text("Add To Favotites");
+		}
+
+		if (data = 'deletenote') {
+			var id = "#" + 'rowNote' + deleteNoteId;
+			$(id).remove();
+
+		}
+
+	}
+
+
+	$(document).ready(function(){
+
+		$(function () {
+		    $.ajaxSetup({
+		        headers: { "X-CSRFToken": getCookie("csrftoken") }
+		    });
+		});
+				
+
+		$("#bAddNote").click(function(){	
+
+			note = $('#note').val();
+			var reading_content_id = $('#reading_content_id').val();
+			// alert (reading_content_id);
+			if (note.length > 0) {
+				 $.post('/readingmaterial/ajax/addnote/', { 'note'  : note, 'reading_content_id' : reading_content_id}, onSuccess);
+
+			} else {
+				alert ("To make a note write something in the note box");
+			}
+		  
+		    
+	  		
+		});
+
+
+		$("#bAddComment").click(function(){	
+
+			comment = $('#comment').val();
+			
+		//	alert (comment)
+		    var reading_content_id = $('#reading_content_id').val();
+			if (comment.length > 0) {
+				 $.post('/readingmaterial/ajax/addcomment/', { 'comment'  : comment, 'postId' : reading_content_id}, onSuccess);
+
+			} else {
+				alert ("To make a comment write something in the comment box");
+			}			  
+	  		
+		});
+
+// 		$(".bmcq").click(function(){	
+// 			question_id = (this.id);
+// 			question_id = question_id.substring(8, question_id.length);
+// // noteId = noteId.substring(4, noteId.length);
+// // 			deleteNoteId = noteId;
+// 		//	alert ($(this).text());
+
+// 			var reading_content_id = $('#reading_content_id').val();
+
+// 		// 	comment = $('#comment').val();
+// 		// 	var reading_content_id = $('#reading_content_id').val();
+// 		// //	alert (comment)
+// 		    var t = $(this).text();
+// 		    t1 = t.indexOf('Add');
+// 		    t2 = t.indexOf('add');
+// 			if (!isNaN(question_id) && (t1 >=0 || t2 >= 0)) {
+// 				 $.post('/readingmaterial/ajax/addmcq/', { 'qid'  : question_id, 'postId' : reading_content_id}, onSuccess);
+
+// 			} else if (!isNaN(question_id)){
+// 				$.post('/readingmaterial/ajax/deletemcq/', { 'qid'  : question_id, 'postId' : reading_content_id}, onSuccess);
+
+// 				// alert ("The question id is not found");
+// 			} else {
+
+// 			}
+	  		
+// 		});
+
+
+		// $("#bAddMarkedText").click(function(){
+		// 	// marked_text = window.getSelection().toString();
+		// 	// var reading_content_id = $('#reading_content_id').val();
+
+
+		// 	// if (marked_text.length <= 0) {
+		// 	// 	text = "nothing is selected. Select some text to send ajax request";
+		// 	// } else {
+		// 	// 	console.log("going to send ajax request");
+			  
+
+		// 	// //  alert (typeof(text.toString()));
+
+			  
+		// 	//    $.post('/readingmaterial/ajax/addmarkedtext/', { 'text'  : marked_text,'postId' : reading_content_id}, onSuccess);
+		// 	//   // text += '<br> Above data has been sent through ajax';
+		// 	//    console.log("request send complete");
+
+		// 	// }
+      
+	  		
+		// });
+
+
+
+		$(".bNoteDelete").click(function(){	
+
+			note = $('#note').val();
+			var noteId = this.id;
+			noteId = noteId.substring(4, noteId.length);
+			deleteNoteId = noteId;
+		//	var reading_content_id = $('#reading_content_id').val();
+			// alert (reading_content_id);
+		//	alert(noteId);
+			if ( !isNaN(noteId) ) {
+				 $.post('/readingmaterial/ajax/deletenote/', { 'noteId'  : noteId}, onSuccess);
+
+			} else {
+				alert ("Cant delete this note");
+			}
+		  
+		    
+	  		
+		});
+
+
+
+
+	});
+
+
+
+
+
+	
+    
+</script>
+

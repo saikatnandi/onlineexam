@@ -1,0 +1,30 @@
+  <div id='cssmenu'>
+	<ul>	
+
+	{% if request.user.is_authenticated %}
+		<li > <a href="/dashboard/">  Dash Board </a>	</li>  
+	   <li><a href="/blog/writepost"> Write A Blog Post </a> </li>
+    	<li><a href="/logout/">Log Out </a> </li>
+
+    {% else %}
+        <li><a href="/login/">Login </a> </li>
+
+
+    {% endif %}
+
+
+
+
+	 <li> <a href="/blog/allpost"> All Blogs </a> </li>
+	 <li><a href="/blog/taglist/"> Blog Tags </a> </li>
+
+	 <li><a href="/readingmaterial/">Reading Material </a> </li>
+	 <li><a href="/registration/">Registration </a> </li>
+	 <li><a href="/question/"> Model Questions </a> </li>
+
+
+
+  
+
+	</ul>
+</div>

@@ -1,0 +1,106 @@
+
+
+Reading material / Content upload:
+	1.Only you (site super admin) or your employee (user id and password provided by you) will able to add reading content.
+	Content means post about topic like  math topic (geometry, calculus) , GK topic, Bangla literature.
+	like this:
+	example: 	http://pre-testbd.com/exampreparation/subjectList
+
+	In the content there will be some reading material (a long text about the topic with image or video link ) and after the reading material there will be some MCQs
+	At the end of that topic REGISTERED user will be able to make comment. Unregistered user will only be able to see reading material, mcq and comment but wont be able to make a comment 
+
+	2.While reading a topic Registered Logged in user will be able to:
+	    a. Make short notes. On that topic user will be able to make multiple notes.
+		b. Mark mcq to read later.
+
+	Individual user will see his notes. Other users wont be able to see his notes or marked mcqs
+	When the user will revisit the topic later he will be able to see his  notes and marked mcq
+
+	3. When a user loges in he can go to his own account dash board where he will be able to see all the notes he has made so far and all the marked mcq will also be showed there
+	User will be able to use this dash board for a last minute revision of the topics
+	In user dashboard These notes and mcq will appear in groups of the topic. 
+	Example: If user makes some note in math and history. Then in his user dash board math and history will appear and when he clicks on math or history details notes on that respective subject will appear
+
+	
+
+
+
+Blog:
+	1. In this part information will be provied by the users. Here user is the content provider. Here user registered will be able to make a post . Other users will be able to comment on that post. Unregistered user will not be able to make a comment he will only be allowed to read.
+
+	Example: http://www.pre-testbd.com/blog/onlineclass/all
+
+	2. Only the post owner(who has written the particular post), you(super admin) or your employee (user id and password provided by you) will be able to delete the post. This employee will only be able to delete the blog post not the mcq ques. So There is no risk of the employee to delete the whole site
+
+	If you want to add more features to blog then pls let us know
+
+
+MCQ:
+	1.Only  you(super admin) or your employee (user id and password provided by you) will be able to upload mcq ques ie model test.
+	By default the employee wont have to authorty to delete mcq.So there is not much risk from him to destroy the whole system.
+	You will have the power to give the employee authorization to delete mcq(not recomended unless you trust the employee)
+
+	2. Suppose you have uploaded 50 mcq model ques. and 10 previous year ques.
+	3. Registered and unregistered user both will be able to take the test. Registered user will be able to save score
+	4. Registered user will be able to make notes and mark mcq from these model test
+	5. Suppose a user has solved all the model test question then the registesterd user will be able to take new test
+	   There will be a system through which a random question set will be prepared from the available mcq stored in the system (mcq from the reading material and mcq from other model test or previous year ques) for the user and the user will be able to take that test.
+	   Registration is required for this.
+	   After some time you can charge money for this service
+
+	6. For every mcq there will be an explanation and even an image.
+
+	I  like this from prestestbd.In addition there can be an image. if you want anything more then let me know
+	http://pre-testbd.com/exampreparation/questions_topics/BCS/bcs-conceptual-skills/communication-skills-judgment
+
+	Pls visit the above link and see if you want to add more. Because i think this is perfect.
+
+
+
+	7.How to find or update mcq:
+			Suppose you have uploaded 10000 mcq on various reading material, model question, previous year ques.
+			Now you want to find and update a ques.
+			There are several ways you can search and find a question:
+			1. There is a search box to search the question.
+			2. You can search question by some tag name. You can group mcq by giving them a tag name. Like changeable, math, history etc
+			Suppose you have some mcq that change over time you can give all these mcq a tag name. Later you will be able to search these mcq by that tag name
+			3. By Upload time. when you upload a ques the upload time will be saved.
+			Later you can search question that you uploaded 0ne day ago, a week ago, a month age and so on
+
+		In this way you will be able to search mcq ques and when you find the mcq question you can edit or delete that or make a model test question form it.
+
+
+	8. How to create a model test:
+	       suppose you want to create a model test with 50 ques.
+	       1.There will be a good interface to upload a mcq ques. You will be able to add explanation and image to that too
+	       2. upload these 50 mcq and give them a unique tag name.
+	       3. now search mcq by that tag name and select these mcq and make a question set.
+	       4. To make a question set you can reuse you previously updated mcq
+
+	    NB: There might be an option to upload the 50 mcq from an excel file. We will work on that later.
+	        If you upload the mcq through the interface then there is no chance of data corruption.
+	        But if you make a mistake in the excel file then data might be corrupted.
+	        we will look into this later and in sha Allah we will be able to find something that is both safe and easy
+
+
+
+
+
+Special Exam:
+	This is a special service through which you will be able to take a special model test which will start at a percular time and finish after a perticular time.
+
+	1. Registered user who will sign up for this service will be able to take part in the exam.
+    2. Notification about this special exam can be sent to all users email account
+    3. First this service might be free but later you can charge money for this
+    4. User will be able to pay through Visa, Master Card and Bkash
+
+
+
+
+Notice Board:
+	Here you can upload bcs circular or other job circular notice or other announcement
+	Only admin or his employees will be able to upload content to notice board. Users will only see this
+
+
+
+

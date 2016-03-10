@@ -33,6 +33,15 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'qa1',
     'exam',
+    'blog',
+    # 'guardian',
+    # 'django_select2',
+    
+    # 'mcq',
+    
+    'readingmaterial',
+    'question',
+
     'polls.apps.PollsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -58,7 +67,7 @@ ROOT_URLCONF = 'mysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -121,4 +130,24 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
+
+
+
+LOGIN_REDIRECT_URL='/exam/'
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend', # default
+    'guardian.backends.ObjectPermissionBackend',
+)
+
+ANONYMOUS_USER_ID = -1
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "")
+
+
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+
+# MEDIA_ROOT = "/mnt/02C8B1A8C8B199FD/programme/python/linux/pro1/mysite/"

@@ -1,0 +1,24 @@
+<h1 align="center">User DashBoard</h1>
+
+<h3>Welcome: {{ request.user.first_name }} {{ request.last_name }}<br> Id:{{ request.user.id }} 
+<br>Username: {{ request.user }}</h3>
+
+<h3> Your Notes </h3>
+
+{{ data }}
+
+
+<ul>
+	{% for n in note %}
+		<li> {{ n.content_notes }}  ....   ....... .conent...: {{ n.content }} ..........{{ n.content.subtopic1.topic }}</li>
+
+		
+	{% endfor %}
+</ul>
+
+<h3>for looping data </h3>
+
+{%for d in data%}
+	<p>  {{  d.content.subtopic1 }} </p>
+
+{% endfor %}

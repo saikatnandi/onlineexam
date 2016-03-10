@@ -1,33 +1,170 @@
 from __future__ import unicode_literals
-
 from django.db import models
 
+from django.utils import timezone
+from django.contrib.auth.models import User
 
-class Tag(models.Model):
-   
 
-    Tag_text = models.CharField(max_length=200)
+# from readingmaterial.models import ReadingContent
+
+
+
+# class ReadingContentInline(admin.TabularInline):
+#     model = ReadingContent
+#     extra = 0
+
+
+
+class Question_Topic(models.Model):   
+    question_topic_text = models.CharField(max_length=200, blank=True, null=True)       
+
+    def __unicode__(self):
+        return self.question_topic_text
+
+    class Meta:
+        verbose_name="Question Topic List"
+
+
+
+# class Subject(models.Model):
+#     subject_text = models.CharField(max_length=100)
+#     def __unicode__(self):
+#         return self.subject_text
+
+# class Tag(models.Model):
+#     tag_text = models.CharField(max_length=30)
+#     def __unicode__(self):
+#         return self.tag_text
+
+
+
+class Mcq_Question(models.Model):
+
+    # question_set = models.ManyToManyField(Question_Set, blank=True, null=True) 
+    # subject_set = models.ManyToManyField(Subject, blank=True, null=True)
+    # tag_set = models.ManyToManyField(Tag, blank=True, null=True)
+
+    question_text = models.CharField(max_length=400)   
+    mcq_image = models.ImageField(upload_to='images/mcq/', blank=True, null=True)
+    choice_a =  models.CharField(max_length=200, blank=True, null=True) 
+    choice_b =  models.CharField(max_length=200, blank=True, null=True) 
+    choice_c =  models.CharField(max_length=200, blank=True, null=True) 
+    choice_d =  models.CharField(max_length=200, blank=True, null=True) 
+    choice_e =  models.CharField(max_length=200, blank=True, null=True) 
+    choice_f =  models.CharField(max_length=200, blank=True, null=True) 
     
 
-    def __str__(self):
-    	return self.Tag_text
+    mcq_answer = models.CharField(max_length=200, blank=True, null=True)  
+    mcq_answer2 = models.CharField(max_length=200, blank=True, null=True)
 
-class Question(models.Model):
-    tags = models.ManyToManyField(Tag)
-    question_text = models.CharField(max_length=200)
-    pub_date = models.DateTimeField('date published')
-   
+    tag1 = models.CharField(max_length = 100, blank=True, null=True)
+    tag2 = models.CharField(max_length=100, blank=True, null=True)
+    tag3 = models.CharField(max_length=100, blank=True, null=True)
+    tag4 = models.CharField(max_length=100, blank=True, null=True)
+    tag5 = models.CharField(max_length=100, blank=True, null=True)
 
-    def __str__(self):
-    	return self.question_text
+    tag_topic = models.CharField(max_length=100, blank=True, null=True)
+    tag_sub_topic = models.CharField(max_length=100, blank=True, null=True)
+    tag_content = models.CharField(max_length=100, blank=True, null=True)
 
-class Answer(models.Model):
-    question = models.ForeignKey(Question, blank=True, null=True)
-    answer_text = models.CharField(max_length=200)
-    pub_date = models.DateTimeField('date published', blank=True, null=True)
+    tag_inconsistent = models.CharField(max_length=200, blank=True, null=True)
 
-    def __str__(self):
-    	return self.answer_text
+
+
+
+
+
+    explanation_text = models.TextField( blank=True, null=True)
+    explanation_image = models.ImageField(upload_to='images/mcq/', blank=True, null=True)
+
+    pub_date = models.DateTimeField('Publishing Date: ', blank=True, null=True)
+    edit_date = models.DateTimeField('Editing Date: ', blank=True, null=True)
+
+    uploader = models.ForeignKey(User, blank=True, null=True)
+
+
+    def update_date(self):
+        if (not self.pub_date):
+            self.pub_date = timezone.now()
+
+        self.edit_date = timezone.now()
+
+        self.save()  
+
+
+
+
+
+    def __unicode__(self):
+        # s = ""
+        # s = "Q: " + str(self.question_text)
+        # s += " Tag: " + str(self.tag1)
+        #return "%50s %10s %10s %10s" % (self.question_text, self.tag1, self.tag2, self.tag3)
+        # s = "{:30}  {:10} {:10}".format(self.question_text, self.tag1, self.tag2)
+        # s = "..        alamin........  qartqewrewerwrewqrrqewreqwerq34521erfdsasdfasdfdfgwe45243erafadsfq435   b"
+        s = 'Q: %s ..|||.. .t_topic:%s .t_sub_topic:%s .t_content:%s .t1:%s .t2:%s .t3:%s .t4:%s .t5:%s' % (self.question_text,
+         self.tag_topic, self.tag_sub_topic, 
+            self.tag_content, self.tag1, self.tag2, self.tag3, self.tag4, self.tag5)
+
+
+        return  s
+
+    class Meta:
+        verbose_name=" Individual MCQ Questions "
+
+
+class Question_Set(models.Model):  
+    question_set_text = models.CharField(max_length=200, verbose_name="Question Set")  
+    question_topic = models.ForeignKey(Question_Topic,blank=True, null=True) 
+    mcq_question = models.ManyToManyField(Mcq_Question, blank=True, null=True)  
+
+    pub_date = models.DateTimeField('Publishing Date: ', blank=True, null=True)
+    edit_date = models.DateTimeField('Editing Date: ', blank=True, null=True)
+
+    uploader = models.ForeignKey(User, blank=True, null=True)
+
+    individual_mcq_marks = models.IntegerField("Individual Mcq Question Marks: ", default=1) 
+    negative_marking_percentage = models.IntegerField("Percent Of Marks To Be Deducted For Wrong Answer: ", default=0) 
+
+    def update_date(self):
+        if (not self.pub_date):
+            self.pub_date = timezone.now()
+
+        self.edit_date = timezone.now()
+
+        self.save() 
+
+        
+    def __unicode__(self):
+        return self.question_set_text
+
+    class Meta:
+        verbose_name="Question Set"
+
+# class Question_Set2(models.Model):  
+    
+#     question_set2_text = models.CharField(max_length=200)  
+#     mcq_question_set = models.ManyToManyField(Mcq_Question)
+
+
+#     def __unicode__(self):
+#         return self.question_set2_text
+
+
+# class Image(models.Model):
+#     image_text = models.CharField(max_length=30)
+#     photo = models.ImageField(upload_to='images')
+
+#     def __unicode__(self):
+#         return self.image_text
+
+class MarkedText(models.Model):
+    marked_text = models.CharField(max_length=100)
+    user = models.ForeignKey(User, null=True, blank=True)
+
+
+    def __unicode__(self):
+        return self.marked_text
 
 
 

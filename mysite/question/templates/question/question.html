@@ -1,5 +1,14 @@
 {% include 'readingmaterial/include/head1' %}
 
+{% include 'question/include/question_timer_js.html' %}
+
+
+
+
+
+
+
+
 
 </head>
 
@@ -17,6 +26,16 @@
 
 	<h3>Individual Question Marks: {{ question_set.individual_mcq_marks }} </h3>
 	<h3>Negative Marking:  {{ question_set.negative_marking_percentage }} % Marks Will Be Deducted For Wrong Answer </h3>
+
+	<div align="center">
+
+		<h2>Time:  </h2>
+		<h3  value=100> <div id="time" style="color:#FF00FF">{{ total_time }} </div></h3>
+		
+
+	</div>
+
+	<!-- {{ total_time }} -->
 
 	<h2 align="center"> List Of Mcq Question </h2>
 

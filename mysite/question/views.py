@@ -183,10 +183,10 @@ def create_question_sub_topic_wise(request):
 def create_mcq_from_excel(request, sheet, row, tag):
 
     if ((sheet.cell(row=row, column=1).value) is None):
-        print ("in if part: " + str(sheet.cell(row=row, column=1).value))
+        # print ("in if part: " + str(sheet.cell(row=row, column=1).value))
         return None
-    print ('***********.....mcq title is about to be been created \n')
-    title = sheet.cell(row=row, column=1).value
+    # print ('***********.....mcq title is about to be been created \n')
+    title = (sheet.cell(row=row, column=1).value)
     if (title):
         title = title.encode('utf8')
         q = Mcq_Question(question_text=title)
@@ -196,29 +196,31 @@ def create_mcq_from_excel(request, sheet, row, tag):
 
 
 
-    c1 = (sheet.cell(row=row, column=2).value)
+    c1 = str(sheet.cell(row=row, column=2).value)
     if (c1):
+        # print (type(c1))
+        # c1 =str(c1)
         c1 = c1.encode('utf8')
 
-    c2 = (sheet.cell(row=row, column=3).value)
+    c2 = str(sheet.cell(row=row, column=3).value)
     if(c2):
         c2 = c2.encode('utf8')
 
-    c3 = (sheet.cell(row=row, column=4).value)
+    c3 = str(sheet.cell(row=row, column=4).value)
     if (c3):
         c3 = c3.encode('utf8')
 
-    c4 = (sheet.cell(row=row, column=5).value)
+    c4 = str(sheet.cell(row=row, column=5).value)
     if(c4):
         c4 = c4.encode('utf8')
 
 
 
-    c5 = (sheet.cell(row=row, column=8).value)
+    c5 = str(sheet.cell(row=row, column=8).value)
     if (c5):
         c5 = c5.encode('utf8')
 
-    c6 = (sheet.cell(row=row, column=9).value)
+    c6 = str(sheet.cell(row=row, column=9).value)
     if (c6):
         c6 = c6.encode('utf8')
 
@@ -231,7 +233,7 @@ def create_mcq_from_excel(request, sheet, row, tag):
 
 
 
-    a = (sheet.cell(row=row, column=6).value)
+    a = str(sheet.cell(row=row, column=6).value)
     if (a):
         a = a.encode('utf8')
 
@@ -240,16 +242,16 @@ def create_mcq_from_excel(request, sheet, row, tag):
         explanation = explanation.encode('utf8')
 
 
-    t1 = (sheet.cell(row=row, column=10).value)
+    t1 = str(sheet.cell(row=row, column=10).value)
     if (t1):
         t1 = t1.encode('utf8')
-    t2 = (sheet.cell(row=row, column=11).value)
+    t2 = str(sheet.cell(row=row, column=11).value)
     if (t2):
         t2 = t2.encode('utf8')
-    t3 = (sheet.cell(row=row, column=12).value)
+    t3 = str(sheet.cell(row=row, column=12).value)
     if (t3):
         t3= t3.encode('utf8')
-    t4 = (sheet.cell(row=row, column=13).value)
+    t4 = str(sheet.cell(row=row, column=13).value)
     if (t4):
         t4= t4.encode('utf8')
 
@@ -508,6 +510,8 @@ def question(request, question_topic_id, question_set_id):
     mcq_question = Mcq_Question.objects.filter(question_set__id=question_set_id)
     question_set = Question_Set.objects.get(id = question_set_id)
     if (question_set):
+        total_time =  len(mcq_question) * question_set.individual_mcq_time
+        # total_time = 5
         pass
         # question_set = question_set[0]
     else:
@@ -516,8 +520,10 @@ def question(request, question_topic_id, question_set_id):
 
 
     # print (question_set.question_set_text)
+    # print ("total time: ")
+    # print (total_time)
     return render(request, 'question/question.html', 
-        {'mcq_question':mcq_question, 'question_set': question_set})
+        {'mcq_question':mcq_question, 'question_set': question_set,  'total_time': total_time})
 
 def result(request, question_topic_id, question_set_id):
     mcq_question = Mcq_Question.objects.filter(question_set__id=question_set_id)

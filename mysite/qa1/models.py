@@ -126,6 +126,9 @@ class Question_Set(models.Model):
     individual_mcq_marks = models.IntegerField("Individual Mcq Question Marks: ", default=1) 
     negative_marking_percentage = models.IntegerField("Percent Of Marks To Be Deducted For Wrong Answer: ", default=0) 
 
+    individual_mcq_time = models.IntegerField("Individual Mcq Question Time In Second: ", default=60) 
+  
+
     def update_date(self):
         if (not self.pub_date):
             self.pub_date = timezone.now()

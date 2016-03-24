@@ -150,7 +150,7 @@ class Question_Set_Admin(admin.ModelAdmin):
           ),
 
           (
-          'Question Setting: ',  {'fields': ['individual_mcq_marks', 'negative_marking_percentage']}
+          'Question Setting: ',  {'fields': ['individual_mcq_marks', 'negative_marking_percentage', 'individual_mcq_time']}
           ),
 
          (

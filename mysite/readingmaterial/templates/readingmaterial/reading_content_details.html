@@ -14,6 +14,23 @@
 
 
 <body>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+
+
+
 <div class="container">
 {% include 'readingmaterial/include/menubar.html' %}
 
@@ -133,7 +150,39 @@
 			<br><br><br>			<br><br><br>
 
 
+
+<!-- 
+    {{ request.get_full_path }}
+    <br>
+    {{ request.path }}
+    <br>
+ -->
+
+
+
+<div class="fb-like" data-href="{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.get_full_path }}" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+
+<br> <br> 
+<div class="fb-comments" data-href="{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.get_full_path }}" data-numposts="5"></div>
+
+
+
+		<br><br><br>			<br><br><br>
+
+
+
+
+
 {% include 'readingmaterial/include/comment.html' %}
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,0 +1,37 @@
+{% include 'readingmaterial/include/head1' %}
+
+
+
+</head>
+
+</body>
+<div class="container">
+{% include 'readingmaterial/include/menubar.html' %}
+
+	<h1 align="center"> Dashboard </h1>
+
+	<a href="notes"><button>My Notes</button></a>
+    <a href="mcq"><button>Marked Mcq</button></a>
+    <a href="quick"><button>Short Questions</button></a>
+    <a href="notification"><button>Notification</button></a>
+    <a href="{% url 'dashboard:mysubscription' %}"><button>My Subscription</button></a>
+
+    <a href="myresult"><button>My Exam Result</button></a>
+
+    <a href="message"><button>Message To/From Admin</button></a>
+    
+    <a href="finished_content"><button>My Finished Reading Contents</button></a>
+    
+
+
+
+
+
+
+
+</div>
+
+
+
+</body>
+</html>

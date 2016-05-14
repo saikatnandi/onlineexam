@@ -1,0 +1,65 @@
+{% include 'readingmaterial/include/head1' %}
+
+
+
+</head>
+
+</body>
+<div class="container">
+{% include 'readingmaterial/include/menubar.html' %}
+
+	<h1 align="center"> My Subscription </h1>
+
+
+
+
+
+
+
+
+	<table id='table_mysubscription' class="table table-bordered" >
+		    <thead>
+		      <tr>
+		        <th>Subscription Plan</th>
+		        <th>Request Date</th>
+		        <th>Start Date</th>
+		        <th>End Date</th>
+		        <th>Is Confirmed</th>
+		        <th>Token</th>	        
+		        
+			   </tr>
+			</thead>
+
+
+			    <tbody>
+				{% for s in subscription %}
+				    <tr>
+				    	<td> {{ s.subscription_plan }}</td>
+				    	<td> {{ s.request_date }} </td>
+				    	<td> {{ s.start_date }} </td>
+				    	<td> {{ s.end_date }} </td>
+				    	<td> {{ s.is_confirmed }} </td>
+				    	<td> {{ s.token }} </td>
+
+
+
+				    </tr>
+
+				{% endfor %}
+
+
+
+
+			    </tbody>
+	 </table>
+
+
+
+
+
+</div>
+
+
+
+</body>
+</html>

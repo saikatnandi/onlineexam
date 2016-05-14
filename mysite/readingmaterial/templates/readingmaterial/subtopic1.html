@@ -7,18 +7,33 @@
 </body>
 <div class="container">
 {% include 'readingmaterial/include/menubar.html' %}
-		<h1 align="center"> Reading Material Reading Subtopic List </h1>
+		<h1 align="center"> Subtopic List </h1>
 
 
 		<ul  class="list-group">
 		{% for st1 in subtopic1 %}
 			<li class="list-group-item">
-				<h4><a href="subtopic/{{ st1.id }}"> {{ st1.subtopic1_text }} </a></h4>
+				<h4><a href="{% url 'readingmaterial:content' st1.id %}"> {{ st1.subtopic1_text }} </a></h4>
 
 			</li>
 		{% endfor %}
 		</ul>
-	
+
+
+        {% if readingcontent %}
+
+
+
+        <br><br><br><br>
+		<h2 align="center"> Reading Materials Are </h1>		
+		<ul  class="list-group">
+			{% for rc in readingcontent %}
+				<li class="list-group-item">
+					<a href="{% url 'readingmaterial:content' rc.id %}"><p> {{ rc.content_title }} </p></a>
+				</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
 
 
 </div>

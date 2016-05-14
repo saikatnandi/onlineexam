@@ -1,0 +1,54 @@
+        {% if announcement %}		
+		<div class="content2">
+			<div class="container2">
+				<div class="marquee-sibling">
+					Important Announcement
+				</div>
+				<div class="marquee">
+					<ul class="marquee-content-items">
+
+
+					{% for a in announcement %}
+						<a href="{{ a.url }}" target="_blank">
+						<li >
+							{{ a.announcement_text }}
+						</li>
+						</a>
+
+					{% endfor %}
+
+	
+						
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		{% endif %}
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+	
+
+			$(function (){
+
+				createMarquee({
+					duration: 100000
+				});
+
+				//example of overwriting defaults: 
+				
+				// createMarquee({
+				// 		duration:30000, 
+				// 		padding:20, 
+				// 		marquee_class:'.example-marquee', 
+				// 		container_class: '.example-container', 
+				// 		sibling_class: '.example-sibling', 
+				// 		hover: false});
+				// });
+			});
+
+});
+
+</script>

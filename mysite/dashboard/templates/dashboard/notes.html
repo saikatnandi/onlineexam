@@ -1,0 +1,74 @@
+{% include 'readingmaterial/include/head1' %}
+
+
+
+<script>
+$(document).ready(function(){
+	$('.explanation').hide();
+
+	$('.toggle_element').hide();
+
+    $(".explanation_button").click(function(){
+    	console.log("button has been pressed");
+        $(this).next('div').toggle();
+    });
+
+	$(".btoggle").click(function(){
+		$('.toggle_element').hide();
+
+		// console.log("button has been pressed");
+		// $(this).next('div').toggle();
+		// console.log($(this).val());
+		var a = $(this).val();
+		// console.log(typeof(a));
+		a = '.' + a;
+		// console.log(a);
+		$(a).show();
+		// $('.toggle_element').toggle();
+
+	});
+
+});
+</script>
+
+
+
+
+
+</head>
+
+</body>
+<div class="container">
+{% include 'readingmaterial/include/menubar.html' %}
+
+	<h1 align="center"> Dashboard </h1>
+
+
+		{% for rt in reading_topic %}		   
+			<button class="btn btoggle" value="{{rt.id}}">{{ rt.reading_topic_text }}</button>
+
+			
+		{% endfor %}
+
+		<br><br><br> 		<br><br><br>
+
+
+
+		<ul  class="list-group">
+		{% for n in note %}
+		   
+			<li class="list-group-item toggle_element {{n.content.subtopic1.topic.id}}">
+				<h4 ><a href="">{{ n.content_notes }}</a></h4>
+			</li>
+
+			
+		{% endfor %}
+		</ul>
+
+
+</div>
+
+
+
+</body>
+</html>

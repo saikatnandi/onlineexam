@@ -16,7 +16,7 @@
 }
 #cssmenu ul {
   zoom: 1;
-  background: #a7bc7a url(images/pattern.png) top left repeat;
+  background: #a7bc7a  top left repeat;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
@@ -53,7 +53,7 @@
   border-right: 1px solid #b2c58b;
 }
 #cssmenu li:hover {
-  background: #9cb369 url(images/pattern.png) top left repeat;
+  background: #9cb369  top left repeat;
 }
 #cssmenu li:first-child {
   border-left: none;

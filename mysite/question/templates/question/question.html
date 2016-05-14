@@ -3,6 +3,10 @@
 {% include 'question/include/question_timer_js.html' %}
 
 
+{% include 'readingmaterial/include/js/paging.html' %}
+
+
+
 
 
 
@@ -13,6 +17,21 @@
 </head>
 
 </body>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+ 	<div class="fb-like" data-href="{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ '/readingmaterial/question/'}}{{q.id}}{{"/"}}" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+
+
 <div class="container">
 
 
@@ -35,26 +54,59 @@
 
 	</div>
 
-	<!-- {{ total_time }} -->
+
+
+
 
 	<h2 align="center"> List Of Mcq Question </h2>
 
-	<form action="{{ request.get_full_path }}result/" method="post" >
+
+{% include 'readingmaterial/include/paging_option.html' %}
+
+
+
+
+
+
+
+	<form action="{% url 'question:result'  question_set_id %}" method="post" >
 	{% csrf_token %}
 		<ol class="list-group">
+
+		     <div id="content">
+
 			{% for mcq in mcq_question %}
+			
 				<li class="list-group-item">
 					<div>
 					<!-- <div align="right"><button id="question{{mcq.id}}" class="bmcq">Add To Favorite </button></div> -->
 					{% include 'readingmaterial/include/mcq_question' %}
 				 </li>
+
+<!-- 
+				  	<div class="fb-like" data-href="{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ '/readingmaterial/mcq/'}}{{mcq.id}}{{"/"}}" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+
+ -->
+
+
 				{% endfor %}
+			</div>
 		</ol>
+
+			<input type='hidden' id='current_page' />
+	        <input type='hidden' id='show_per_page' />
+
+		<div id='page_navigation'></div>
+
+
+
 
 		<br><br><br>
 	 <input type="submit" class="btn btn-info" value="Submit Answer">
 	 <br><br>
 	 <br>
+
+	 <input type="hidden" name="result" value="{{ question_set_result.id }}"></input>
     </form>
 
 

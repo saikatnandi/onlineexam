@@ -1,0 +1,15 @@
+	<div class="pagination">
+	    <span class="step-links">
+	        {% if mcq_question.has_previous %}
+	            <a href="?page={{ contacts.previous_page_number }}">previous</a>
+	        {% endif %}
+
+	        <span class="current">
+	            Page {{ mcq_question.number }} of {{ mcq_question.paginator.num_pages }}.
+	        </span>
+
+	        {% if mcq_question.has_next %}
+	            <a href="?page={{ mcq_question.next_page_number }}">next</a>
+	        {% endif %}
+	    </span>
+	</div>

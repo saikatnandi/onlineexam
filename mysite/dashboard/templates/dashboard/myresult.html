@@ -1,0 +1,65 @@
+{% include 'readingmaterial/include/head1' %}
+
+
+
+</head>
+
+</body>
+<div class="container">
+{% include 'readingmaterial/include/menubar.html' %}
+
+	<h1 align="center"> My Exam Result </h1>
+
+
+
+
+
+
+
+
+	<table id='table_myresult' class="table table-bordered" >
+		    <thead>
+		      <tr>
+		        <th>Question Title</th>
+
+		        <th>Date</th>
+		        <th>Marks</th>
+		        <th>Position</th>
+		            
+		        
+			   </tr>
+			</thead>
+
+
+			    <tbody>
+				{% for mr in myresult %}
+				    <tr>
+				    	<td> {{ mr.question_set }}</td>
+				    	
+				    	<td> {{ mr.finish_date }} </td>
+				    	<td> {{ mr.marks }} </td>
+				    	<td> {{ mr.position }} </td>
+				    
+
+
+
+				    </tr>
+
+				{% endfor %}
+
+
+
+
+			    </tbody>
+	 </table>
+
+
+
+
+
+</div>
+
+
+
+</body>
+</html>

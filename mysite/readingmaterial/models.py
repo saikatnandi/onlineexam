@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.contrib.auth.models import User
-from qa1.models import Mcq_Question
+# from qa1.models import Mcq_Question
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 
@@ -15,30 +15,30 @@ class ReadingTopic(models.Model):
         return self.reading_topic_text
 
 
+    class Meta:
+        verbose_name = "Topic Of Reading Content"
+
+
 class SubTopic1 (models.Model):
     subtopic1_text = models.CharField(max_length=200)
     topic = models.ForeignKey(ReadingTopic)
+    tid = models.IntegerField("Topic Id", blank=True, null=True) 
 
     def __unicode__(self):
         return self.subtopic1_text
 
     class Meta:
-        verbose_name = "Sub Topic Of Contents"
+        verbose_name = "Sub Topic Of Content"
 
 
 
 
-# class SubTopic2(models.Model):
-# 	subtopic2_text = models.CharField(max_length=200)
-# 	subtopic1 = models.ForeignKey(SubTopic1)
 
-# 	def __unicode__(self):
-# 		return self.subtopic2_text
 
 
 class ReadingContent(models.Model):
     content_title = models.CharField(max_length=200)
-    content_body = models.TextField()
+    content_body = models.TextField( blank=True, null=True)
     
     image1 = models.ImageField(upload_to='images/content/', blank=True, null=True)
     image2 = models.ImageField(upload_to='images/content/', blank=True, null=True)
@@ -46,12 +46,14 @@ class ReadingContent(models.Model):
     image4 = models.ImageField(upload_to='images/content/', blank=True, null=True)
     image5 = models.ImageField(upload_to='images/content/', blank=True, null=True)
 
-    mcq_question = models.ManyToManyField(Mcq_Question, blank=True, null=True)
     # mcq_question = models.ManyToManyField(Mcq_Question, blank=True, null=True)
-    subtopic1 = models.ForeignKey(SubTopic1, blank=True, null=True)
+    # mcq_question = models.ManyToManyField(Mcq_Question, blank=True, null=True)
+    subtopic1 = models.ForeignKey(SubTopic1, blank=True, null=True, verbose_name="Sub Topic Name")
+    stid = models.IntegerField("Sub Topic Id", blank=True, null=True) 
 
 	# subtopic2 = models.ForeignKey(SubTopic2, blank=True, null=True)
-    reading_topic = models.ForeignKey(ReadingTopic, blank=True, null=True)
+    reading_topic = models.ForeignKey(ReadingTopic)
+    tid = models.IntegerField("Topic Id", blank=True, null=True) 
 
     pub_date = models.DateTimeField('Publishing Date: ', blank=True, null=True)
     edit_date = models.DateTimeField('Editing Date: ', blank=True, null=True)
@@ -102,14 +104,6 @@ class ContentMarkedText(models.Model):
     def __unicode__(self):
         return self.marked_text
 
-class ContentMarkedMcq(models.Model):
-    user = models.ForeignKey(User, null=True, blank=True)
-    mcq_question = models.ForeignKey(Mcq_Question, null=True, blank=True)
-    content = models.ForeignKey(ReadingContent, null=True, blank=True)
-
-    def __unicode__(self):
-        return ("user: %s mcq_question: %s " %(self.user, self.mcq_question))
-
 
 
 class ContentComment(models.Model):
@@ -131,5 +125,57 @@ class ContentComment(models.Model):
         s = 'U: %s %s and comment: %s' % (self.user, self.user.id, self.comment_text)
         # s += str(self.comment_text)
         return s
+
+
+class Quick_Question(models.Model):
+    quick_question_text = models.TextField()
+    quick_question_answer = models.TextField()
+
+    uploader = models.ForeignKey(User, null=True, blank=True)
+    content = models.ForeignKey(ReadingContent)
+   
+
+    pub_date = models.DateTimeField('Publishing Date: ', blank=True, null=True)
+    edit_date = models.DateTimeField('Editing Date: ', blank=True, null=True)
+
+
+    def update_date(self):
+        if (not self.pub_date):
+            self.pub_date = timezone.now()
+        self.edit_date = timezone.now()
+        self.save() 
+    
+    def __unicode__(self):
+        return self.quick_question_text
+
+    class Meta:
+        verbose_name = "Quick/Short Question(Tika)"
+
+
+class Marked_Quick_Question(models.Model):
+    # marked_text = models.TextField()
+    user = models.ForeignKey(User)
+    quick_question = models.ForeignKey(Quick_Question)
+
+    # def __unicode__(self):
+    #     return self.quick_question__quick_question_text_
+
+    class Meta:
+        unique_together = ('user', 'quick_question',)
+
+
+
+
+class Finished_Content(models.Model):
+    # marked_text = models.TextField()
+    user = models.ForeignKey(User)
+    reading_content = models.ForeignKey(ReadingContent)
+
+    # def __unicode__(self):
+    #     return self.quick_question__quick_question_text_
+
+    class Meta:
+        unique_together = ('user', 'reading_content',)
+
 
 

@@ -23,12 +23,26 @@
 	    <div class="row" id="">
 	    	<div align="left" class="col-sm-10">
 
-				<p>	<a href="{{qt.id}}/questionset/">
+              
+              {% if qt.is_reading_content %}   
+				<p>	<a href="{% url 'question:reading_content'%}">
 				<li class="list-group-item">
 					 {{ qt.question_topic_text }}
 
 				</li>
 				</a></p>
+
+
+               {% else %}
+
+				<p>	<a href="{% url 'question:question_set' qt.id %}">
+				<li class="list-group-item">
+					 {{ qt.question_topic_text }}
+
+				</li>
+				</a></p>
+
+				{% endif %}
 			</div>
 			
 		</div>

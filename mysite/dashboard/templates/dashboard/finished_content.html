@@ -1,0 +1,107 @@
+{% include 'readingmaterial/include/head1' %}
+
+<script>
+
+	$(document).ready(function(){
+
+
+
+		    var mcq = $("#finished_content").val();
+		    var my_mcq2 = mcq.split(',');
+		    var my_mcq = Array();
+
+		    for (var i=0; i < my_mcq2.length; i++){
+		    	my_mcq[i] = Number(my_mcq2[i]);
+		    	//  var id = "#"+ my_mcq[i];
+		    	// // $(id).text("Remove From Favotites");
+		    	// console.log (my_mcq[i]);
+		    	// console.log(id);
+		    	//console.log (type(my_mcq[i]));
+		    }
+
+		    // alert(my_mcq);
+
+		    // var my_mcq = [1, 2, 3, 4, 5];
+		//    alert(my_mcq[0]);
+
+		    for (var i=0; i < my_mcq.length; i++){
+		    	 var id = "#content"+ my_mcq[i];
+		    	 // $(id).removeClass("btn");
+		    	 $(id).addClass("finished");
+		    //	console.log (my_mcq[i]);
+		    //	console.log(id);
+		    	//console.log (type(my_mcq[i]));
+		    }
+
+
+
+
+		});
+		
+
+</script>
+
+<style type="text/css">
+	button.finished {
+		background-color: blue !important; 
+
+		color: red;
+
+
+       /* margin: 10px 10px 10px 10px !important;*/
+	}
+
+</style>
+
+</head>
+
+</body>
+<div class="container">
+
+
+
+<input id='finished_content' value="{{finished_content_str}}" type='hidden'>  </input>
+
+
+
+
+{% include 'readingmaterial/include/menubar.html' %}
+
+	<h1 align="center"> Dashboard </h1>
+
+    
+	<ul  class="list-group">
+	{% for rt in reading_topic %}
+		<li class="list-group-item">
+			<h4 align="center">{{ rt.reading_topic_text }}</h4>
+
+
+			<div align="center">
+			{% for rc in readingcontentlist %}
+
+			  {% ifequal rc.reading_topic rt %}
+			    <a href="{% url 'readingmaterial:content' rc.id %}">
+			    <button class="btn" id="content{{rc.id}}" value="{{rc.id}}">{{ rc.content_title }}</button></a>
+
+			  {% endifequal %}
+
+
+			{% endfor %}
+			</div>
+
+		</li>
+	{% endfor %}
+	</ul>
+
+	<br><br><br> 		<br><br><br>
+
+
+
+
+
+</div>
+
+
+
+</body>
+</html>

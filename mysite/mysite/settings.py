@@ -34,9 +34,19 @@ INSTALLED_APPS = [
     'qa1',
     'exam',
     'blog',
+    'dashboard',
+    'feedback',
+
 
     'readingmaterial',
     'question',
+    'notice',
+    'links',
+    'announcement',
+    'subscription',
+
+    # 'django_comments',
+
 
     'polls.apps.PollsConfig',
     'django.contrib.admin',
@@ -45,6 +55,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'django.contrib.sites',
+
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -114,7 +127,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Dhaka'
 
 USE_I18N = True
 
@@ -145,5 +158,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "")
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
+SITE_ID = 1
+
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'onlinebcs25@gmail.com'
+EMAIL_HOST_PASSWORD = 'passwordpassword19'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
 # MEDIA_ROOT = "/mnt/02C8B1A8C8B199FD/programme/python/linux/pro1/mysite/"

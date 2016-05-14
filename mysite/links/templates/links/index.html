@@ -1,0 +1,80 @@
+{% include 'readingmaterial/include/head1' %}
+
+
+
+
+
+
+
+
+
+
+</head>
+
+</body>
+<div class="container">
+{% include 'readingmaterial/include/menubar.html' %}
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<h1 align="center"> Link Page </h1>
+
+	<h2>Link Categories</h2>
+
+	<ul  class="list-group">
+		{% for lt in link_topic %}
+			<li class="list-group-item">
+				<h4><a href="topic/{{ lt.id }}"> {{ lt.link_topic_text }} </a></h4>
+
+			</li>
+
+		{% endfor %}
+	</ul>
+
+
+	<h2 align="center"> Important Links Are </h1>
+	
+	<ul  class="list-group">
+		{% for l in links %}
+			<li class="list-group-item">
+				<a href="{{ l.id }}"><p> {{ l.link_title }} </p></a>
+			</li>
+		{% endfor %}
+	</ul>
+
+</div>
+
+
+
+</body>
+</html>

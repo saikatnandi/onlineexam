@@ -21,6 +21,33 @@
   </style>
 
 
+  <style>
+    {% include 'readingmaterial/include/marquee/marquee.css' %} 
+  </style>
+
+
+    <script>
+      {% include 'readingmaterial/include/marquee/marquee.js' %} 
+      
+    </script>
+
+
+
+<style>
+#page_navigation a{
+  padding:3px;
+  border:1px solid gray;
+  margin:2px;
+  color:black;
+  text-decoration:none
+}
+.active_page{
+  background:darkblue;
+  color:white !important;
+}
+</style>
+
+
 
 
 

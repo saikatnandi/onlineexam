@@ -1,0 +1,66 @@
+{% include 'readingmaterial/include/head1' %}
+
+
+{% include 'readingmaterial/include/js/paging.html' %}
+
+
+
+
+</head>
+</body>
+
+
+<div class="container">
+
+
+{% include 'readingmaterial/include/menubar.html' %}
+	<h1 align="center"> Message </h1>
+
+
+
+
+
+{% include 'readingmaterial/include/paging_option.html' %}
+
+
+		<ol class="list-group">
+
+		    <div id="content">
+
+			   {% for m in message %}		
+				<li class="list-group-item">
+				  {% if m.is_receiver %}
+				    Admin: 
+
+				  {% else %}
+				    Me  :
+
+
+				  {% endif %}
+					{{m.message_text}}
+
+				   <div align="right">{{m.pub_date}}</div>
+					
+
+				 </li>
+				{% endfor %}
+			</div>
+		</ol>
+
+			<input type='hidden' id='current_page' />
+	        <input type='hidden' id='show_per_page' />
+		    <div id='page_navigation'></div>
+
+
+		<br><br><br>
+
+
+{% include 'dashboard/include/write_message.html' %}
+
+
+
+
+
+</div>
+</body>
+</html>

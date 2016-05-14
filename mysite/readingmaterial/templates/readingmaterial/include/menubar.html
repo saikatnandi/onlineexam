@@ -20,7 +20,11 @@
 
 	 <li><a href="/readingmaterial/">Reading Material </a> </li>
 	 <li><a href="/registration/">Registration </a> </li>
-	 <li><a href="/question/"> Model Questions </a> </li>
+	 <li><a href="/question/">Model Question</a> </li>
+	 <li> <a href="{% url 'subscription:index' %}">Subscription</a> </li>
+   
+	 <li><a href="/links/">Important Links</a> </li>
+	 <li><a href="/notice/"> Notice Board </a> </li>
 
 
 
@@ -28,3 +32,17 @@
 
 	</ul>
 </div>
+
+
+
+{% include 'readingmaterial/include/marquee/marquee.html' %}
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+

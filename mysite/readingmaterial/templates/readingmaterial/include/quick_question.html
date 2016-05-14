@@ -1,0 +1,192 @@
+
+
+
+
+
+
+{% if quick_question %}
+
+
+
+<script>
+    var question_id ;
+
+    function getCookie_question(c_name)
+	{
+	    if (document.cookie.length > 0)
+	    {
+	        c_start = document.cookie.indexOf(c_name + "=");
+	        if (c_start != -1)
+	        {
+	            c_start = c_start + c_name.length + 1;
+	            c_end = document.cookie.indexOf(";", c_start);
+	            if (c_end == -1) c_end = document.cookie.length;
+	            return unescape(document.cookie.substring(c_start,c_end));
+	        }
+	    }
+	    return "";
+	 }
+
+	function onSuccess_question(data, status, xhr)
+	{
+
+		// alert ("Your Message Has Been Successfully Send");
+
+
+		if (data == 'question') {
+			$("#qid"+question_id).text("Remove From Favotites");
+		}
+
+		if (data == 'deletequestion') {
+			$("#qid"+question_id).text("Add To Favotites");
+		}
+
+
+
+
+	}
+
+
+	$(document).ready(function(){
+
+		initial();
+
+
+		$(function () {
+		    $.ajaxSetup({
+		        headers: { "X-CSRFToken": getCookie_question("csrftoken") }
+		    });
+		});
+				
+
+		$(".bquestion").click(function(){	
+
+			
+			question_id = (this.id);
+			question_id = question_id.substring(3, question_id.length);
+
+		    var t = $(this).text();
+		    t1 = t.indexOf('Add');
+		    t2 = t.indexOf('add');
+			if (!isNaN(question_id) && (t1 >=0 || t2 >= 0)) {
+				 $.post('/readingmaterial/ajax/addquestion/', { 'qid'  : question_id}, onSuccess_question);
+
+			} else if (!isNaN(question_id)){
+				$.post('/readingmaterial/ajax/deletequestion/', { 'qid'  : question_id}, onSuccess_question);
+
+				// alert ("The question id is not found");
+			} else {
+
+			}	
+
+
+	  
+	  		
+		});
+
+	});	
+
+
+
+
+
+
+function initial() {
+
+
+		    var mcq = $("#my_question").val();
+		    var my_mcq2 = mcq.split(',');
+		    var my_mcq = Array();
+
+		    for (var i=0; i < my_mcq2.length; i++){
+		    	my_mcq[i] = Number(my_mcq2[i]);
+
+		    }
+
+
+
+		    for (var i=0; i < my_mcq.length; i++){
+		    	 var id = "#qid"+ my_mcq[i];
+		    	 $(id).text("Remove From Favotites");
+
+		    }
+
+
+}
+
+
+    
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<input id='my_question' value="{{marked_question_str}}" type='hidden'>  </input>
+<br><br><br>
+
+<br><br><br><br>
+<h2 align="center"> Quick Question </h1>	
+
+{% include 'readingmaterial/include/js/paging.html' %}
+{% include 'readingmaterial/include/paging_option.html' %}
+
+<ol  class="list-group">
+    <div id="content">
+	{% for q in quick_question %}
+
+
+	    <li class="list-group-item">
+
+
+	    {% if request.user.is_authenticated %}	    
+			<div align="right"><button id="qid{{q.id}}" class="bquestion">Add To Favorite </button></div>
+	 	{% endif  %}
+
+
+
+			<p> Q:{{ forloop.counter }}  <a href="{% url 'readingmaterial:quick_question' q.id %}"> {{ q.quick_question_text }} </p></a>
+
+
+
+
+		{% if q.quick_question_answer %}
+		   <p>Answer:  {{ q.quick_question_answer }}</p>
+			
+		{% endif %}
+<!-- 		<div class="fb-like" data-href="{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ '/readingmaterial/question/'}}{{q.id}}{{"/"}}" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div> -->
+
+		</li>
+
+
+
+	{% endfor %}
+	</div>
+</ol>
+{% endif %}
+
+
+<input type='hidden' id='current_page' />
+<input type='hidden' id='show_per_page' />
+<div id='page_navigation'></div>

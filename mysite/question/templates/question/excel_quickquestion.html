@@ -1,0 +1,45 @@
+{% include 'readingmaterial/include/head1' %}
+
+
+
+
+</head>
+
+</body>
+<div class="container">
+
+{% include 'readingmaterial/include/menubar.html' %}
+
+
+	<h1 align="center"> Upload Quick Question To Reading Material </h1>
+
+
+
+
+
+
+
+
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    
+    <input type="submit" value="Submit" />
+</form>
+
+
+
+
+<br><br><br><br><br><br>
+
+
+
+
+
+
+</div>
+
+
+</body>
+</html>

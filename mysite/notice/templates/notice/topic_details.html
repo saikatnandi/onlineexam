@@ -1,0 +1,33 @@
+{% include 'readingmaterial/include/head1' %}
+
+
+
+</head>
+
+</body>
+<div class="container">
+{% include 'readingmaterial/include/menubar.html' %}
+
+	<h1 align="center"> Notice Topic Details Page </h1>
+
+
+
+
+	<h2 align="center"> Notices Are </h1>
+	
+	<ul  class="list-group">
+		{% for n in notices %}
+			<li class="list-group-item">
+<!-- 				<a href="notice/{{ n.id }}"><p> {{ n.notice_title }} </p></a> -->
+			<a href="{% url 'notice:notice_details' n.id %}"><p> {{ n.notice_title }} </p></a>
+
+			</li>
+		{% endfor %}
+	</ul>
+
+</div>
+
+
+
+</body>
+</html>

@@ -37,7 +37,11 @@ urlpatterns = [
     url(r'^blog/',include('blog.urls')),
     url(r'^readingmaterial/', include ('readingmaterial.urls') ),
     url(r'^admin/', admin.site.urls),
+    url(r'^dashboard/', include ('dashboard.urls')),
+    url(r'^feedback/', include ('feedback.urls')),
+
     # url(r'^select2/', include('django_select2.urls')),
+    # url(r'^dashboard/$', readingmaterial_views.dashboard, name= 'dashboard'),
 
     # url(r'^excelparsing/$', qa1.views.excelparsing, name= 'excelparsing'),
 
@@ -51,9 +55,17 @@ urlpatterns = [
     url(r'^logout/$', qa1_views.mylogout, name='logout'),
     url(r'^registration/$', qa1_views.register, name='registration'),  
 
-    url(r'^dashboard/$', readingmaterial_views.dashboard, name= 'dashboard'),
+
 
     url(r'^$', readingmaterial_views.index, name= 'homepage'),
+
+    url(r'^links/', include('links.urls',  namespace="links")),
+    url(r'^notice/', include('notice.urls',  namespace="notice")),
+    url(r'^subscription/', include('subscription.urls',  namespace="subscription")),
+
+
+
+    # url(r'^comments/', include('django_comments.urls')),
     
 
     

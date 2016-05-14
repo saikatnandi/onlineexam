@@ -15,17 +15,21 @@
 
 	<h1 align="center"> Question Set Page</h1>
 
-<!-- 	{{ question_set }} -->
 
-	<p>Just a paragraph</p>
 
 	<h2 align="center"> List Of Question Sets </h2>
 	<ul id='' class="list-group">
 	    {% for qs in question_set %}
 	    <div class="row" id="">
-	    	<div align="left" class="col-sm-10">
-				<a href="{{qs.id}}/question/"><li class="list-group-item">
+	    	<div align="left" class="col-sm-8">
+				<a href="{% url 'question:question' qs.id %}"><li class="list-group-item">
 					 {{ qs.question_set_text }}
+			    <div align="right">
+					  <a href="{% url 'question:question' qs.id %}"><button>Start Exam</button></a>
+					  <a href="{% url 'question:result' qs.id %}" target="_blank"><button>Show Question</button></a>			    	
+
+			    </div>
+
 
 				</li></a>
 			</div>

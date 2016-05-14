@@ -1,0 +1,96 @@
+{% include 'readingmaterial/include/head1' %}
+
+
+
+</head>
+
+</body>
+<div class="container">
+{% include 'readingmaterial/include/menubar.html' %}
+
+	<h1 align="center"> Notice Details </h1>
+
+
+
+
+
+	
+	<h2 align="center">Title: {{ notice.notice_title }} </h2>
+
+	
+
+
+
+
+
+
+
+
+
+
+	<br><br><br><br>
+
+	
+	<div align="center">
+		<h5> {{ notice.notice_text }}</h5>
+
+
+		<br><br><br><br>
+
+		<h3>Download Able files </h3>
+		{% if notice.file1 %}
+		    <a href="{{notice.file1.url}}" download> Download Link 1 </a>		
+		{% endif %}
+
+		{% if notice.file2 %}
+		    <a href="{{notice.file2.url}}" download> Download Link 2 </a>		
+		{% endif %}
+
+		{% if notice.file3 %}
+		    <a href="{{notice.file3.url}}" download>	Download Link 3 </a>		
+		{% endif %}
+
+
+
+		<br><br><br><br>
+
+		<h3> Images </h3>
+
+		{% if notice.image1 %}			   
+			<img src="{{notice.image1.url}}" class="img-rounded" alt="image1" width="304" height="236">						
+		{% endif %}
+
+		{% if notice.image2 %}			   
+			<img src="{{notice.image2.url}}" class="img-rounded" alt="image1" width="304" height="236">						
+		{% endif %}
+
+
+		{% if notice.image3 %}			   
+			<img src="{{notice.image3.url}}" class="img-rounded" alt="image1" width="304" height="236">						
+		{% endif %}
+
+
+
+		<br><br><br><br>
+
+
+
+
+	</div>
+
+
+
+
+
+
+
+	
+	
+
+
+</div>
+
+
+
+</body>
+</html>

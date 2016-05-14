@@ -20,26 +20,80 @@ from django.shortcuts import render_to_response
 from django.contrib import messages
 from django.core.context_processors import csrf
 
+from announcement.models import *
+from django.db.models import Q
+from qa1.models import *
+
+
+
+def quick_question_details(request, quick_question_id):
+    quick_question = Quick_Question.objects.filter(id=quick_question_id)
+
+    return render(request, 'readingmaterial/quick_question_details.html',
+        {
+        'quick_question': quick_question,             
+
+        })
+
+
+
+def mcq_question_details(request, mcq_question_id):
+    mcq_question = Mcq_Question.objects.filter(id=mcq_question_id)
+
+    return render(request, 'readingmaterial/mcq_question_details.html',
+        {
+        'mcq_question': mcq_question,             
+
+        })
+
 
 
 def index(request):
-	reading_topic = ReadingTopic.objects.all()
+    reading_topic = ReadingTopic.objects.all()
 
-	return render(request, 'readingmaterial/index.html',{'reading_topic': reading_topic})
+    now = timezone.now()
+    announcement = Announcement.objects.filter( Q(start_date__isnull = True) | Q(start_date__lte=now))
+    announcement = announcement.filter(Q(end_date__isnull = True) | Q(end_date__gte = now))
+
+
+    return render(request, 'readingmaterial/index.html',
+        {'reading_topic': reading_topic,
+        'announcement' : announcement,        
+
+        })
 
 def subtopic1(request, topic_id):
-	subtopic1 = SubTopic1.objects.filter(topic=topic_id)
-
-	return render (request, 'readingmaterial/subtopic1.html', {'subtopic1': subtopic1})
-
-
+    subtopic1 = SubTopic1.objects.filter(topic=topic_id)
+    readingcontent = ReadingContent.objects.filter(subtopic1__isnull = True)
+    readingcontent = readingcontent.filter(reading_topic_id=topic_id)
 
 
-def reading_content_list(request, topic_id, subtopic1_id):
-	readingcontentlist = ReadingContent.objects.filter(subtopic1=subtopic1_id)
+    now = timezone.now()
+    announcement = Announcement.objects.filter( Q(start_date__isnull = True) | Q(start_date__lte=now))
+    announcement = announcement.filter(Q(end_date__isnull = True) | Q(end_date__gte = now))
+
+    return render (request, 'readingmaterial/subtopic1.html', 
+        {'subtopic1': subtopic1,
+        'announcement' : announcement,
+        'readingcontent' : readingcontent,
+         'topic_id' : topic_id,
+        })
 
 
-	return render (request, 'readingmaterial/readingcontentlist.html', {'readingcontentlist': readingcontentlist})
+
+
+def reading_content_list(request, subtopic1_id):
+    readingcontentlist = ReadingContent.objects.filter(subtopic1=subtopic1_id)
+
+    now = timezone.now()
+    announcement = Announcement.objects.filter( Q(start_date__isnull = True) | Q(start_date__lte=now))
+    announcement = announcement.filter(Q(end_date__isnull = True) | Q(end_date__gte = now))
+
+    return render (request, 'readingmaterial/readingcontentlist.html', 
+        {'readingcontentlist': readingcontentlist,
+        'announcement' : announcement,
+
+        })
     #return HttpResponse("Hello, world. You're at the .... reading material ..... index.")
 
 
@@ -51,47 +105,167 @@ def getContentMarkedMcqString(content_marked_mcq):
 
     return cmm 
 
-def reading_content_details(request, topic_id, subtopic1_id, reading_content_id):
+# def reading_content_details(request, topic_id, subtopic1_id, reading_content_id):
+#     readingcontent = ReadingContent.objects.get(id=reading_content_id)
+#     readingcontent_text = ""
+#     content_marked_mcq = ""
+
+#     if (request.user.is_authenticated()):
+#         print ("*********authenticated user*********")
+#         readingcontent_text = ContentMarkedText.objects.filter(user = request.user, content_id = reading_content_id)
+    
+#         content_marked_mcq = ContentMarkedMcq.objects.filter( user=request.user)
+
+#     readingcontentlist = ReadingContent.objects.filter(subtopic1=subtopic1_id)
+
+
+#     comment = ContentComment.objects.filter(content = readingcontent)
+#     # mcq_question = Mcq_Question.objects.filter(readingcontent__id=reading_content_id)
+#     # # content_marked_mcq = ContentMarkedMcq.objects.filter(content=readingcontent, user=request.user)
+    
+
+#     cmm = ""
+   
+
+#     # for m in content_marked_mcq:
+#     #     if (m.mcq_question is not None):
+#     #         cmm += str(m.mcq_question.id) + ', '
+
+#     print ("\n cmm is: %s" % cmm)
+#     note = None
+#     if (request.user.is_authenticated()):
+#         cmm = getContentMarkedMcqString(content_marked_mcq)
+#         note = ContentNotes.objects.filter(user=request.user, content=reading_content_id)
+
+
+#     print ("*****going to return template\n")
+#     now = timezone.now()
+#     announcement = Announcement.objects.filter( Q(start_date__isnull = True) | Q(start_date__lte=now))
+#     announcement = announcement.filter(Q(end_date__isnull = True) | Q(end_date__gte = now))
+
+#     return render (request, 'readingmaterial/reading_content_details.html', 
+#         {'readingcontent': readingcontent, 'readingcontentlist': readingcontentlist,
+#         'reading_content_id': reading_content_id,'note': note, 'comment': comment,
+#         # 'mcq_question': mcq_question, 
+#         'content_marked_mcq_string': cmm,
+#         'readingcontent_text': readingcontent_text,
+#         'announcement' : announcement,
+
+#         })
+#     #return HttpResponse("Hello, world. You're at the .... reading material ..... index.")
+
+
+
+
+
+
+
+
+def reading_content_details(request, reading_content_id):
     readingcontent = ReadingContent.objects.get(id=reading_content_id)
+    quick_question = Quick_Question.objects.filter(content = reading_content_id)
+
     readingcontent_text = ""
     content_marked_mcq = ""
 
     if (request.user.is_authenticated()):
         print ("*********authenticated user*********")
-        readingcontent_text = ContentMarkedText.objects.filter(user = request.user, content_id = reading_content_id)
+        readingcontent_text = ContentMarkedText.objects.filter(user = request.user,
+         content_id = reading_content_id)
     
-        content_marked_mcq = ContentMarkedMcq.objects.filter( user=request.user)
+        # content_marked_mcq = ContentMarkedMcq.objects.filter( user=request.user)
 
-    readingcontentlist = ReadingContent.objects.filter(subtopic1=subtopic1_id)
+    # readingcontentlist = ReadingContent.objects.filter(subtopic1=subtopic1_id)
 
 
     comment = ContentComment.objects.filter(content = readingcontent)
-    mcq_question = Mcq_Question.objects.filter(readingcontent__id=reading_content_id)
-    # content_marked_mcq = ContentMarkedMcq.objects.filter(content=readingcontent, user=request.user)
-    
 
-    cmm = ""
-   
 
-    # for m in content_marked_mcq:
-    #     if (m.mcq_question is not None):
-    #         cmm += str(m.mcq_question.id) + ', '
-
-    print ("\n cmm is: %s" % cmm)
+    # print ("\n cmm is: %s" % cmm)
     note = None
     if (request.user.is_authenticated()):
         cmm = getContentMarkedMcqString(content_marked_mcq)
         note = ContentNotes.objects.filter(user=request.user, content=reading_content_id)
+        marked_question = Marked_Quick_Question.objects.filter(user=request.user)
+
+    marked_question_str = ""
+    # print (marked_question)
+    # print ("**********marked q str finished")
+    for mq in marked_question:
+
+        if (str(mq.quick_question.content_id) == str(reading_content_id)):
+            marked_question_str += str(mq.quick_question.id) + ", "
+
+    finished = Finished_Content.objects.filter(user=request.user, reading_content_id = reading_content_id)
+    print (finished)
+
+    if (finished):
+        finished = True
+    else:
+        finished = False
 
 
-    print ("*****going to return template\n")
+    # print ("*****going to return template\n")
+    # print (marked_question_str)
+    # print ("**********marked q str finished")
+    now = timezone.now()
+    announcement = Announcement.objects.filter( Q(start_date__isnull = True) | Q(start_date__lte=now))
+    announcement = announcement.filter(Q(end_date__isnull = True) | Q(end_date__gte = now))
+
     return render (request, 'readingmaterial/reading_content_details.html', 
-        {'readingcontent': readingcontent, 'readingcontentlist': readingcontentlist,
-        'reading_content_id': reading_content_id,'note': note, 'comment': comment,
-        'mcq_question': mcq_question, 'content_marked_mcq_string': cmm,
+        {'readingcontent': readingcontent, 
+         'quick_question' : quick_question,
+         # 'topic_id' : topic_id,
+        # 'readingcontentlist': readingcontentlist,
+        'reading_content_id': reading_content_id,
+        'note': note, 
+        'comment': comment,
+        'finished': finished,
+        # 'mcq_question': mcq_question, 
+        # 'content_marked_mcq_string': cmm,
+        'marked_question_str': marked_question_str,
         'readingcontent_text': readingcontent_text,
+        'announcement' : announcement,
+
         })
     #return HttpResponse("Hello, world. You're at the .... reading material ..... index.")
+
+
+
+
+def reading_content_finished(request, reading_content_id):
+
+    print ("*&********* going to do something now")
+    try:        
+        fc = Finished_Content(user=request.user)
+        fc.reading_content_id = reading_content_id
+        fc.save()
+    except Exception:
+        print ("\n ****** there is an exception")
+        
+
+
+    return HttpResponseRedirect(reverse('readingmaterial:content', args=[reading_content_id]))
+
+
+
+
+
+def reading_content_unfinished(request, reading_content_id):
+
+    finished = Finished_Content.objects.get(user=request.user, reading_content_id = reading_content_id)
+    if (finished):
+        finished.delete()
+
+    return HttpResponseRedirect(reverse('readingmaterial:content', args=[reading_content_id]))
+
+
+
+
+
+
+
+
 
 
 
@@ -128,11 +302,17 @@ def dashboard(request):
         if (m is not None):
             cmm += str(m.mcq_question.id) + ', '
 
+    now = timezone.now()
+    announcement = Announcement.objects.filter( Q(start_date__isnull = True) | Q(start_date__lte=now))
+    announcement = announcement.filter(Q(end_date__isnull = True) | Q(end_date__gte = now))
 
     return render(request, 'readingmaterial/dashboard.html', {
         'note': note, 'data': data, 'reading_topic': reading_topic,
         'mcq_question': mcq_question, 'content_marked_mcq_string': cmm,
-        'marked_mcq': marked_mcq, 'marked_mcq_topic': marked_mcq_topic,
+        'marked_mcq': marked_mcq, 
+        'marked_mcq_topic': marked_mcq_topic,
+        'announcement' : announcement,
+
         })
 
 
@@ -235,7 +415,26 @@ def ajax_addcomment(request):
 def ajax_addmcq(request):
 
     if (request.method =='POST'):
-        qid = request.POST.get('qid', 'no comment')
+        qid = request.POST.get('qid', '')
+      
+        c = Marked_Mcq(user= request.user)
+        c.mcq_question_id = int(str(qid))
+
+        c.save()
+
+        print('\n\n\n')
+       
+
+    return HttpResponse("mcq")
+
+
+
+
+
+def ajax_addquestion(request):
+
+    if (request.method =='POST'):
+        qid = request.POST.get('qid', '')
         #userId = request.POST.get('userId', 'no user id')
         # postId = request.POST.get('postId', 'no post')
 
@@ -244,20 +443,26 @@ def ajax_addmcq(request):
 
         # print ("post id is: ..........." + postId)
 
-        content_marked_mcq = ContentMarkedMcq.objects.filter(user=request.user, mcq_question_id = qid)
-        if (not content_marked_mcq):       
-            c = ContentMarkedMcq(user= request.user)
-            c.mcq_question_id = int(str(qid))
-            content_list = ReadingContent.objects.filter(mcq_question__id = qid)
-            for cl in content_list:
-                c.content = cl
-            # c.content_id = int(str(postId))
-            c.save()
+   
+        mqq = Marked_Quick_Question(user= request.user)
+
+        mqq.quick_question_id = int(str(qid))
+
+        # c.content_id = int(str(postId))
+        mqq.save()
 
         print('\n\n\n')
        
 
-    return HttpResponse("mcq")
+    return HttpResponse("question")
+
+
+
+
+
+
+
+
 
 
 def ajax_deletemcq(request):
@@ -265,29 +470,32 @@ def ajax_deletemcq(request):
     if (request.method =='POST'):
 
 
-        qid = request.POST.get('qid', 'no comment')
+        qid = request.POST.get('qid', '')
         #userId = request.POST.get('userId', 'no user id')
         # postId = request.POST.get('postId', 'no post')
 
         # print ("post id is: ..........." + postId)
-        print ("qid id is: ..........." + qid)
-        print ("usesr id Is: " + str(request.user.id))
+        # print ("qid id is: ..........." + qid)
+        # print ("usesr id Is: " + str(request.user.id))
 
         # if (not postId == 'no post'):       
         # c = ContentMarkedMcq.objects.filter(mcq_question_id = int(str(qid)), 
         #     user=request.user, content_id=int(str(postId)))
 
 
-        content_marked_mcq = ContentMarkedMcq.objects.filter(mcq_question_id = int(str(qid)), 
+        content_marked_mcq = Marked_Mcq.objects.filter(mcq_question_id = int(str(qid)), 
             user=request.user)
 
+        if (content_marked_mcq):
+            content_marked_mcq.delete()
 
-        print ("these mcqs will be removed from marked mcq")
-        print (content_marked_mcq)
 
-        for c in content_marked_mcq:
-            c.delete()
-            return HttpResponse("deletemcq")
+        # print ("these mcqs will be removed from marked mcq")
+        # print (content_marked_mcq)
+
+        # for c in content_marked_mcq:
+        #     c.delete()
+        #     return HttpResponse("deletemcq")
         # if (c is not None):
 
 
@@ -308,11 +516,46 @@ def ajax_deletemcq(request):
 
 
 
-        
+
+
+
+
+
+def ajax_deletequestion(request):
+
+    if (request.method =='POST'):
+
+
+        qid = request.POST.get('qid', '')
+        #userId = request.POST.get('userId', 'no user id')
+        # postId = request.POST.get('postId', 'no post')
+
+        # print ("post id is: ..........." + postId)
+        print ("qid id is: ..........." + qid)
+        print ("usesr id Is: " + str(request.user.id))
+
+        # if (not postId == 'no post'):       
+        # c = ContentMarkedMcq.objects.filter(mcq_question_id = int(str(qid)), 
+        #     user=request.user, content_id=int(str(postId)))
+
+
+        quick_question = Marked_Quick_Question.objects.filter(quick_question_id = int(str(qid)), 
+            user=request.user)
+
+
+        if (quick_question):
+            quick_question.delete()
+
+      
         
        
 
-    return HttpResponse("deletemcq_failed")
+    return HttpResponse("deletequestion")
+
+
+
+
+
 
 def ajax_add_marked_text(request):
 

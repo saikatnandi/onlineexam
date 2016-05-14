@@ -24,6 +24,33 @@ class Upload_Question_Set_From_Excel_Form(ModelForm):
 
 
 
+# 
+
+class Excel_quickquestion_form(forms.Form):
+    # reading_content = forms.ModelChoiceField(queryset=ReadingContent.objects.all(),
+    #  label="Select Reading Content For This Quick Question",
+    #   widget  = forms.CheckboxSelectMultiple,required=True)
+
+    reading_content =  forms.ModelChoiceField(queryset=ReadingContent.objects.all(),
+     label="Select Reading Content For This Quick Question",
+      widget=forms.RadioSelect,required=True)
+
+
+    excel_file = forms.FileField(required=True )
+    tag = forms.CharField(max_length=100, label="Tag", required=False)
+    # total_question = forms.IntegerField(initial=0, required=True)
+
+    # marks = forms.IntegerField(initial=1, required=True, label="Individual Question Marks")
+    # negative_marks = forms.IntegerField(initial=25, required=True,
+    #  label="How Percent Marks Will Be Deducted For Wrong Answer: ")
+
+    # topic_list = forms.ModelMultipleChoiceField(queryset=ReadingTopic.objects.all(), widget  = forms.CheckboxSelectMultiple)
+
+    # profile = forms.ModelChoiceField(queryset=Profile.objects.all(),
+    #         widget=forms.HiddenInput())
+
+
+
 
 
 

@@ -1,0 +1,49 @@
+{% include 'readingmaterial/include/head1' %}
+
+
+
+</head>
+
+</body>
+<div class="container">
+{% include 'readingmaterial/include/menubar.html' %}
+		<h1 align="center"> Question List </h1>
+
+
+
+		
+
+
+        {% if question_set %}
+
+        <br><br><br><br>
+		<h2 align="center"> List Of Question Sets </h2>
+		<ul id='' class="list-group">
+		    {% for qs in question_set %}
+		    <div class="row" id="">
+		    	<div align="left" class="col-sm-10">
+					<a href="{% url 'question:question' qs.id %}"><li class="list-group-item">
+						 {{ qs.question_set_text }}
+
+					</li></a>
+				</div>
+				
+			</div>
+			{% endfor %}
+		</ul>
+
+		{% endif %}
+	
+
+
+</div>
+
+</body>
+</html>
+
+
+
+
+
+
+

@@ -1,0 +1,57 @@
+{% include 'readingmaterial/include/head1' %}
+
+
+
+</head>
+
+</body>
+<div class="container">
+{% include 'readingmaterial/include/menubar.html' %}
+		<h1 align="center"> Question SubTopic List </h1>
+
+
+		<ul  class="list-group">
+		{% for st1 in subtopic1 %}
+			<li class="list-group-item">
+				<h4><a href="{% url 'question:reading_content_subtopic' st1.id %}"> {{ st1.subtopic1_text }} </a></h4>
+
+			</li>
+		{% endfor %}
+		</ul>
+
+
+        {% if question_set %}
+
+
+
+        <br><br><br><br>
+		<h2 align="center"> List Of Question Sets </h2>
+		<ul id='' class="list-group">
+		    {% for qs in question_set %}
+		    <div class="row" id="">
+		    	<div align="left" class="col-sm-10">
+					<a href="{% url 'question:question' qs.id %}"><li class="list-group-item">
+						 {{ qs.question_set_text }}
+
+					</li></a>
+				</div>
+				
+			</div>
+			{% endfor %}
+		</ul>
+
+		{% endif %}
+	
+
+
+</div>
+
+</body>
+</html>
+
+
+
+
+
+
+

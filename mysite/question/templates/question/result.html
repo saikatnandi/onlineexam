@@ -1,5 +1,7 @@
 {% include 'readingmaterial/include/head1' %}
 
+{% include 'readingmaterial/include/js/paging.html' %}
+
 
 
 
@@ -18,18 +20,49 @@
 
 	<h1 align="center"> Exam Result  Page </h1>
 
-	<h3>Total Marks : {{ total_marks }}</h3>
-	<h3>Your Score is: {{ score }}</h3>
+	<h5>Total Marks : {{ total_marks }}</h5>
+	<h5>Your Score is: {{ score }}</h5>
 
 
 	<br><br><br><br>
 
-	<h1>Solution Of Question: </h1>
+	<h3>Solution Of Question: </h3>
+
+
+
+
+	<button class="btn" id="bshowall">Show All Answer</button>
+	<button class="btn" id="bcloseall">Close All Answer</button>
+
+	<script>
+	$(document).ready(function(){
+
+
+	    $("#bshowall").click(function(){
+	    	// console.log("button has been pressed");
+	  		$('.explanation').show();
+	    });
+
+		$("#bcloseall").click(function(){
+			// console.log("button has been pressed");
+			$('.explanation').hide();
+		});
+
+
+	});
+	</script>
+
+
+	{% include 'readingmaterial/include/paging_option.html' %}
 
 
 	
    {% include 'readingmaterial/include/mcq_question_complete.html' %}
 
+	<input type='hidden' id='current_page' />
+    <input type='hidden' id='show_per_page' />
+
+    <div id='page_navigation'></div>
 
 
 

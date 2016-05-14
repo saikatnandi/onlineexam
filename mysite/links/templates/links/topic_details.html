@@ -1,0 +1,33 @@
+{% include 'readingmaterial/include/head1' %}
+
+
+
+</head>
+
+</body>
+<div class="container">
+{% include 'readingmaterial/include/menubar.html' %}
+
+	<h1 align="center"> Link Topic Details Page </h1>
+
+
+
+
+	<h2 align="center"> Links Are </h1>
+	
+	<ul  class="list-group">
+		{% for l in links %}
+			<li class="list-group-item">
+
+			<a href="{% url 'links:link_details' l.id %}"><p> {{ l.link_title }} </p></a>
+
+			</li>
+		{% endfor %}
+	</ul>
+
+</div>
+
+
+
+</body>
+</html>

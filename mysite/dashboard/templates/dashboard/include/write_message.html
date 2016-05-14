@@ -1,0 +1,81 @@
+ <script>
+    var note ;
+    var message;
+
+    function getCookie(c_name)
+	{
+	    if (document.cookie.length > 0)
+	    {
+	        c_start = document.cookie.indexOf(c_name + "=");
+	        if (c_start != -1)
+	        {
+	            c_start = c_start + c_name.length + 1;
+	            c_end = document.cookie.indexOf(";", c_start);
+	            if (c_end == -1) c_end = document.cookie.length;
+	            return unescape(document.cookie.substring(c_start,c_end));
+	        }
+	    }
+	    return "";
+	 }
+
+	function onSuccess(data, status, xhr)
+	{
+
+		alert ("Your Message Has Been Successfully Send");
+
+		
+		if (data == 'message') {
+			var li = '<li class="list-group-item">' + message + '</li>';
+
+			var td = '<td> </td>' 
+			td += '<td>' + comment + '</td>';
+			td += '<td> </td>';
+			$('#table_comment').append(td);
+
+			$('#pre_comment').append(li);
+
+
+		}
+
+
+
+	}
+
+
+	$(document).ready(function(){
+
+		$(function () {
+		    $.ajaxSetup({
+		        headers: { "X-CSRFToken": getCookie("csrftoken") }
+		    });
+		});
+				
+
+
+
+
+		$("#bAddMessage").click(function(){	
+
+			message = $('#message').val();
+			
+		//	alert (comment)
+		    // var reading_content_id = $('#reading_content_id').val();
+			if (message.length > 0) {
+				 $.post('/feedback/ajax/addmessage/', { 'message'  : message}, onSuccess);
+
+			} else {
+				alert ("To Send A Message Write Something");
+			}			  
+	  		
+		});
+
+	});	
+    
+</script>
+
+
+
+			<h4>Add New Message</h4>
+			<p>
+			<input id='message' name='message' type='textarea' placeholder="'Write A New Message' " size="100"></input></p>
+			<button id='bAddMessage'>Send </button>

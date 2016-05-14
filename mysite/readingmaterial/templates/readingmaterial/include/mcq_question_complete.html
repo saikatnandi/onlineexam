@@ -2,9 +2,10 @@
 
 
 <br><br><br>
-<input id='my_mcq' value="{{content_marked_mcq_string}}" type='hidden'>  </input>
+<input id='my_mcq' value="{{marked_mcq_str}}" type='hidden'>  </input>
 
 <ol class="list-group">
+     <div id="content">
 	{% for mcq in mcq_question %}
 		<li class="list-group-item">
 
@@ -15,13 +16,22 @@
 
  	{% endif  %}
 
+
 	{% include 'readingmaterial/include/mcq_question_with_explanation.html' %}
- 
 
-
+<div align="right">
+<div class="fb-like" data-href="{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ '/readingmaterial/mcq/'}}{{mcq.id}}{{"/"}}" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+</div>
 
 
 	 </li>
+
+
+
+
+
 	{% endfor %}
+
+	</div>
 </ol>
 		

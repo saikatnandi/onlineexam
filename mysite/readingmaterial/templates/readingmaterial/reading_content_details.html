@@ -37,7 +37,46 @@
 <input id='reading_content_id' value="{{ reading_content_id }}" type='hidden'>  </input>
 
 
-	<h1 align="center"> Reading Material Page   </h1>		
+
+
+
+
+	<h1 align="center"> Reading Material Page   </h1>	
+
+
+
+
+	
+
+	{% if finished %}
+	 <a href="{% url 'readingmaterial:content_unfinished' reading_content_id %}">
+	 <div align="center"><button class="btn" id="bfinish"> 
+	 Mark As Unfinished
+
+	 </button></div></a>
+	  {% else  %}
+	  
+
+	  <a href="{% url 'readingmaterial:content_finished' reading_content_id %}">
+	  <div align="center"><button class="btn" id="bfinish"> 
+
+	  Mark As Finished</button></div></a>
+
+	 {% endif %} 
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
 
 
 	<h1 align="center">Title: {{ readingcontent.content_title }} </h1>
@@ -59,6 +98,8 @@
 	{% endif %}
 
 
+        {% if readingcontent.content_body %}
+
 		  <div align="center">
 			<h3>Content body </h3>
 			<div id="textBody">
@@ -69,11 +110,11 @@
 
 			   			{{ readingcontent.content_body | safe }}
 
-			   {% endif %}
-
-				
+			   {% endif %}			
 
 			</div>
+
+		{% endif %}
 
 
 
@@ -151,23 +192,22 @@
 
 
 
-<!-- 
-    {{ request.get_full_path }}
-    <br>
-    {{ request.path }}
-    <br>
- -->
+
 
 
 
 <div class="fb-like" data-href="{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.get_full_path }}" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
 
 <br> <br> 
-<div class="fb-comments" data-href="{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.get_full_path }}" data-numposts="5"></div>
+<!-- <div class="fb-comments" data-href="{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.get_full_path }}" data-numposts="5"></div>
+ -->
+
+
+		<br><br><br>			
 
 
 
-		<br><br><br>			<br><br><br>
+{% include 'readingmaterial/include/quick_question.html' %}
 
 
 
@@ -213,23 +253,22 @@
 
 <br><br><br><br><br><br>
  	<div class="container">
-		<h1>MCQS:</h1>
-
-
-
-
+	
 
 		{% include 'readingmaterial/include/mcq_question_complete.html' %}
-
-
 	</div>
 
 
 
+
+
+
+
+
+
+
+
 </div>
-
-
-
 
 
 </body>

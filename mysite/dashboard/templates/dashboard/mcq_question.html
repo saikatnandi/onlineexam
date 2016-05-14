@@ -1,0 +1,23 @@
+{% include 'readingmaterial/include/head1' %}
+
+
+
+</head>
+
+</body>
+<div class="container">
+{% include 'readingmaterial/include/menubar.html' %}
+
+	<h1 align="center"> Dashboard </h1>
+
+	{% for rt in reading_topic %}		   
+		<a href="{% url 'dashboard:mcq_question_topic' rt.id %} "><button class="btn" value="{{rt.id}}">{{ rt.reading_topic_text }}</button></a>
+		
+	{% endfor %}
+
+</div>
+
+
+
+</body>
+</html>

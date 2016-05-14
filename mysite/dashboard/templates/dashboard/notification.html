@@ -1,0 +1,94 @@
+{% include 'readingmaterial/include/head1' %}
+
+
+{% include 'readingmaterial/include/js/paging.html' %}
+
+
+
+
+</head>
+</body>
+
+<div id="fb-root"></div>
+
+
+<div class="container">
+
+
+{% include 'readingmaterial/include/menubar.html' %}
+
+
+	<h1 align="center"> Notification </h1>
+
+
+
+
+
+
+{% include 'readingmaterial/include/paging_option.html' %}
+
+
+
+
+
+		<ol class="list-group">
+
+		     <div id="content">
+
+			{% for n in notification %}
+			
+				<li class="list-group-item">
+					<a href="
+
+					{% if n.url %}
+					   {{ n.url }}
+					    
+
+					{% elif n.question_set %}
+					   {% url 'question:question' n.question_set.id %}
+					  
+
+					{% elif n.reading_content %}
+					   {% url 'readingmaterial:content' n.reading_content.id %}
+					      
+
+					{% elif n.notice %}
+					   {% url 'notice:notice_details' n.notice.id %}
+				
+
+					{% elif n.link %}
+					   {% url 'links:link_details' n.link.id %}
+					{% endif %} 
+
+
+
+					" >
+
+
+
+					{{n.notification_text}}
+					</a>
+
+				 </li>
+				{% endfor %}
+			</div>
+		</ol>
+
+			<input type='hidden' id='current_page' />
+	        <input type='hidden' id='show_per_page' />
+
+		    <div id='page_navigation'></div>
+
+
+
+
+		<br><br><br>
+
+
+
+</div>
+
+
+
+</body>
+</html>

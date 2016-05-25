@@ -11,25 +11,24 @@
 
 	<h1 align="center"> My Subscription </h1>
 
-
-
-
-
-
-
+    <br><br><br>
+    <h1 align="center"> Approved Subscriptions</h1>
+    <br><br><br>
 
 	<table id='table_mysubscription' class="table table-bordered" >
 		    <thead>
 		      <tr>
 		        <th>Subscription Plan</th>
-		        <th>Request Date</th>
+
 		        <th>Start Date</th>
 		        <th>End Date</th>
-		        <th>Is Valid</th>
-		        <th>Is Confirmed</th>
-		        <th>Token</th>	        
+
+		        <th>Per Day Exam</th>
+		        <th>Random Question</th>	      
 		        
 			   </tr>
+
+
 			</thead>
 
 
@@ -37,11 +36,80 @@
 				{% for s in subscription %}
 				    <tr>
 				    	<td> {{ s.subscription_plan }}</td>
-				    	<td> {{ s.request_date }} </td>
 				    	<td> {{ s.start_date }} </td>
 				    	<td> {{ s.end_date }} </td>
-				    	<td> {{ s.is_valid }} </td>
-				    	<td> {{ s.is_confirmed }} </td>
+
+
+				    	<td> 
+							{% ifequal  s.no_of_exam_per_day -1 %}
+								Unlimited	
+							{% else %}
+							    {{s.no_of_exam_per_day}}	
+							{% endifequal %}
+		
+
+		                </td>
+
+				    	<td> 		
+				    	{% ifequal  s.no_of_random_question -1 %}
+							Unlimited	
+						{% else %}
+						     {{s.no_of_random_question}}	
+						{% endifequal %}
+		                 </td>
+
+
+
+				    </tr>
+
+				{% endfor %}
+			    </tbody>
+
+
+	 </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <br><br><br>    <br><br><br>
+    <h1 align="center"> Pending Subscriptions </h1>
+    <br><br><br>
+
+
+	<table id='table_mysubscription' class="table table-bordered" >
+		    <thead>
+		      <tr>
+		        <th>Subscription Plan</th>
+		        <th>Request Date</th>
+<!-- 		        <th>Start Date</th>
+		        <th>End Date</th> -->
+<!-- 		        <th>Is Valid</th> -->
+	<!-- 	        <th>Is Pending</th> -->
+		        <th>Token</th>	        
+		        
+			   </tr>
+			</thead>
+
+
+			    <tbody>
+				{% for s in subscription_request %}
+				    <tr>
+				    	<td> {{ s.subscription_plan }}</td>
+				    	<td> {{ s.request_date }} </td>
+
+	
+
 				    	<td> {{ s.token }} </td>
 
 

@@ -283,13 +283,18 @@ def mysubscription(request):
 
     # print (plan_id)
 
-    subscription = Subscription.objects.filter(user=request.user)
-    subscription = subscription.order_by('-is_valid','-is_confirmed', "-start_date","request_date")
+    subscription = Subscription.objects.filter(user=request.user, is_valid=True)
+    subscription = subscription.order_by( "-start_date")
+
+    subscription_request = Subscription_Request.objects.filter(user=request.user, is_valid=False)
+    subscription_request = subscription_request.order_by( "-request_date")
+
+
 
 
     return render(request, 'dashboard/mysubscription.html', {
         'subscription': subscription,
- 
+         'subscription_request': subscription_request,
 
         })
 

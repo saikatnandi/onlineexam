@@ -6,7 +6,7 @@ urlpatterns = [
     # # ex: /polls/
     url(r'^$', views.index, name='index'),
 
-    url(r'^plan/(?P<plan_id>[0-9]+)/$', views.subscribe, name='subscribe'),
+    url(r'^plan/(?P<plan_id>[0-9]+)/$', views.subscribe_request, name='subscribe_request'),
 
 
 

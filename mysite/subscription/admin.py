@@ -135,16 +135,16 @@ class Subscription_Plan_Admin(admin.ModelAdmin):
 
 class Subscription_Admin(admin.ModelAdmin):
     search_fields = ('token', )
-    list_filter = ('is_confirmed','is_valid')
+    list_filter = ('is_valid',)
     raw_id_fields = ('user', 'subscription_plan' )    
  
-    list_display = ('subscription_plan', 'user', 'token', 
-      'is_confirmed',
+    list_display = ('subscription_plan', 'user', 
+      # 'is_confirmed',
       'is_valid', 
       'no_of_exam_per_day',
       'no_of_random_question',
 
-      'request_date', 'start_date', 
+      'start_date', 
       'end_date',
 
       
@@ -167,9 +167,9 @@ class Subscription_Admin(admin.ModelAdmin):
           'Select Plan And User ',  {'fields': ['user','subscription_plan']}
           ),
 
-         (
-          'Is Subscription Accepted (Is Payment Completed?) ',  {'fields': ['is_confirmed']}
-          ),
+         # (
+         #  'Is Subscription Accepted (Is Payment Completed?) ',  {'fields': ['is_confirmed']}
+         #  ),
 
 
 
@@ -177,7 +177,7 @@ class Subscription_Admin(admin.ModelAdmin):
          (
           'Date Information(Keep Blank And They will Be Auto Filled)  ', 
            {'fields': [
-           'request_date', 
+           # 'request_date', 
            'start_date', 
             'end_date'
             ]}
@@ -207,17 +207,127 @@ class Subscription_Admin(admin.ModelAdmin):
        
     ]    
 
+    # def save_model(self, request, obj, form, change):
+    #     if (not obj.request_date):
+    #         obj.request_date = timezone.now()
+    #     flag = True
+
+    #     print ("\n\n**************** in subscription save method")
+    #     if (obj.is_confirmed):
+
+    #         if ((not obj.start_date) and (not obj.end_date)):
+    #             subscription = Subscription.objects.filter(user=obj.user, 
+    #              subscription_plan=obj.subscription_plan, is_confirmed=True, is_valid=True)
+    #             print (subscription)
+    #             print ("****** ******* check if going to save")
+    #             if (subscription):
+    #                 # print ("\n\n****** ******* not going to save")                   
+    #                 subscription = subscription[0]
+    #                 day = obj.subscription_plan.subscription_duration
+    #                 subscription.end_date = subscription.end_date + timezone.timedelta(days=day)
+    #                 subscription.save()
+    #                 flag = False
+    #                 obj.start_date = timezone.now()
+    #                 obj.save()
+
+    #         #         print ("value of flag: " )
+    #         #         print (flag)
+
+    #         # print ("value of flag: " )
+    #         # print (flag)
+    #         if (flag):
+    #             print ("***** if flag ")            
+    #             if (not obj.start_date):
+    #                 obj.start_date = timezone.now()
+
+    #               # obj.is_valid = True
+
+    #             day = obj.subscription_plan.subscription_duration
+    #             if (not obj.end_date):
+    #                 obj.end_date = timezone.now() + timezone.timedelta(days=day)
+
+    #             obj.save()
+
+    #             if (obj.end_date > timezone.now()):
+    #                 obj.is_valid = True
+
+
+        
+    #     if (flag):
+    #         obj.save()
+    #         obj.update_validity()
+            
+
+
+
+
+
+class Subscription_Request_Admin(admin.ModelAdmin):
+    search_fields = ('token', 'user')
+    list_filter = ('is_confirmed','is_valid')
+    raw_id_fields = ('user', 'subscription_plan' )    
+ 
+    list_display = ('subscription_plan', 'user', 'token', 
+      'is_confirmed',
+      'is_valid', 
+
+      'request_date',       
+
+      )
+
+
+
+
+    fieldsets = [
+      
+
+
+         (
+          'Is Subscription Accepted (Is Payment Completed?) ',  {'fields': ['is_confirmed']}
+          ),
+
+         (
+          'Select Plan And User ',  {'fields': ['user','subscription_plan']}
+          ),
+
+
+
+
+         (
+          'Date Information(Keep Blank And They will Be Auto Filled)  ', 
+           {'fields': [
+           'request_date', 
+
+            ]}
+          ),
+
+
+
+         # (
+         #  'Is Subscription Valid (Has This Request Been Processed?)(This Field Will ) ',  {'fields': ['is_valid']}
+         #  ),
+
+
+
+
+       
+    ]    
+
+
+
+
     def save_model(self, request, obj, form, change):
         if (not obj.request_date):
             obj.request_date = timezone.now()
         flag = True
 
-        print ("\n\n**************** in subcription save method")
-        if (obj.is_confirmed):
-
-            if ((not obj.start_date) and (not obj.end_date)):
+        print ("\n\n**************** in subscription save method")
+        if (obj.is_valid):
+            if (obj.is_confirmed):
                 subscription = Subscription.objects.filter(user=obj.user, 
-                 subscription_plan=obj.subscription_plan, is_confirmed=True, is_valid=True)
+                               subscription_plan=obj.subscription_plan,
+                                is_valid=True).order_by("-id")
+
                 print (subscription)
                 print ("****** ******* check if going to save")
                 if (subscription):
@@ -225,38 +335,85 @@ class Subscription_Admin(admin.ModelAdmin):
                     subscription = subscription[0]
                     day = obj.subscription_plan.subscription_duration
                     subscription.end_date = subscription.end_date + timezone.timedelta(days=day)
+
+                    print (obj.subscription_plan.no_of_exam_per_day)
+                    if (obj.subscription_plan.no_of_exam_per_day != -1):
+                        print ("********* in exam per day condition")
+                        subscription.no_of_exam_per_day = subscription.no_of_exam_per_day + obj.subscription_plan.no_of_exam_per_day
+
+                    if (obj.subscription_plan.no_of_random_question != -1):
+                        subscription.no_of_random_question = subscription.no_of_random_question + obj.subscription_plan.no_of_random_question
+
+
+
                     subscription.save()
-                    flag = False
-                    obj.start_date = timezone.now()
-                    obj.save()
+                    # flag = False
+                    # obj.start_date = timezone.now()
+                    # obj.save()
+
+                else:
+                    subscription = Subscription(user=obj.user)
+                    # plan = Subscription_Plan.objects.get(id = plan_id)
+                    subscription.subscription_plan = obj.subscription_plan
+                    subscription.start_date = timezone.now()
+
+                    day = obj.subscription_plan.subscription_duration
+
+                    subscription.end_date = timezone.now() + timezone.timedelta(days=day) 
+                    # subscription.save()
+                    subscription.is_valid = True
+                    subscription.no_of_random_question = obj.subscription_plan.no_of_random_question
+                    subscription.no_of_exam_per_day = obj.subscription_plan.no_of_exam_per_day
+                    subscription.save()
+
+                obj.is_valid = False
+
+
+
+
 
             #         print ("value of flag: " )
             #         print (flag)
 
             # print ("value of flag: " )
             # print (flag)
-            if (flag):
-                print ("***** if flag ")            
-                if (not obj.start_date):
-                    obj.start_date = timezone.now()
+        
 
-                  # obj.is_valid = True
+        obj.save()
+        obj.update_validity()
 
-                day = obj.subscription_plan.subscription_duration
-                if (not obj.end_date):
-                    obj.end_date = timezone.now() + timezone.timedelta(days=day)
+        #     if (flag):
+        #         print ("***** if flag ")            
+        #         if (not obj.start_date):
+        #             obj.start_date = timezone.now()
 
-                obj.save()
+        #           # obj.is_valid = True
 
-                if (obj.end_date > timezone.now()):
-                    obj.is_valid = True
+        #         day = obj.subscription_plan.subscription_duration
+        #         if (not obj.end_date):
+        #             obj.end_date = timezone.now() + timezone.timedelta(days=day)
+
+        #         obj.save()
+
+        #         if (obj.end_date > timezone.now()):
+        #             obj.is_valid = True
 
 
         
-        if (flag):
-            obj.save()
-            obj.update_validity()
+        # if (flag):
+        #     obj.save()
+        #     obj.update_validity()
             
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -344,6 +501,7 @@ admin.site.register(Subscription_Plan, Subscription_Plan_Admin)
 
 
 admin.site.register(Subscription, Subscription_Admin)
+admin.site.register(Subscription_Request, Subscription_Request_Admin)
 # admin.site.register(Subscription_Special_Plan, Subscription_Special_Plan_Admin)
 
 

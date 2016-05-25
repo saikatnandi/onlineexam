@@ -43,19 +43,19 @@ def  index(request):
 
 
 @login_required(login_url="/login/")
-def subscribe(request, plan_id):
+def subscribe_request(request, plan_id):
 
     # print (plan_id)
 
-    subscription = Subscription.objects.filter(user=request.user, 
+    subscription_request = Subscription_Request.objects.filter(user=request.user, 
         subscription_plan_id=plan_id, is_confirmed=False)
-    subscription = subscription.order_by('-request_date')
-    print (subscription)
+    subscription_request = subscription_request.order_by('-request_date')
+    # print (subscription)
     flag = False
-    if (subscription):
-        subscription = subscription[0]
-        subscription.request_date = timezone.now()
-        subscription.save()
+    if (subscription_request):
+        subscription_request = subscription_request[0]
+        subscription_request.request_date = timezone.now()
+        subscription_request.save()
         flag = True
         # if (not subscription.is_confirmed):
         #     flag = True
@@ -73,25 +73,25 @@ def subscribe(request, plan_id):
 
 
     if (not flag):
-        subscription = Subscription(user = request.user)
+        subscription_request = Subscription_Request(user = request.user)
         # print ("******printing plan id")
         # print (plan_id)
         plan = Subscription_Plan.objects.get(id = plan_id)
-        subscription.subscription_plan = plan
-        subscription.no_of_random_question = plan.no_of_random_question
-        subscription.no_of_exam_per_day = plan.no_of_exam_per_day
+        subscription_request.subscription_plan = plan
+        # subscription.no_of_random_question = plan.no_of_random_question
+        # subscription.no_of_exam_per_day = plan.no_of_exam_per_day
 
         # print (subscribe.subscribe_plan)
-        subscription.request_date = timezone.now()
+        subscription_request.request_date = timezone.now()
 
 
-        subscription.save()
-        subscription.token = "TOKEN" + str(subscription.id)
-        subscription.save()
+        subscription_request.save()
+        subscription_request.token = "TOKEN" + str(subscription_request.id)
+        subscription_request.save()
 
 
     return render(request, 'subscription/subscribe.html', {
-        'subscription': subscription,
+        'subscription': subscription_request,
  
 
         })

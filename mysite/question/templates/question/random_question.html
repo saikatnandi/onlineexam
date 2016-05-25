@@ -19,6 +19,10 @@
 	.reading_content {
 		color: 	#DEB887;
 	}
+
+	.subtopic {
+		color: red;
+	}
 </style>
 
 
@@ -131,7 +135,7 @@
 		{% ifequal st.topic rt%}
 		  <ul class="subtopic1">
 			<li>
-			<label>
+			<label class="subtopic">
 			<input class="mycheck" type="checkbox" name="subtopic1[]" value="{{st.id}}"/>
 			{{st.subtopic1_text}}
 			</label>

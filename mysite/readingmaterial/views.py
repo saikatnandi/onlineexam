@@ -207,6 +207,8 @@ def reading_content_details(request, reading_content_id):
     if (request.user.is_authenticated()):
         cmm = getContentMarkedMcqString(content_marked_mcq)
         note = ContentNotes.objects.filter(user=request.user, content=reading_content_id)
+        note = note.order_by("-id")
+
         marked_question = Marked_Quick_Question.objects.filter(user=request.user)
 
 

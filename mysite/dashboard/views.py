@@ -66,8 +66,8 @@ def notes_topic(request, topic_id):
     #     quick_question__content__reading_topic_id = topic_id)
     note = ContentNotes.objects.filter(user=request.user)
     note = note.filter(Q(content__reading_topic__id = topic_id) | Q(reading_topic__id=topic_id))
-
-    print (note)
+    note = note.order_by("-id")
+    # print (note)
     return render(request, 'dashboard/notes_topic.html', {
         'reading_topic' :reading_topic,
         'note': note,

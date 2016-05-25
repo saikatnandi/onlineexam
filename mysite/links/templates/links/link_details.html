@@ -21,24 +21,18 @@
 
 
 
-
-
-
-
-
-
-
 	<br><br><br><br>
 
 	
 	<div align="center">
-		<h5> {{ link.link_text }}</h5>
+		<p> {{ link.link_text }}</p>
 
 
 <br><br><br><br>
-    <h3>Video  Links </h3>
+
 
 	{% if link.video_url_1 %}
+	    <h3>Video  Links </h3>
 		<iframe width="854" height="480" 
 		src="{{ link.video_url_1 }}" 
 		frameborder="0" allowfullscreen>			
@@ -51,15 +45,20 @@
 
 <br><br><br><br>
 
-		<h3>Download Links </h3>
+		
 		{% if link.link_url_1 %}
+		    <h3>External Download Links </h3>
 		    <a href="{{link.link_url_1}}" target="_blank"> Download Link 1 </a>		
 		{% endif %}
 
 
 		<br><br><br><br>
 
-		<h3>Download Able files </h3>
+		{% if link.file1 or link.file2 or link.file3 %}
+
+		    <h3>Download Able files </h3>
+        {% endif %}
+
 		{% if link.file1 %}
 		    <a href="{{link.file1.url}}" download> Download Link 1 </a>		
 		{% endif %}
@@ -76,7 +75,10 @@
 
 		<br><br><br><br>
 
-		<h3> Images </h3>
+		{% if link.image1 or link.image2 or link.image3%}
+		    <h3> Images </h3>        
+        {% endif %}
+
 
 		{% if link.image1 %}			   
 			<img src="{{link.image1.url}}" class="img-rounded" alt="image1" width="304" height="236">						

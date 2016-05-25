@@ -39,8 +39,26 @@ width:auto;
     font-family: 'Oxygen', sans-serif;
 	}
 
-  h1, h2,h3,h4,h5,h6 {
-  	color: #00FF00;
+
+
+  h2{
+    color: #006400;
+     font-family: 'Oxygen', sans-serif !important;
+  } 
+
+   h1 {
+    color: #00FF00;
+    font-family: 'Oxygen', sans-serif !important;
+    
+  }
+
+   h3 {
+    color: #8B008B;
+     font-family: 'Oxygen', sans-serif !important;
+  }
+
+   h4 {
+    color: #008000;
      font-family: 'Oxygen', sans-serif !important;
   }
 
@@ -76,5 +94,10 @@ width:auto;
 
   }
   tr:hover{background-color:#00ffbf}
+  
+  .myclass1{
+     background-color:  #00FFFF ;
+     color:   #556B2F !important;
+  }
 
   * { font-family: 'Oxygen', sans-serif !important;

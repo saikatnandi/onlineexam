@@ -14,11 +14,11 @@
 		<a href="{% url 'dashboard:mcq_question_topic' rt.id %} "><button class="btn" value="{{rt.id}}">{{ rt.reading_topic_text }}</button></a>		
 	{% endfor %}
 
-	<a href="{% url 'dashboard:mcq_question_topic' 5555 %} "><button class="btn" value=""> All </button></a>	
+	<a href="{% url 'dashboard:mcq_question_topic' 5555 %} "><button class="btn" value=""> All Marked MCQ </button></a>	
 
 
 
-
+{% if mcq_question %}
 
 	<script>
 	$(document).ready(function(){
@@ -54,7 +54,7 @@
 
 
 
-
+{% endif %}
 
 
 

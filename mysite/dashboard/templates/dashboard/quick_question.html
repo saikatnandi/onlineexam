@@ -16,13 +16,16 @@
 		<a href="{% url 'dashboard:quick_question_topic' rt.id %} "><button class="btn" value="{{rt.id}}">{{ rt.reading_topic_text }}</button></a>
 		
 	{% endfor %}
+	<a href="{% url 'dashboard:quick_question_topic' 5555 %} "><button class="btn" value=""> All Marked Quick Question </button></a>	
 
 	<br><br><br> 		<br><br><br>
 
 
+{% if quick_question %}
 
 {% include 'readingmaterial/include/quick_question.html' %}
 
+{% endif %}
 
 </div>
 

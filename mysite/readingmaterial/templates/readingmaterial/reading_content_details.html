@@ -38,25 +38,24 @@
 
 
 
-
+<!-- 
 	<h1 align="center"> Reading Material Page   </h1>	
 
 
-
+ -->
 
 	
 
 	{% if finished %}
 	 <a href="{% url 'readingmaterial:content_unfinished' reading_content_id %}">
-	 <div align="center"><button class="btn" id="bfinish"> 
+	 <div align="center" class="myclass1"><button class="btn" id="bfinish"> 
 	 Mark As Unfinished
 
 	 </button></div></a>
-	  {% else  %}
-	  
+	  {% else  %}	  
 
 	  <a href="{% url 'readingmaterial:content_finished' reading_content_id %}">
-	  <div align="center"><button class="btn" id="bfinish"> 
+	  <div align="center" class="myclass1"><button class="btn" id="bfinish"> 
 
 	  Mark As Finished</button></div></a>
 

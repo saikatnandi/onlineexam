@@ -94,19 +94,24 @@ def get_reading_topic(request, marked_mcq):
 
 
 
+
+
+
 @login_required(login_url="/login/")
 def mcq_question(request):
     # reading_topic = ReadingTopic.objects.all()   
     marked_mcq = Marked_Mcq.objects.filter(user = request.user)
-    reading_topic = get_reading_topic(request, marked_mcq)
+    # reading_topic = get_reading_topic(request, marked_mcq)
 
     # print (reading_topic2)
 
 
+    reading_topic =   ReadingTopic.objects.filter(mcq_question__marked_mcq__user=request.user).distinct()
+
+    # print (reading_topic)
 
 
-
-    return render(request, 'dashboard/mcq_question.html', {
+    return render(request, 'dashboard/mcq_question_topic.html', {
         'reading_topic' :reading_topic,
 
         })
@@ -119,7 +124,7 @@ def mcq_question(request):
 def mcq_question_topic(request, topic_id):
     # reading_topic = ReadingTopic.objects.all()
     marked_mcq = Marked_Mcq.objects.filter(user = request.user)
-    reading_topic = get_reading_topic(request, marked_mcq)
+    # reading_topic = get_reading_topic(request, marked_mcq)
 
     marked_mcq_id = []
     for mm in marked_mcq:
@@ -143,29 +148,9 @@ def mcq_question_topic(request, topic_id):
     for mcq in mcq_question_list:
         marked_mcq_str += str(mcq.id) + ", "
 
+    reading_topic =   ReadingTopic.objects.filter(mcq_question__marked_mcq__user=request.user).distinct()
 
 
-    # marked_question_str = ""
-    # # print (marked_question)
-    # # print ("**********marked q str finished")
-    # for mq in marked_quick_question:
-    #     print ("******* marked qid: " + str(mq.quick_question.id))
-    #     marked_question_str += str(mq.quick_question.id) + ", "
-    #     marked_quick_question_list.append(mq.quick_question.id)
-
-    # # print (marked_quick_question_list)
-
-
-
-    # quick_question = Quick_Question.objects.filter(pk__in = marked_quick_question_list)
-
-
-    # return render(request, 'dashboard/quick_question.html', {
-    #     'reading_topic' :reading_topic,
-    #     'quick_question': quick_question,
-    #     'marked_question_str': marked_question_str,
-
-    #     })
 
 
 
@@ -188,7 +173,18 @@ def mcq_question_topic(request, topic_id):
 
 @login_required(login_url="/login/")
 def quick_question(request):
-    reading_topic = ReadingTopic.objects.all()
+    # reading_topic = ReadingTopic.objects.all()
+
+    # quick_question_topic = Quick_Question.objects.filter(marked_quick_question__user = request.user)
+
+    # quick_question_topic = ReadingContent.objects.filter(quick_question__marked_quick_question__user = request.user)
+    quick_question_topic = ReadingTopic.objects.filter(readingcontent__quick_question__marked_quick_question__user = request.user).distinct()
+    
+    reading_topic = quick_question_topic
+
+
+   
+    print (quick_question_topic)
 
 
     return render(request, 'dashboard/quick_question.html', {
@@ -199,9 +195,13 @@ def quick_question(request):
 
 @login_required(login_url="/login/")
 def quick_question_topic(request, topic_id):
-    reading_topic = ReadingTopic.objects.all()
-    marked_quick_question = Marked_Quick_Question.objects.filter(user = request.user).filter(
+    # reading_topic = ReadingTopic.objects.all()
+    if (int(topic_id) != 5555):
+        marked_quick_question = Marked_Quick_Question.objects.filter(user = request.user).filter(
         quick_question__content__reading_topic_id = topic_id)
+
+    else:
+        marked_quick_question = Marked_Quick_Question.objects.filter(user = request.user)
 
     marked_quick_question_list = []
 
@@ -219,6 +219,13 @@ def quick_question_topic(request, topic_id):
 
 
     quick_question = Quick_Question.objects.filter(pk__in = marked_quick_question_list)
+
+
+    quick_question_topic = ReadingTopic.objects.filter(readingcontent__quick_question__marked_quick_question__user = request.user).distinct()
+    
+    reading_topic = quick_question_topic
+
+
 
 
     return render(request, 'dashboard/quick_question.html', {

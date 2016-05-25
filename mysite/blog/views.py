@@ -41,7 +41,7 @@ def index(request):
 
 def post_details(request, post_id):
     post = Post.objects.get(id = post_id)
-    comment = Comment.objects.filter(post = post)
+    comment = Comment.objects.filter(post = post).order_by("-pub_date")
     blog_tag = ""
     if (post):
         blog_tag = Tag.objects.filter(post = post)

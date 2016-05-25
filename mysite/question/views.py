@@ -18,6 +18,9 @@ from django.shortcuts import render_to_response
 from django.contrib import messages
 from django.db.models import Q
 
+from django.http import HttpResponseRedirect
+
+
 # from django.core.context_processors import csrf
 
 
@@ -149,6 +152,16 @@ def index(request):
     return render(request, 'question/index.html', {'question_topic': question_topic})
 
 
+def exam_result(request, question_set_id):
+    result = Question_Set_Result.objects.filter(question_set__id = question_set_id).order_by("-marks", "id")
+
+
+    return render(request, 'question/exam_result.html', {'result': result})
+
+
+
+
+
 
 
 def question_set(request, question_topic_id):
@@ -234,10 +247,10 @@ def reading_content_question(request, reading_content_id):
 
 
 
-def check_eligibility(request,  question_set):
+def check_eligibility(request,  question_set_id):
 
 
-    # question_set = Question_Set.objects.get(id = question_set_id)
+    question_set = Question_Set.objects.get(id = question_set_id)
     subscription_plan = []
     special_plan = []
 
@@ -247,14 +260,15 @@ def check_eligibility(request,  question_set):
 
     elif (not question_set.is_free):
         subscription_plan = Subscription_Plan.objects.filter(question_set= question_set)
-        special_plan = Special_Plan.objects.filter(question_set = question_set)
+        # special_plan = Special_Plan.objects.filter(question_set = question_set)
 
+    
+    users = Subscription.objects.filter(is_valid = True,
+             subscription_plan__in=subscription_plan)
+    # users = users.filter() 
 
-    users = Subscription.objects.filter(is_confirmed = True)
-    users = users.filter(subscription_plan__in=subscription_plan) 
-
-    users2 = Subscription_Special_Plan.objects.filter(is_confirmed = True)
-    users2 = users2.filter(special_plan__in=special_plan) 
+    # users2 = Subscription_Special_Plan.objects.filter(is_confirmed = True)
+    # users2 = users2.filter(special_plan__in=special_plan) 
 
 
     # print (users)
@@ -264,11 +278,59 @@ def check_eligibility(request,  question_set):
             return True
 
 
-    for u in users2:
-        if (request.user == u.user):
-            return True
-
+    # for u in users2:
+    #     if (request.user == u.user):
+    #         return True
+    # print ("\n\n******* about to rediect from check eligility")
     return False
+
+
+
+
+
+
+
+def question_subscription(request, question_set_id):
+
+    # print ("\n*******question set id: ")
+    # print (question_set_id)
+    question_set = Question_Set.objects.get(id = question_set_id)
+    # print (question_set)
+    subscription_plan = ""
+    if (not question_set.is_free):
+        subscription_plan = Subscription_Plan.objects.filter(question_set = question_set)
+        # special_plan = Special_Plan.objects.filter(question_set = question_set)
+    
+
+    
+
+
+
+
+
+
+
+
+
+    # start_index = mcq_question.start_index() - 1
+
+
+    return render(request,  'subscription/index.html', {
+        'subscription': subscription_plan,  
+        'question_set': question_set,
+ 
+
+        })
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -277,17 +339,21 @@ def check_eligibility(request,  question_set):
 
 def question(request, question_set_id):
 
-    print ("\n*******question set id: ")
-    print (question_set_id)
-    question_set = Question_Set.objects.get(id = question_set_id)
-
-    ce = check_eligibility(request, question_set)
-
+    ce = check_eligibility(request, question_set_id)
     if (not ce):
+        url = reverse('question:question_subscription', args=(question_set_id,))
+        return HttpResponseRedirect(url)
+    
+    # print (ce)
+    # print ("\n\n ********* ce this should not be printed")
+    # question_set = Question_Set.objects.get(id = question_set_id)
+    # ce = check_eligibility(request, question_set)
+    # if (not ce):
+    #     # string = "You Dont Have The Proper Authrization To Sit For This Exam"
+    #     url = reverse('question:question_subscription', args=(question_set_id,))
+    #     return HttpResponseRedirect(url)
 
-        string = "You Dont Have The Proper Authrization To Sit For This Exam"
 
-        return HttpResponse (string)
 
 
 
@@ -363,9 +429,13 @@ def question(request, question_set_id):
 
 def result(request, question_set_id):
 
-    print ("**** in result method with qid: ")
-    print (question_set_id)
 
+    ce = check_eligibility(request, question_set_id)
+    if (not ce):
+        url = reverse('question:question_subscription', args=(question_set_id,))
+        return HttpResponseRedirect(url)
+
+        
     mcq_question_list = Mcq_Question.objects.filter(question_set__id=int(question_set_id))
      
     question_set = Question_Set.objects.get(pk = int(question_set_id))
@@ -812,8 +882,8 @@ def create_mcq_from_excel(request, sheet, row, tag):
     q.choice_c = c3
     q.choice_d = c4
 
-    q.choice_e = c5
-    q.choice_f = c6
+    # q.choice_e = c5
+    # q.choice_f = c6
 
 
 

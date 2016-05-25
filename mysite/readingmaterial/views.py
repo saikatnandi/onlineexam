@@ -25,7 +25,7 @@ from  django.template.context_processors import csrf
 from announcement.models import *
 from django.db.models import Q
 from qa1.models import *
-
+import json
 
 def getString(title):
     try:
@@ -188,7 +188,7 @@ def reading_content_details(request, reading_content_id):
     content_marked_mcq = ""
 
     if (request.user.is_authenticated()):
-        print ("*********authenticated user*********")
+        # print ("*********authenticated user*********")
         readingcontent_text = ContentMarkedText.objects.filter(user = request.user,
          content_id = reading_content_id)
     
@@ -197,7 +197,7 @@ def reading_content_details(request, reading_content_id):
     # readingcontentlist = ReadingContent.objects.filter(subtopic1=subtopic1_id)
 
 
-    comment = ContentComment.objects.filter(content = readingcontent)
+    comment = ContentComment.objects.filter(content = readingcontent).order_by("-pub_date")
 
 
     # print ("\n cmm is: %s" % cmm)
@@ -452,6 +452,17 @@ def ajax_addcomment(request):
 
         print('\n\n\n')
        
+
+
+
+        data = {}
+        data['task'] = 'add_comment'
+        data['id'] = c.id
+        data['user'] = getString(request.user.first_name + "  " +  request.user.last_name )
+        data['pub_date'] = str(c.pub_date)
+        data['comment_text'] = c.comment_text
+
+        return HttpResponse(json.dumps(data), content_type = "application/json")
 
     return HttpResponse("comment")
 

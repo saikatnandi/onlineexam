@@ -31,6 +31,14 @@ urlpatterns = [
     url(r'^questionset/(?P<question_set_id>[0-9]+)/result/$', 
         views.result, name='result'),
 
+
+    url(r'^questionset/(?P<question_set_id>[0-9]+)/subscription/$', 
+        views.question_subscription, name='question_subscription'),
+
+    url(r'^questionset/(?P<question_set_id>[0-9]+)/exam/result/$', 
+        views.exam_result, name='exam_result'),
+
+
     url(r'^automated/questionset/(?P<question_set_id>[0-9]+)/question/$', 
     views.result, name='automated_question'),
 

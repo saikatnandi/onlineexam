@@ -29,16 +29,30 @@
 		// but you can do something with it if you like - the JSON is deserialised into an object
 		console.log(String(data.value).toUpperCase());
 
+		console.log(data);
+
 		
-		if (data == 'comment') {
-			var li = '<li class="list-group-item">' + comment + '</li>';
+		if (data['task'] == 'add_comment') {
+			// var li = '<li class="list-group-item">' + comment + '</li>';
 
-			var td = '<td> </td>' 
-			td += '<td>' + comment + '</td>';
-			td += '<td> </td>';
-			$('#table_comment').append(td);
+			var td1 = "<td>" + data["user"] +"</td>";
+			var td2 = "<td>" + data["comment_text"] +"</td>";
+			var td3 = "<td>" + data["pub_date"] +"</td>";
 
-			$('#pre_comment').append(li);
+
+			// var td4 = "<td> <button class='bDeleteComment'> Button </button></td>";
+
+
+			var cid = "comment"+data["id"];
+			var td4 = "<td> <button id='" + cid + 
+			         "' class='bDeleteComment'>Delete</button> </td>";
+
+
+
+			var tr = '<tr id="rowComment' +data["id"]+ '"> ' + td1 + td2 + td3 + td4 +'</tr>';
+
+			$('#table_comment').prepend(tr);
+			console.log("comment just been added");
 
 
 
@@ -84,10 +98,12 @@
 		});
 
 
-		$(".bDeleteComment").click(function(){	
+         function deleteComment(id) {
+
+			console.log ("delete comment button has been pressed");
 
 			note = $('#comment').val();
-			var commentId = this.id;
+			var commentId = id;
 			commentId = commentId.substring(7, commentId.length);
 			deleteCommentId = commentId;
 		//	var reading_content_id = $('#reading_content_id').val();
@@ -99,10 +115,62 @@
 			} else {
 				alert ("Cant delete this comment");
 			}
+         }
+
+
+
+         $(".bDeleteComment").on('click' ,function(){	
+
+			var commentId = this.id;
+
+			deleteComment(commentId);
+			console.log("comment id is: ");
+			console.log(commentId);
+
+		// 	console.log ("delete comment button has been pressed");
+
+		// 	note = $('#comment').val();
+		// 	var commentId = this.id;
+		// 	commentId = commentId.substring(7, commentId.length);
+		// 	deleteCommentId = commentId;
+		// //	var reading_content_id = $('#reading_content_id').val();
+		// 	// alert (reading_content_id);
+		// //	alert(noteId);
+		// 	if ( !isNaN(commentId) ) {
+		// 		 $.post('/readingmaterial/ajax/deletecomment/', { 'commentId'  : commentId}, onSuccess_comment);
+
+		// 	} else {
+		// 		alert ("Cant delete this comment");
+		// 	}
 		  
 		    
 	  		
 		});
+
+
+        $('#table_comment').on('click' ,".bDeleteComment" ,function(){	
+
+			note = $('#comment').val();
+			var commentId = this.id;
+
+			deleteComment(commentId);
+			console.log("comment id is: ");
+			console.log(commentId);
+		// 	commentId = commentId.substring(7, commentId.length);
+		// 	deleteCommentId = commentId;
+		// //	var reading_content_id = $('#reading_content_id').val();
+		// 	// alert (reading_content_id);
+		// //	alert(noteId);
+		// 	if ( !isNaN(commentId) ) {
+		// 		 $.post('/readingmaterial/ajax/deletecomment/', { 'commentId'  : commentId}, onSuccess_comment);
+
+		// 	} else {
+		// 		alert ("Cant delete this comment");
+		// 	}
+		});
+
+
+
 
 
 

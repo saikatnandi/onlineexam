@@ -293,7 +293,7 @@ def mysubscription(request):
     subscription = Subscription.objects.filter(user=request.user, is_valid=True)
     subscription = subscription.order_by( "-start_date")
 
-    subscription_request = Subscription_Request.objects.filter(user=request.user, is_valid=False)
+    subscription_request = Subscription_Request.objects.filter(user=request.user, is_valid=True)
     subscription_request = subscription_request.order_by( "-request_date")
 
 

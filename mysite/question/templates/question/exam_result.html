@@ -7,9 +7,8 @@
 </body>
 <div class="container">
 {% include 'readingmaterial/include/menubar.html' %}
-{% include 'dashboard/include/dashboard_menu.html' %}
 
-	<h1 align="center"> My Exam Result </h1>
+	<h1 align="center"> Question Title: {{ result.0 }} </h1>
 
 
 
@@ -21,26 +20,23 @@
 	<table id='table_myresult' class="table table-bordered" >
 		    <thead>
 		      <tr>
-		        <th>Question Title</th>
-
+		        <th>User Name</th>
 		        <th>Date</th>
 		        <th>Marks</th>
-		        <th>Position</th>
-		            
+		        <th>Position</th>	            
 		        
 			   </tr>
 			</thead>
 
 
 			    <tbody>
-				{% for mr in myresult %}
+				{% for mr in result %}
 				    <tr>
-				    	<td> <a href="{% url 'question:exam_result' mr.question_set.id %}"><h4>{{   mr.question_set }} </h4></a>
-				    	</td>
+				    	<td> <h4>{{ mr.user }} </h4></td>
 				    	
 				    	<td> {{ mr.finish_date }} </td>
 				    	<td> {{ mr.marks }} </td>
-				    	<td> {{ mr.position }} </td>
+				    	<td> {{ forloop.counter }} </td>
 				    
 
 

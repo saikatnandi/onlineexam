@@ -10,7 +10,18 @@
 
 	<h1 align="center"> Subscription Plan </h1>
 
+{% if question_set %}
+<br><br><br>
+   
+   <div align="center" >
+   <h3 style="color:red">
+   <h4 style="color:red"> Sorry This Question Set Is Not Free </h4>
+   To View The Question: <h1>{{question_set}}</h1>You Will Have To Subscribe To Any Of These Package
+   </h3>
+   </div>
 
+<br><br><br><br><br><br>
+{% endif %}
 
 <ul  class="list-group">
 {% for s in subscription %}
@@ -55,7 +66,10 @@
 
 
 
+
+
 	</li>
+	<br><br><br>
 
 {% endfor %}
 </ul>

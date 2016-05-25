@@ -7,11 +7,33 @@ from django.utils import timezone
 from question.models import *
 from announcement.models import *
 
+def getString(title):
+    try:
+        title = str(title)
+    except Exception:
+        title = title.encode('UTF8')
+
+    # print ("\n ********** retirng strign: " + title)
+    return title
+
 
 def Update_published_time(modeladmin, request, queryset):
     print ("***** in update publish time method ***")
     for obj in queryset:
         obj.update_date()
+
+
+def Fix_Problem_None_Of_choice_ef(modeladmin, request, queryset):
+    print ("***** iFix_Problem_None_Of_choice_ef  ***")
+    for obj in queryset:
+
+        if (getString(obj.choice_f) == "None"):
+            # print ("*** going to update choice_ef")
+            obj.choice_e=""
+            obj.choice_f=""
+            obj.save()
+
+
 
 
 def Update_Uploader_Information(modeladmin, request, queryset):
@@ -42,7 +64,7 @@ class Mcq_Question_Admin(admin.ModelAdmin):
 
     raw_id_fields = ('subtopic1', 'reading_topic', )    
 
-    actions = [Update_published_time, Update_Uploader_Information]
+    actions = [Update_published_time, Update_Uploader_Information, Fix_Problem_None_Of_choice_ef]
 
 
 

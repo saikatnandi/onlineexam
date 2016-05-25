@@ -105,7 +105,7 @@ def subscribe_request(request, plan_id):
 
 
 
-# def  my_send_mail(request ):
+# def  my_send_mail(request  ):
 
 #     send_mail('Testing Mail', 'Here is the message.', 'abc@gmail.com',
 #     ['mdabdullahalalaminp@gmail.com'], fail_silently=False)

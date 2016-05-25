@@ -1,6 +1,6 @@
 {% include 'readingmaterial/include/head1' %}
 
-{% include 'readingmaterial/include/js/reading_content_details_js.html' %}
+{% include 'readingmaterial/include/js/reading_content_comment_js.html' %}
 
 
 
@@ -33,9 +33,7 @@
 
 <div class="container">
 {% include 'readingmaterial/include/menubar.html' %}
-
-<input id='reading_content_id' value="{{ reading_content_id }}" type='hidden'>  </input>
-
+{% include 'readingmaterial/include/topic_list.html' %}
 
 
 
@@ -150,43 +148,14 @@
 
 
 		<div class="col-sm-3">
-			<br><br><br>
-			{% if request.user.is_authenticated %}
-				<h4>Add New Notes</h4>
-				<input id='note' name='note' type='textarea' placeholder="Add A New Note " width="100%"></input>				<button id='bAddNote'>Add Note</button>
 
-
-			<br><br><br>
-
-
-			    <h4><My Notes: </h4>		
-			    <ul id='my_notes' class="list-group">
-				    {% for n in note %}
-				    <div class="row" id="rowNote{{n.id}}">
-				    	<div align="left" class="col-sm-10">
-							<li class="list-group-item">
-								 {{ n.content_notes }}
-
-							</li>
-						</div>
-						<div align="right" class="col-sm-2">
-							<button id="note{{n.id}}" class="bNoteDelete">Delete</button>
-							
-						</div>
-					</div>
-					{% endfor %}
-				</ul>
-
-			{% endif %}
+		{% include 'readingmaterial/include/notes.html' %}
 
 
 
-		</div>
 
+        </div>
 	</div>
-
-
-
 
 			<br><br><br>			<br><br><br>
 
@@ -204,6 +173,11 @@
 
 
 		<br><br><br>			
+
+
+{% include 'question/include/question_set_list.html' %}
+
+
 
 
 
@@ -243,7 +217,7 @@
 
 		{% endif %}
 
-		<P>end of comments</P>
+
 
 	</div>
 

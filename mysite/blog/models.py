@@ -3,7 +3,16 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.contrib import admin
+from ckeditor.fields import RichTextField
+from django.utils.safestring import SafeUnicode
+
 # Create your models here.
+
+
+
+
+
 
 class Tag(models.Model):
 	tag_text = models.CharField(max_length=100)
@@ -14,8 +23,9 @@ class Tag(models.Model):
 
 
 class Post(models.Model):
-    title_text = models.CharField(max_length=200)
-    post_body = models.TextField()
+    title_text = models.CharField("Title: ",max_length=200)
+    post_body = RichTextField("Body Of Post", blank=True, null=True)
+    # post_body2 = RichTextField(blank=True, null=True)
 
     user = models.ForeignKey(User)
     tag = models.ManyToManyField(Tag, blank=True, null=True)
@@ -35,7 +45,7 @@ class Post(models.Model):
         self.save() 
 
     def __unicode__(self):
-        return self.title_text
+        return make_safe(self.title_text) 
 
 
 

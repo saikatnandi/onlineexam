@@ -16,7 +16,13 @@ from  qa1.models import *
 from readingmaterial.models import *
 from django.shortcuts import render_to_response
 from django.contrib import messages
-from django.core.context_processors import csrf
+from django.db.models import Q
+
+# from django.core.context_processors import csrf
+
+
+
+from  django.template.context_processors import csrf
 
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import Permission
@@ -40,22 +46,69 @@ def getString(title):
     # print ("\n ********** retirng strign: " + title)
     return title
 
-@staff_member_required
-@permission_required('question.excel_upload', login_url='/admin/login/')
+
+
+def get_removed_list(reading_topic, selected_topic):
+    # print (type(reading_topic))
+    # print (type(selected_topic))
+
+    reading_topic_list = []
+    for rt in reading_topic:
+        reading_topic_list.append(rt)
+
+    for st in selected_topic:
+        for rt in reading_topic_list:
+            if (rt.id == int(st)):
+                # print ("*(**** about to remove")
+                # print (rt)
+                reading_topic_list.remove(rt)
+
+
+    return reading_topic_list
+
+
+
+
+@login_required(login_url="/login/")
 def random_question(request):
     # reading_topic = ReadingTopic.objects.all()
     reading_topic = ReadingTopic.objects.all()
     subtopic1 = SubTopic1.objects.all()
     reading_content = ReadingContent.objects.all()
 
-    topic = []
-    subtopic = []
-    content = []
-    print ("******* requestmethod: *******: " + request.method)
+    selected_topic = []
+    selected_subtopic = []
+    selected_content = []
+    # print ("******* requestmethod: *******: " + request.method)
     if (request.method =='POST'):
-        topic = request.POST.getlist('topic[]')
-        subtopic = request.POST.getlist('subtopic1[]')
-        content = request.POST.getlist('content[]')
+        selected_topic = request.POST.getlist('topic[]')
+        selected_subtopic = request.POST.getlist('subtopic1[]')
+        selected_content = request.POST.getlist('content[]')
+
+        # print (reading_topic)
+        reading_topic = get_removed_list(reading_topic, selected_topic)
+        # print (reading_topic)
+
+        # print (subtopic1)
+        subtopic1 = SubTopic1.objects.filter(topic__in=reading_topic)
+        # print (subtopic1)
+        subtopic1 = get_removed_list(subtopic1, selected_subtopic)
+        print ("\n\n ****** final subtopic")
+        print (subtopic1)
+
+        reading_content = ReadingContent.objects.filter(Q(subtopic1__in=subtopic1) | Q(reading_topic__in=reading_topic))
+        reading_content = get_removed_list(reading_content, selected_content)
+        print (reading_content)
+        # reading_content = get_removed_list(reading_content, selected_content)
+
+
+        # print (topic)
+        # for t in topic:
+        #     print (getString(t))
+        # print ("****** topic has been printed")
+        # print (subtopic)
+
+
        
 
         # topic2 = list([x.encode('UTF8') for x in topic])
@@ -77,9 +130,9 @@ def random_question(request):
      {'reading_topic': reading_topic,
        'subtopic1' : subtopic1,
        'reading_content' : reading_content,
-       'topic': topic,
-       'subtopic': subtopic,
-       'content' : content,
+       'topic': selected_topic,
+       'subtopic': selected_subtopic,
+       'content' : selected_content,
 
 
      })
@@ -95,12 +148,11 @@ def index(request):
 
     return render(request, 'question/index.html', {'question_topic': question_topic})
 
+
+
+
 def question_set(request, question_topic_id):
     question_set = Question_Set.objects.filter(question_topic = question_topic_id)
-
-
-
-
     return render(request, 'question/question_set.html', {'question_set': question_set})
 
 
@@ -238,15 +290,6 @@ def question(request, question_set_id):
         return HttpResponse (string)
 
 
-        
-
-
-
-
-
-
-
-
 
     mcq_question_list = Mcq_Question.objects.filter(question_set__id=question_set_id)
 
@@ -260,43 +303,29 @@ def question(request, question_set_id):
         print (question_set)
 
 
-    # print (question_set.question_set_text)
-    # print ("total time: ")
-    # print (total_time)
+
 
     mcq_question = mcq_question_list
 
 
-    # paginator = Paginator(mcq_question_list, 25) # Show 25 contacts per page
 
-    # page = request.GET.get('page')
-    # try:
-    #     mcq_question = paginator.page(page)
-    # except PageNotAnInteger:
-    #     # If page is not an integer, deliver first page.
-    #     mcq_question = paginator.page(1)
-    # except EmptyPage:
-    #     # If page is out of range (e.g. 9999), deliver last page of results.
-    #     mcq_question = paginator.page(paginator.num_pages)
+    question_set_result = ""
+    if (request.user.is_authenticated()):
 
-
-
-
-    question_set_result = Question_Set_Result.objects.filter(user= request.user,
+        question_set_result = Question_Set_Result.objects.filter(user= request.user,
                       question_set = question_set_id)
+        if (not question_set_result):
+            question_set_result = Question_Set_Result(question_set_id = question_set_id)
+            question_set_result.user = request.user
+        else:
+            question_set_result = question_set_result[0]
 
-    if (not question_set_result):
-        question_set_result = Question_Set_Result(question_set_id = question_set_id)
-        question_set_result.user = request.user
-    else:
-        question_set_result = question_set_result[0]
+        now = timezone.now()
 
-    now = timezone.now()
+        question_set_result.start_date = now
+        question_set_result.finish_date = now + timezone.timedelta(seconds=total_time + 60)
 
-    question_set_result.start_date = now
-    question_set_result.finish_date = now + timezone.timedelta(seconds=total_time + 60)
-
-    question_set_result.save()
+        question_set_result.save()
 
 
 
@@ -334,12 +363,12 @@ def question(request, question_set_id):
 
 def result(request, question_set_id):
 
-    # print ("\n\n ******** Result")
-    # print (res_id)
+    print ("**** in result method with qid: ")
+    print (question_set_id)
 
-    mcq_question_list = Mcq_Question.objects.filter(question_set__id=question_set_id)
+    mcq_question_list = Mcq_Question.objects.filter(question_set__id=int(question_set_id))
      
-    question_set = Question_Set.objects.get(id = question_set_id)
+    question_set = Question_Set.objects.get(pk = int(question_set_id))
     individual_mcq_mark = question_set.individual_mcq_marks
     negative_marking_percentage = question_set.negative_marking_percentage
 
@@ -363,68 +392,72 @@ def result(request, question_set_id):
                 negative_marks += individual_mcq_mark * 1.0 * negative_marking_percentage / 100.0
             score += p * individual_mcq_mark
 
-    marked_mcq = Marked_Mcq.objects.filter(user=request.user)
 
-    # print ("********** marked mcq")
-    # print (marked_mcq)
-
-    marked_mcq_list = []
-    for m in marked_mcq:
-        marked_mcq_list.append(m.mcq_question_id)
-
-    # print (marked_mcq_list)
 
     marked_mcq_str = ""
-# print (marked_question)
-# print ("**********marked q str finished")
-    for mcq in mcq_question_list:
-        # print ("******* marked qid: " + str(mq.quick_question.id))
-        if (mcq.id in marked_mcq_list):
-            marked_mcq_str += str(mcq.id) + ", "
-        # marked_quick_question_list.append(mq.quick_question.id)
+    if (request.user.is_authenticated()):        
+        marked_mcq = Marked_Mcq.objects.filter(user=request.user)
+
+        marked_mcq_list = []
+        for m in marked_mcq:
+            marked_mcq_list.append(m.mcq_question_id)
+
+        # print (marked_mcq_list)
+
+
+    # print (marked_question)
+    # print ("**********marked q str finished")
+        for mcq in mcq_question_list:
+            # print ("******* marked qid: " + str(mq.quick_question.id))
+            if (mcq.id in marked_mcq_list):
+                marked_mcq_str += str(mcq.id) + ", "
+            # marked_quick_question_list.append(mq.quick_question.id)
 
     score = score - negative_marks
-    # # print (".........total negative marks is :" + str(negative_marks))
-
-    
-    # paginator = Paginator(mcq_question_list, 25) # Show 25 contacts per page
-
-    # page = request.GET.get('page')
-    # try:
-    #     mcq_question = paginator.page(page)
-    # except PageNotAnInteger:
-    #     # If page is not an integer, deliver first page.
-    #     mcq_question = paginator.page(1)
-    # except EmptyPage:
-    #     # If page is out of range (e.g. 9999), deliver last page of results.
-    #     mcq_question = paginator.page(paginator.num_pages)
 
 
 
     mcq_question = mcq_question_list
 
+    pos = ""
+
+    if (request.user.is_authenticated()):        
+
+        res_id = request.POST.get("result", "-1")
+        if (res_id):
+            res_id = int(res_id)
+        else:
+            res_id = -1
 
 
-    res_id = request.POST.get("result", "-1")
-    if (res_id):
-        res_id = int(res_id)
+        # print (res_id)
+
+
+
+        if (res_id != -1):
+            question_set_result = Question_Set_Result.objects.get(user=request.user,
+             pk=res_id, question_set = question_set_id)
+
+            if (question_set_result):
+                now = timezone.now()
+
+                if (now <= question_set_result.finish_date):
+                    question_set_result.marks = score
+                    print ("About to update marks")
+                    question_set_result.save()                
+
+                    pos = Question_Set_Result.objects.filter(question_set = question_set)
+                    pos = pos.filter(marks__gt=score).count()
+                    pos = pos + 1
+
+                    print ("******* position is: ")
+                    print (pos)
+
     else:
-        res_id = -1
+        pos = Question_Set_Result.objects.filter(question_set = question_set)
+        pos = pos.filter(marks__gt=score).count()
+        pos = pos + 1
 
-
-    print (res_id)
-
-    if (res_id != -1):
-        question_set_result = Question_Set_Result.objects.get(user=request.user,
-         pk=res_id, question_set = question_set_id)
-
-        if (question_set_result):
-            now = timezone.now()
-
-            if (now <= question_set_result.finish_date):
-                question_set_result.marks = score
-                print ("About to update marks")
-                question_set_result.save()
 
 
 
@@ -433,6 +466,7 @@ def result(request, question_set_id):
                  'score' : score,
                  'total_marks': total_marks,
                  'marked_mcq_str': marked_mcq_str,
+                 'position': pos, 
 
                  }
 

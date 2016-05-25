@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 
 # from readingmaterial.models import ReadingTopic
-from readingmaterial.models import SubTopic1
+# from readingmaterial.models import SubTopic1, ReadingTopic, ReadingContent
 from readingmaterial.models import *
 from subscription.models import *
 
@@ -25,17 +25,6 @@ class Question_Topic(models.Model):
     class Meta:
         verbose_name="Question Topic List"
 
-
-
-# class Subject(models.Model):
-#     subject_text = models.CharField(max_length=100)
-#     def __unicode__(self):
-#         return self.subject_text
-
-# class Tag(models.Model):
-#     tag_text = models.CharField(max_length=30)
-#     def __unicode__(self):
-#         return self.tag_text
 
 
 
@@ -121,12 +110,12 @@ class Question_Set(models.Model):
     question_set_text = models.CharField(max_length=200, verbose_name="Question Set")  
     question_topic = models.ForeignKey(Question_Topic,blank=True, null=True) 
     
-    reading_content = models.ForeignKey(ReadingContent, blank=True, null=True)
+    # reading_contents = models.ManyToManyField(ReadingContent)
     subtopic1 = models.ForeignKey(SubTopic1, blank=True, null=True, verbose_name="Sub Topic Name")
     reading_topic = models.ForeignKey(ReadingTopic,  blank=True, null=True)
 
     mcq_question = models.ManyToManyField(Mcq_Question, blank=True, null=True)  
-    reading_content = models.ForeignKey(ReadingContent, blank=True, null=True)
+    # reading_content = models.ForeignKey(ReadingContent, blank=True, null=True)
 
     pub_date = models.DateTimeField('Publishing Date: ', blank=True, null=True)
     edit_date = models.DateTimeField('Editing Date: ', blank=True, null=True)
@@ -140,9 +129,10 @@ class Question_Set(models.Model):
 
 
     is_free = models.BooleanField("Is Free",default=True)
-    subscription_plan = models.ManyToManyField(Subscription_Plan)
-    special_plan = models.ManyToManyField(Special_Plan)
- 
+    subscription_plan = models.ManyToManyField(Subscription_Plan, blank=True, null=True )
+    # special_plan = models.ManyToManyField(Special_Plan, blank=True, null=True)
+    reading_content = models.ManyToManyField(ReadingContent, blank=True, null=True)
+    # is_free2 = models.BooleanField("Is Free",default=True)
 
     def update_date(self):
         if (not self.pub_date):
@@ -159,22 +149,10 @@ class Question_Set(models.Model):
     class Meta:
         verbose_name="Question Set"
 
-# class Question_Set2(models.Model):  
-    
-#     question_set2_text = models.CharField(max_length=200)  
-#     mcq_question_set = models.ManyToManyField(Mcq_Question)
 
 
-#     def __unicode__(self):
-#         return self.question_set2_text
 
 
-# class Image(models.Model):
-#     image_text = models.CharField(max_length=30)
-#     photo = models.ImageField(upload_to='images')
-
-#     def __unicode__(self):
-#         return self.image_text
 
 class MarkedText(models.Model):
     marked_text = models.CharField(max_length=100)

@@ -3,28 +3,32 @@
 
 	{% if request.user.is_authenticated %}
 		<li > <a href="/dashboard/">  Dash Board </a>	</li>  
-	   <li><a href="/blog/writepost"> Write A Blog Post </a> </li>
+<!-- 	   <li><a href="/blog/writepost"> Write A Blog Post </a> </li> -->
     	<li><a href="/logout/">Log Out </a> </li>
+	   <li><a href="{% url 'question:random_question' %}"> Random Question </a> </li>
+
+
 
     {% else %}
         <li><a href="/login/">Login </a> </li>
-
+	    <li><a href="/registration/">Registration </a> </li>
 
     {% endif %}
 
 
 
-
-	 <li> <a href="/blog/allpost"> All Blogs </a> </li>
+	 <li> <a href="/blog/"> Blog </a> </li>
+<!-- 	 <li> <a href="/blog/allpost"> All Blogs </a> </li>
 	 <li><a href="/blog/taglist/"> Blog Tags </a> </li>
-
+ -->
 	 <li><a href="/readingmaterial/">Reading Material </a> </li>
-	 <li><a href="/registration/">Registration </a> </li>
+
 	 <li><a href="/question/">Model Question</a> </li>
 	 <li> <a href="{% url 'subscription:index' %}">Subscription</a> </li>
    
 	 <li><a href="/links/">Important Links</a> </li>
 	 <li><a href="/notice/"> Notice Board </a> </li>
+
 
 
 

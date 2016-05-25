@@ -10,15 +10,22 @@ urlpatterns = [
 
     # ex: /polls/
     #url('^', include('django.contrib.auth.urls')),
-    url(r'^$', views.index, name='index'),
+    url(r'^$', views.allpost, name='index'),
     url(r'^allpost/$', views.allpost, name='allpost'),
+
     url(r'^taglist/$', views.taglist, name='taglist'),
+    url(r'^mypost/$', views.mypost, name='mypost'),
+    url(r'^mypost/edit/(?P<post_id>[0-9]+)/$', views.mypost_edit, name='mypost_edit'),
+      
+
     url(r'^taglist/tagid/(?P<tag_id>[0-9]+)/allpost/$', views.allpost_by_taglist, name='allpost_by_taglist'),
  
    
     url(r'^writepost/$', views.writepost, name='writepost'),
     url(r'^allpost/(?P<post_id>[0-9]+)/$', views.post_details, name='post_details'),
     url(r'^ajax/addcomment/$', views.ajax_comment, name='ajax_comment'),
+    url(r'^ajax/deletecomment/$', views.ajax_deletecomment, name='ajax_deletecomment'),
+
 
 
        # url(r'^(?P<question_id>[0-9]+)/vote/$', views.vote, name='vote'),

@@ -17,14 +17,17 @@
 
 
 
-
+   {% if position %}
 	<h1 align="center"> Exam Result  Page </h1>
 
 	<h5>Total Marks : {{ total_marks }}</h5>
 	<h5>Your Score is: {{ score }}</h5>
+	<h5>Position is: {{ position }}</h5>
 
 
 	<br><br><br><br>
+
+	{% endif %}
 
 	<h3>Solution Of Question: </h3>
 

@@ -1,0 +1,50 @@
+{% include 'readingmaterial/include/head1' %}
+
+
+
+
+
+
+
+
+
+</head>
+
+</body>
+<div class="container">
+{% include 'readingmaterial/include/menubar.html' %}
+
+	<h1 align="center"> Dashboard </h1>
+
+
+		{% for rt in reading_topic %}		   
+			<a href="{% url 'dashboard:notes_topic' rt.id %} "><button class="btn btoggle" value="{{rt.id}}">{{ rt.reading_topic_text }}</button></a>
+
+			
+		{% endfor %}
+
+		<br><br><br> 		<br><br><br>
+
+
+
+<!-- 		<ul  class="list-group">
+		{% for n in note %}
+		   
+			<li >
+				<h4 ><a href="">{{ n.content_notes }}</a></h4>
+			</li>
+
+			
+		{% endfor %}
+		</ul> -->
+
+
+		{% include 'readingmaterial/include/notes.html' %}
+
+
+</div>
+
+
+
+</body>
+</html>

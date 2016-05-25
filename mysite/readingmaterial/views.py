@@ -18,11 +18,23 @@ from .models import *
 from .forms import *
 from django.shortcuts import render_to_response
 from django.contrib import messages
-from django.core.context_processors import csrf
+# from django.core.context_processors import csrf
+
+from  django.template.context_processors import csrf
 
 from announcement.models import *
 from django.db.models import Q
 from qa1.models import *
+
+
+def getString(title):
+    try:
+        title = str(title)
+    except Exception:
+        title = title.encode('UTF8')
+
+    # print ("\n ********** retirng strign: " + title)
+    return title
 
 
 
@@ -63,6 +75,7 @@ def index(request):
         })
 
 def subtopic1(request, topic_id):
+    reading_topic = ReadingTopic.objects.all()
     subtopic1 = SubTopic1.objects.filter(topic=topic_id)
     readingcontent = ReadingContent.objects.filter(subtopic1__isnull = True)
     readingcontent = readingcontent.filter(reading_topic_id=topic_id)
@@ -77,12 +90,15 @@ def subtopic1(request, topic_id):
         'announcement' : announcement,
         'readingcontent' : readingcontent,
          'topic_id' : topic_id,
+         'reading_topic': reading_topic,
+
         })
 
 
 
 
 def reading_content_list(request, subtopic1_id):
+    reading_topic = ReadingTopic.objects.all()
     readingcontentlist = ReadingContent.objects.filter(subtopic1=subtopic1_id)
 
     now = timezone.now()
@@ -92,6 +108,8 @@ def reading_content_list(request, subtopic1_id):
     return render (request, 'readingmaterial/readingcontentlist.html', 
         {'readingcontentlist': readingcontentlist,
         'announcement' : announcement,
+        'reading_topic': reading_topic,
+
 
         })
     #return HttpResponse("Hello, world. You're at the .... reading material ..... index.")
@@ -162,6 +180,7 @@ def getContentMarkedMcqString(content_marked_mcq):
 
 
 def reading_content_details(request, reading_content_id):
+    reading_topic = ReadingTopic.objects.all()
     readingcontent = ReadingContent.objects.get(id=reading_content_id)
     quick_question = Quick_Question.objects.filter(content = reading_content_id)
 
@@ -183,26 +202,28 @@ def reading_content_details(request, reading_content_id):
 
     # print ("\n cmm is: %s" % cmm)
     note = None
+    marked_question_str = ""
+    finished = ""
     if (request.user.is_authenticated()):
         cmm = getContentMarkedMcqString(content_marked_mcq)
         note = ContentNotes.objects.filter(user=request.user, content=reading_content_id)
         marked_question = Marked_Quick_Question.objects.filter(user=request.user)
 
-    marked_question_str = ""
-    # print (marked_question)
-    # print ("**********marked q str finished")
-    for mq in marked_question:
 
-        if (str(mq.quick_question.content_id) == str(reading_content_id)):
-            marked_question_str += str(mq.quick_question.id) + ", "
+        # print (marked_question)
+        # print ("**********marked q str finished")
+        for mq in marked_question:
 
-    finished = Finished_Content.objects.filter(user=request.user, reading_content_id = reading_content_id)
-    print (finished)
+            if (str(mq.quick_question.content_id) == str(reading_content_id)):
+                marked_question_str += str(mq.quick_question.id) + ", "
 
-    if (finished):
-        finished = True
-    else:
-        finished = False
+        finished = Finished_Content.objects.filter(user=request.user, reading_content_id = reading_content_id)
+        print (finished)
+
+        if (finished):
+            finished = True
+        else:
+            finished = False
 
 
     # print ("*****going to return template\n")
@@ -211,6 +232,10 @@ def reading_content_details(request, reading_content_id):
     now = timezone.now()
     announcement = Announcement.objects.filter( Q(start_date__isnull = True) | Q(start_date__lte=now))
     announcement = announcement.filter(Q(end_date__isnull = True) | Q(end_date__gte = now))
+
+    question_set = Question_Set.objects.filter(reading_content = readingcontent)
+
+    print (question_set)
 
     return render (request, 'readingmaterial/reading_content_details.html', 
         {'readingcontent': readingcontent, 
@@ -226,6 +251,8 @@ def reading_content_details(request, reading_content_id):
         'marked_question_str': marked_question_str,
         'readingcontent_text': readingcontent_text,
         'announcement' : announcement,
+        'reading_topic': reading_topic,
+        'question_set': question_set,
 
         })
     #return HttpResponse("Hello, world. You're at the .... reading material ..... index.")
@@ -330,22 +357,36 @@ def dashboard(request):
 
 
 def ajax_addnote(request):
-    print ("\n............addnote ajax is called....\n")
+    # print ("\n............addnote ajax is called....\n")
     if (request.method =='POST'):
         note = request.POST.get('note', 'no comment')
         #userId = request.POST.get('userId', 'no user id')
-        reading_content_id = request.POST.get('reading_content_id', 'no reading_content_id')
+        reading_content_id = request.POST.get('reading_content_id', '')
+        reading_topic_id = request.POST.get('reading_topic_id', '')
+
+
+
+
 
         #print ("post id is: ..........." + postId)
         # print (note)
         # print (reading_content_id)
-        c = ContentNotes(content_notes=str(note))
+
+        mynote = getString(note)
+        c = ContentNotes(content_notes=mynote)
+
         c.user = request.user
 
-        print("\n reading_content_id: \n" +  str(reading_content_id))
-        print (reading_content_id)
-        con = ReadingContent.objects.get(id=int(reading_content_id))
-        c.content = con
+
+
+        if (reading_content_id):
+            
+            con = ReadingContent.objects.get(id=int(reading_content_id))
+            c.content = con
+        elif (reading_topic_id):
+            print ("******** In else if condition notes with topic id")
+            topic = ReadingTopic.objects.get(id=int(reading_topic_id))
+            c.reading_topic = topic
         # c.post_id = int(str(postId))
         c.user = request.user
         c.save()
@@ -411,6 +452,35 @@ def ajax_addcomment(request):
        
 
     return HttpResponse("comment")
+
+
+
+def ajax_deletecomment(request):
+    print ("\n............deletecomment ajax is called....\n")
+    if (request.method =='POST'):
+        commentId = request.POST.get('commentId', '')
+
+        c = ContentComment.objects.get(id = int(str(commentId)))
+
+        if (c.user == request.user):
+            c.delete()
+            return HttpResponse("deletecomment")
+
+       
+
+    return HttpResponse("deletecomment_failed")
+
+
+
+
+
+
+
+
+
+
+
+
 
 def ajax_addmcq(request):
 

@@ -2,11 +2,11 @@
 
 
 
-<script>
+<!-- <script>
 $(document).ready(function(){
 	$('.explanation').hide();
 
-	$('.toggle_element').hide();
+//	$('.toggle_element').hide();
 
     $(".explanation_button").click(function(){
     	console.log("button has been pressed");
@@ -14,7 +14,7 @@ $(document).ready(function(){
     });
 
 	$(".btoggle").click(function(){
-		$('.toggle_element').hide();
+	//	$('.toggle_element').hide();
 
 		// console.log("button has been pressed");
 		// $(this).next('div').toggle();
@@ -29,7 +29,7 @@ $(document).ready(function(){
 	});
 
 });
-</script>
+</script> -->
 
 
 
@@ -45,7 +45,7 @@ $(document).ready(function(){
 
 
 		{% for rt in reading_topic %}		   
-			<button class="btn btoggle" value="{{rt.id}}">{{ rt.reading_topic_text }}</button>
+			<a href="{% url 'dashboard:notes_topic' rt.id %} "><button class="btn btoggle" value="{{rt.id}}">{{ rt.reading_topic_text }}</button></a>
 
 			
 		{% endfor %}
@@ -54,7 +54,7 @@ $(document).ready(function(){
 
 
 
-		<ul  class="list-group">
+<!-- 		<ul  class="list-group">
 		{% for n in note %}
 		   
 			<li class="list-group-item toggle_element {{n.content.subtopic1.topic.id}}">
@@ -63,7 +63,9 @@ $(document).ready(function(){
 
 			
 		{% endfor %}
-		</ul>
+		</ul> -->
+
+		{% include 'readingmaterial/include/notes.html' %}
 
 
 </div>

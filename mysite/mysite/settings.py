@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'subscription',
 
     # 'django_comments',
+    'django_wysiwyg',
+    'ckeditor',
 
 
     'polls.apps.PollsConfig',
@@ -142,7 +144,7 @@ USE_TZ = True
 
 
 
-LOGIN_REDIRECT_URL='/exam/'
+LOGIN_REDIRECT_URL='/login/'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend', # default
@@ -167,4 +169,7 @@ EMAIL_HOST_PASSWORD = 'passwordpassword19'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
+DJANGO_WYSIWYG_FLAVOR = "ckeditor"
+CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
+CKEDITOR_MEDIA_URL = '/static/third-party/ckeditor'
 # MEDIA_ROOT = "/mnt/02C8B1A8C8B199FD/programme/python/linux/pro1/mysite/"

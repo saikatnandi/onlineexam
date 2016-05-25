@@ -29,6 +29,8 @@ from readingmaterial.models import *
 from announcement.models import *
 from feedback.models import *
 from subscription.models import *
+from django.db.models import Q
+
 
 @login_required(login_url="/login/")
 def index(request):
@@ -44,12 +46,12 @@ def index(request):
 
 @login_required(login_url="/login/")
 def notes(request):
-    note = ContentNotes.objects.filter(user=request.user)
+    # note = ContentNotes.objects.filter(user=request.user)
     reading_topic = ReadingTopic.objects.all()
 
 
     return render(request, 'dashboard/notes.html', {
-        'note': note,
+        # 'note': note,
         'reading_topic' :reading_topic,
         
 
@@ -58,8 +60,50 @@ def notes(request):
 
 
 @login_required(login_url="/login/")
-def mcq_question(request):
+def notes_topic(request, topic_id):
     reading_topic = ReadingTopic.objects.all()
+    # marked_quick_question = Marked_Quick_Question.objects.filter(user = request.user).filter(
+    #     quick_question__content__reading_topic_id = topic_id)
+    note = ContentNotes.objects.filter(user=request.user)
+    note = note.filter(Q(content__reading_topic__id = topic_id) | Q(reading_topic__id=topic_id))
+
+    print (note)
+    return render(request, 'dashboard/notes_topic.html', {
+        'reading_topic' :reading_topic,
+        'note': note,
+        'topic_id': topic_id,
+
+        })
+
+
+
+
+
+
+
+
+
+def get_reading_topic(request, marked_mcq):
+    reading_topic2 = []
+    for mm in marked_mcq:
+        if (mm.mcq_question.reading_topic):
+            if (mm.mcq_question.reading_topic not in reading_topic2):
+                reading_topic2.append(mm.mcq_question.reading_topic)
+
+    return reading_topic2
+
+
+
+@login_required(login_url="/login/")
+def mcq_question(request):
+    # reading_topic = ReadingTopic.objects.all()   
+    marked_mcq = Marked_Mcq.objects.filter(user = request.user)
+    reading_topic = get_reading_topic(request, marked_mcq)
+
+    # print (reading_topic2)
+
+
+
 
 
     return render(request, 'dashboard/mcq_question.html', {
@@ -73,17 +117,26 @@ def mcq_question(request):
 
 @login_required(login_url="/login/")
 def mcq_question_topic(request, topic_id):
-    reading_topic = ReadingTopic.objects.all()
+    # reading_topic = ReadingTopic.objects.all()
     marked_mcq = Marked_Mcq.objects.filter(user = request.user)
+    reading_topic = get_reading_topic(request, marked_mcq)
+
     marked_mcq_id = []
     for mm in marked_mcq:
         marked_mcq_id.append(mm.mcq_question_id)
 
 
     mcq_question_list = Mcq_Question.objects.filter(pk__in=marked_mcq_id)
-    mcq_question_list = mcq_question_list.filter(reading_topic_id = topic_id)
-    print ("\n\n ***** going to print mcq_question_list ")
-    print (mcq_question_list)
+    # print (mcq_question_list)
+    if (int(topic_id) != 5555):
+        # print (topic_id)
+        # print (type(topic_id))
+        mcq_question_list = mcq_question_list.filter(reading_topic_id = topic_id)
+        # print ("******* filtering more")
+
+
+    # print ("\n\n ***** going to print mcq_question_list ")
+    # print (mcq_question_list)
 
     marked_mcq_str = ""
 
@@ -231,7 +284,7 @@ def mysubscription(request):
     # print (plan_id)
 
     subscription = Subscription.objects.filter(user=request.user)
-    subscription = subscription.order_by('-request_date')
+    subscription = subscription.order_by('-is_valid','-is_confirmed', "-start_date","request_date")
 
 
     return render(request, 'dashboard/mysubscription.html', {

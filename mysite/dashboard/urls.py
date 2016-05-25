@@ -6,6 +6,9 @@ urlpatterns = [
     # # ex: /polls/
     url(r'^$', views.index, name='index'),
     url(r'^notes/$', views.notes, name='notes'),
+    url(r'^notes/topic/(?P<topic_id>[0-9]+)/$', views.notes_topic, name='notes_topic'),
+
+
     url(r'^mcq/$', views.mcq_question, name='mcq_question'),
     url(r'^mcq/topic/(?P<topic_id>[0-9]+)/$', views.mcq_question_topic, name='mcq_question_topic'),
 

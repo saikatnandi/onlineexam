@@ -1,5 +1,5 @@
 {% include 'readingmaterial/include/head1' %}
-
+{% include 'readingmaterial/include/js/paging.html' %}
 
 </head>
 
@@ -10,21 +10,29 @@
 
 
 
+{% include 'blog/include/blog_menu.html' %}
+
+
 
 
 	<h1 align="center"> All Blog Post </h1>
-	<p> blogs are listed here </p>
+	
 
 
-
+	{% include 'readingmaterial/include/paging_option.html' %}
 	<ul  class="list-group">
+	  <div id="content">
 		{% for b in blog %}
 			<li class="list-group-item">
-				<a href="{% url 'blog:post_details' b.id %}"><p> {{ b.title_text }} </p></a>
+				<a href="{% url 'blog:post_details' b.id %}"><p> {{ b.title_text | safe}} </p></a>
 			</li>
 		{% endfor %}
+	   </div>
 	</ul>
 
+	<input type='hidden' id='current_page' />
+    <input type='hidden' id='show_per_page' />
+    <div id='page_navigation'></div>
 
 </div>
 

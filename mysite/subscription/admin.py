@@ -81,40 +81,40 @@ class Subscription_Plan_Admin(admin.ModelAdmin):
 
 
 
-class Special_Plan_Admin(admin.ModelAdmin):
-    search_fields = ('special_plan_title', )
+# class Special_Plan_Admin(admin.ModelAdmin):
+#     search_fields = ('special_plan_title', )
  
-    list_display = ('special_plan_title', 'special_plan_fee', 
+#     list_display = ('special_plan_title', 'special_plan_fee', 
 
-      'bkash_no',
-      )
-
-
+#       'bkash_no',
+#       )
 
 
-    fieldsets = [
+
+
+#     fieldsets = [
          
-         (
-          'Write Plan Name ',  {'fields': ['special_plan_title']}
-          ),
+#          (
+#           'Write Plan Name ',  {'fields': ['special_plan_title']}
+#           ),
 
-         (
-          'Subscription Fee ',  {'fields': ['special_plan_fee']}
-          ),
+#          (
+#           'Subscription Fee ',  {'fields': ['special_plan_fee']}
+#           ),
 
-        (
-          'Bkash No (Money Send To This Number) ',  {'fields': ['bkash_no']}
-          ),
+#         (
+#           'Bkash No (Money Send To This Number) ',  {'fields': ['bkash_no']}
+#           ),
 
 
 
 
 
        
-    ]    
+#     ]    
 
-    def save_model(self, request, obj, form, change):
-      obj.save()
+#     def save_model(self, request, obj, form, change):
+#       obj.save()
         
 
 
@@ -135,11 +135,12 @@ class Special_Plan_Admin(admin.ModelAdmin):
 
 class Subscription_Admin(admin.ModelAdmin):
     search_fields = ('token', )
-    list_filter = ('is_confirmed',)
+    list_filter = ('is_confirmed','is_valid')
     raw_id_fields = ('user', 'subscription_plan' )    
  
     list_display = ('subscription_plan', 'user', 'token', 
       'is_confirmed',
+      'is_valid', 
       'no_of_exam_per_day',
       'no_of_random_question',
 
@@ -196,6 +197,10 @@ class Subscription_Admin(admin.ModelAdmin):
           ),
 
 
+         (
+          'Is Subscription Valid (Is Period Expired?) ',  {'fields': ['is_valid']}
+          ),
+
 
 
 
@@ -205,64 +210,96 @@ class Subscription_Admin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         if (not obj.request_date):
             obj.request_date = timezone.now()
+        flag = True
 
+        print ("\n\n**************** in subcription save method")
         if (obj.is_confirmed):
 
-            if (not obj.start_date):
-                obj.start_date = timezone.now()
+            if ((not obj.start_date) and (not obj.end_date)):
+                subscription = Subscription.objects.filter(user=obj.user, 
+                 subscription_plan=obj.subscription_plan, is_confirmed=True, is_valid=True)
+                print (subscription)
+                print ("****** ******* check if going to save")
+                if (subscription):
+                    # print ("\n\n****** ******* not going to save")                   
+                    subscription = subscription[0]
+                    day = obj.subscription_plan.subscription_duration
+                    subscription.end_date = subscription.end_date + timezone.timedelta(days=day)
+                    subscription.save()
+                    flag = False
+                    obj.start_date = timezone.now()
+                    obj.save()
 
-            day = obj.subscription_plan.subscription_duration
-          # print ("printing day")
-          # print (day)
+            #         print ("value of flag: " )
+            #         print (flag)
 
-            if (not obj.end_date):
-                obj.end_date = timezone.now() + timezone.timedelta(days=day)
+            # print ("value of flag: " )
+            # print (flag)
+            if (flag):
+                print ("***** if flag ")            
+                if (not obj.start_date):
+                    obj.start_date = timezone.now()
+
+                  # obj.is_valid = True
+
+                day = obj.subscription_plan.subscription_duration
+                if (not obj.end_date):
+                    obj.end_date = timezone.now() + timezone.timedelta(days=day)
+
+                obj.save()
+
+                if (obj.end_date > timezone.now()):
+                    obj.is_valid = True
+
+
         
-        obj.save()
-          
+        if (flag):
+            obj.save()
+            obj.update_validity()
+            
 
 
 
 
-class Subscription_Special_Plan_Admin(admin.ModelAdmin):
-    search_fields = ('token', )
-    list_filter = ('is_confirmed',)
-    raw_id_fields = ('user', 'special_plan' )    
+# class Subscription_Special_Plan_Admin(admin.ModelAdmin):
+#     search_fields = ('token', )
+#     list_filter = ('is_confirmed',)
+#     raw_id_fields = ('user', 'special_plan' )    
  
-    list_display = ('special_plan', 'user', 'token', 
+#     list_display = ('special_plan', 'user', 'token', 
 
 
 
-      'request_date', 
+#       'request_date', 
 
-      'is_confirmed',
+#       'is_confirmed',
       
 
-      )
+#       )
 
 
 
 
-    fieldsets = [
+#     fieldsets = [
          
-         (
-          'Select Plan And User ',  {'fields': ['user','special_plan']}
-          ),
+#          (
+#           'Select Plan And User ',  {'fields': ['user','special_plan']}
+#           ),
 
-         (
-          'Is Subscription Accepted (Is Payment Completed?) ',  {'fields': ['is_confirmed']}
-          ),
-
-
+#          (
+#           'Is Subscription Accepted (Is Payment Completed?) ',  {'fields': ['is_confirmed']}
+#           ),
 
 
-         (
-          'Date Information(Keep Blank And They will Be Auto Filled)  ', 
-           {'fields': [
-           'request_date', 
 
-            ]}
-          ),
+
+#          (
+#           'Date Information(Keep Blank And They will Be Auto Filled)  ', 
+#            {'fields': [
+#            'request_date', 
+
+#             ]}
+#           ),
 
 
 
@@ -273,14 +310,14 @@ class Subscription_Special_Plan_Admin(admin.ModelAdmin):
 
 
        
-    ]    
+#     ]    
 
-    def save_model(self, request, obj, form, change):
-        if (not obj.request_date):
-            obj.request_date = timezone.now()
+#     def save_model(self, request, obj, form, change):
+#         if (not obj.request_date):
+#             obj.request_date = timezone.now()
 
         
-        obj.save()
+#         obj.save()
           
 
 
@@ -303,11 +340,11 @@ class Subscription_Special_Plan_Admin(admin.ModelAdmin):
 
 
 admin.site.register(Subscription_Plan, Subscription_Plan_Admin)
-admin.site.register(Special_Plan, Special_Plan_Admin)
+# admin.site.register(Special_Plan, Special_Plan_Admin)
 
 
 admin.site.register(Subscription, Subscription_Admin)
-admin.site.register(Subscription_Special_Plan, Subscription_Special_Plan_Admin)
+# admin.site.register(Subscription_Special_Plan, Subscription_Special_Plan_Admin)
 
 
 

@@ -1,0 +1,8 @@
+	
+
+<h2 align="center"> Topic List </h2>
+{% for rt in reading_topic %}		   
+	<a href="{% url 'readingmaterial:subtopic1' rt.id %} "><button class="btn" value="{{rt.id}}">{{ rt.reading_topic_text }}</button></a>		
+{% endfor %}
+
+<br><br><br>

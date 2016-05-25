@@ -1,0 +1,207 @@
+
+
+
+ <script>
+    var note ;
+    var comment;
+    var question_id ;
+    var marked_text;
+    var deleteNoteId;
+    function getCookie(c_name)
+	{
+	    if (document.cookie.length > 0)
+	    {
+	        c_start = document.cookie.indexOf(c_name + "=");
+	        if (c_start != -1)
+	        {
+	            c_start = c_start + c_name.length + 1;
+	            c_end = document.cookie.indexOf(";", c_start);
+	            if (c_end == -1) c_end = document.cookie.length;
+	            return unescape(document.cookie.substring(c_start,c_end));
+	        }
+	    }
+	    return "";
+	 }
+
+	function onSuccess_note(data, status, xhr)
+	{
+		// with our success handler, we're just logging the data...
+		console.log(data, status, xhr);
+		// but you can do something with it if you like - the JSON is deserialised into an object
+		console.log(String(data.value).toUpperCase());
+	//	$("#div1").text("value form ajax: " + String(data.value));
+		// alert ("ajax successful");
+		if (data == 'note'){
+			var li = '<li class="list-group-item">' + note + '</li>';
+			$('#my_notes').prepend(li);
+
+			console.log("should have been appended to the list");
+
+
+
+
+			var li2 = '<div class="row" id="rowNote{{n.id}}">\
+				    	<div align="left" class="col-sm-10">\
+							<li class="list-group-item">\
+								 {{ n.content_notes }}\
+\
+							</li>\
+						</div>\
+						<div align="right" class="col-sm-2">\
+							<button id="note{{n.id}}" class="bNoteDelete">Delete</button>\
+							\
+						</div>\
+			</div>';
+
+
+
+
+		}
+		
+
+
+
+
+		if (data = 'deletenote') {
+			var id = "#" + 'rowNote' + deleteNoteId;
+			$(id).remove();
+
+		}
+
+	}
+
+
+	$(document).ready(function(){
+
+		$(function () {
+		    $.ajaxSetup({
+		        headers: { "X-CSRFToken": getCookie("csrftoken") }
+		    });
+		});
+				
+
+		$("#bAddNote").click(function(){	
+
+			note = $('#note').val();
+			var reading_content_id = $('#reading_content_id').val();
+            var reading_topic_id = $('#reading_topic_id').val();
+
+			// alert (reading_content_id);
+			if (note.length > 0) {
+
+				if (reading_content_id) {
+
+				 $.post('/readingmaterial/ajax/addnote/', { 'note'  : note, 'reading_content_id' : reading_content_id}, onSuccess_note);
+				}  else if (reading_topic_id){
+
+				  $.post('/readingmaterial/ajax/addnote/', { 'note'  : note, 'reading_topic_id' : reading_topic_id}, onSuccess_note);
+
+			//	  console.log(reading_topic_id)
+
+
+				}
+
+			} else {
+				alert ("To make a note write something in the note box");
+			}
+		  
+		    
+	  		
+		});
+
+
+
+
+
+
+
+		$(".bNoteDelete").click(function(){	
+
+			note = $('#note').val();
+			var noteId = this.id;
+			noteId = noteId.substring(4, noteId.length);
+			deleteNoteId = noteId;
+		//	var reading_content_id = $('#reading_content_id').val();
+			// alert (reading_content_id);
+		//	alert(noteId);
+			if ( !isNaN(noteId) ) {
+				 $.post('/readingmaterial/ajax/deletenote/', { 'noteId'  : noteId}, onSuccess_note);
+
+			} else {
+				alert ("Cant delete this note");
+			}
+		  
+		    
+	  		
+		});
+
+
+
+
+	});
+
+
+
+    
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<input id='reading_content_id' value="{{ reading_content_id }}" type='hidden'>  </input>
+
+<input id='reading_topic_id' value="{{ topic_id }}" type='hidden'>  </input>
+
+
+
+
+<br><br><br>
+{% if request.user.is_authenticated %}
+	<h4>Add New Notes</h4>
+	<input id='note' name='note' type='textarea' placeholder="Add A New Note " width="100%"></input>				<button id='bAddNote'>Add Note</button>
+
+
+<br><br><br>
+
+
+    <h4>My Notes: </h4>		
+    <ul id='my_notes' class="list-group">
+	    {% for n in note %}
+	    <div class="row" id="rowNote{{n.id}}">
+	    	<div align="left" class="col-sm-10">
+				<li class="list-group-item">
+					 {{ n.content_notes }}
+
+				</li>
+			</div>
+			<div align="right" class="col-sm-2">
+				<button id="note{{n.id}}" class="bNoteDelete">Delete</button>
+				
+			</div>
+		</div>
+		{% endfor %}
+	</ul>
+
+{% endif %}
+
+
+
+

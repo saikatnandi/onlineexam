@@ -31,7 +31,7 @@ from models import *
 
 @login_required(login_url="/login/")
 def  index(request):
-    subscription = Subscription_Plan.objects.all()
+    subscription = Subscription_Plan.objects.all().order_by("subscription_fee")
 
 
 
@@ -47,18 +47,26 @@ def subscribe(request, plan_id):
 
     # print (plan_id)
 
-    subscription = Subscription.objects.filter(user=request.user).filter(subscription_plan_id=plan_id)
+    subscription = Subscription.objects.filter(user=request.user, 
+        subscription_plan_id=plan_id, is_confirmed=False)
     subscription = subscription.order_by('-request_date')
     print (subscription)
     flag = False
     if (subscription):
         subscription = subscription[0]
-        t =   timezone.now() - subscription.request_date
-        # print ("************** time")
-        print (t.days)
-        # if (subscription.request_date )
-        if (t.days < 7):
-            flag = True
+        subscription.request_date = timezone.now()
+        subscription.save()
+        flag = True
+        # if (not subscription.is_confirmed):
+        #     flag = True
+
+
+        # t =   timezone.now() - subscription.request_date
+        # # print ("************** time")
+        # print (t.days)
+        # # if (subscription.request_date )
+        # if (t.days < 7):
+        #     flag = True
 
 
 
@@ -66,8 +74,8 @@ def subscribe(request, plan_id):
 
     if (not flag):
         subscription = Subscription(user = request.user)
-        print ("******printing plan id")
-        print (plan_id)
+        # print ("******printing plan id")
+        # print (plan_id)
         plan = Subscription_Plan.objects.get(id = plan_id)
         subscription.subscription_plan = plan
         subscription.no_of_random_question = plan.no_of_random_question
@@ -78,8 +86,9 @@ def subscribe(request, plan_id):
 
 
         subscription.save()
-        subscription.token = "TK" + str(subscription.id)
+        subscription.token = "TOKEN" + str(subscription.id)
         subscription.save()
+
 
     return render(request, 'subscription/subscribe.html', {
         'subscription': subscription,

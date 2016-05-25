@@ -7,6 +7,11 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 
 from django.utils import timezone
+from ckeditor.fields import *
+
+# from qa1.models import Question_Set
+
+
 
 class ReadingTopic(models.Model):   
     reading_topic_text = models.CharField(max_length=200)       
@@ -38,7 +43,9 @@ class SubTopic1 (models.Model):
 
 class ReadingContent(models.Model):
     content_title = models.CharField(max_length=200)
-    content_body = models.TextField( blank=True, null=True)
+    # content_body = models.TextField( blank=True, null=True)
+    content_body = RichTextField( blank=True, null=True)
+
     
     image1 = models.ImageField(upload_to='images/content/', blank=True, null=True)
     image2 = models.ImageField(upload_to='images/content/', blank=True, null=True)
@@ -54,6 +61,9 @@ class ReadingContent(models.Model):
 	# subtopic2 = models.ForeignKey(SubTopic2, blank=True, null=True)
     reading_topic = models.ForeignKey(ReadingTopic)
     tid = models.IntegerField("Topic Id", blank=True, null=True) 
+
+    # question_set = models.ManyToManyField(Question_Set, blank=True, null=True)
+
 
     pub_date = models.DateTimeField('Publishing Date: ', blank=True, null=True)
     edit_date = models.DateTimeField('Editing Date: ', blank=True, null=True)
@@ -92,6 +102,7 @@ class ContentNotes(models.Model):
     content_notes = models.TextField()
     user = models.ForeignKey(User, null=True, blank=True)
     content = models.ForeignKey(ReadingContent, null=True, blank=True)
+    reading_topic = models.ForeignKey(ReadingTopic,  null=True, blank=True)
 
     def __unicode__(self):
         return self.content_notes

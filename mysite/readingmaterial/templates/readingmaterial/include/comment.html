@@ -1,9 +1,30 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <table id='table_comment' class="table table-bordered" >
 	    <thead>
 	      <tr>
 	        <th>User</th>
 	        <th>Comment</th>
 	        <th>Date</th>
+	        <th>Action </th>
 	        
 	        
 		   </tr>
@@ -11,19 +32,23 @@
 		    <tbody>
 
 			{% for c in comment %}
-			    <tr>
+			    <tr id="rowComment{{c.id}}">
 			    	<td> {{c.user.first_name}}  {{ c.user.last_name }}</td>
 			    	<td> {{ c.comment_text }} </td>
 			    	<td>  {{ c.edit_date }}</td>
 
+			    	<td>
+
+			    	{% ifequal c.user request.user%}
+			    	<button id="comment{{c.id}}" class='bDeleteComment'>Delete</button>
+
+			    	{% endifequal  %}
+			    	</td>
+
 
 			    </tr>
 
-
 			{% endfor %}
-
-
-
 
 		    </tbody>
  </table>

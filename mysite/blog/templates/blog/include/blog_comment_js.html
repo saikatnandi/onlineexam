@@ -1,5 +1,6 @@
 <script>
 	var comment ;
+	var deleteCommentId;
     function getCookie(c_name)
 	{
 	    if (document.cookie.length > 0)
@@ -16,7 +17,7 @@
 	    return "";
 	 }
 
-	function onSuccess(data, status, xhr)
+	function onSuccess_blog_comment(data, status, xhr)
 	{
 		// with our success handler, we're just logging the data...
 		console.log(data, status, xhr);
@@ -31,6 +32,13 @@
 			td += '<td>' + comment + '</td>';
 			td += '<td> </td>';
 			$('#table_comment').append(td);
+
+		}
+
+
+		if (data = 'deletecomment') {
+			var id = "#" + 'rowComment' + deleteCommentId;
+			$(id).remove();
 
 		}
 
@@ -52,14 +60,44 @@
 			comment = $('#comment').val();
 			var post_id = $('#post_id').val();
 			if (comment.length > 0) {
-				 $.post('/blog/ajax/addcomment/', { 'comment'  : comment, 'postId' : post_id}, onSuccess);
+				 $.post('/blog/ajax/addcomment/', { 'comment'  : comment, 'postId' : post_id}, onSuccess_blog_comment);
 
 			} else {
 				alert ("To make a comment write something in the comment box");
-			}		  
+			}		    
+	  		
+		});
+
+
+
+		$(".bDeleteComment").click(function(){	
+
+ 			// note = $('#comment').val();
+			var commentId = this.id;
+			commentId = commentId.substring(7, commentId.length);
+			deleteCommentId = commentId;
+		//	var reading_content_id = $('#reading_content_id').val();
+			// alert (reading_content_id);
+		//	alert(noteId);
+			if ( !isNaN(commentId) ) {
+
+
+				$.post('/blog/ajax/deletecomment/', { 'commentId'  : commentId}, onSuccess_blog_comment);
+
+				 // $.post('/readingmaterial/ajax/deletecomment/', { 'commentId'  : commentId}, onSuccess_blog_comment);
+
+			} else {
+				alert ("Cant delete this comment");
+			}
+		  
 		    
 	  		
 		});
+
+
+
+
+
 
 	});
 

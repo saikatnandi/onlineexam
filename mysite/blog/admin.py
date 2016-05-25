@@ -4,7 +4,7 @@ from django.contrib import admin
 
 from .models import *
 from django.utils import timezone
-
+from .forms import *
 
 
 class Tag_Admin(admin.ModelAdmin):
@@ -18,6 +18,8 @@ class Post_Admin(admin.ModelAdmin):
     filter_horizontal = ('tag',)
     list_filter = ( 'pub_date', 'edit_date'
                    )
+
+    form = Writepost_Form
 
     def save_model(self, request, obj, form, change):
         # print ("\n\n printing about obj " + str(obj))

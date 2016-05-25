@@ -20,7 +20,23 @@
 <input id='my_mcq' value="{{content_marked_mcq_string}}" type='hidden'>  </input>
 
 	<h1 align="center"> Blog Page </h1>
-	<h2 align="center">Title: {{ post.title_text }} </h2>
+
+	{% if request.user.is_authenticated %}
+
+		{% ifequal request.user post.user %}
+		   <br><br><br>
+            <div align="center">
+            <a href="{% url 'blog:mypost_edit' post.id  %}"><button>EDIT THIS BLOG</button></a> </div>
+           
+           <br><br><br>
+		{% endifequal %}
+
+	{% endif %}
+
+
+
+
+	<h2 align="center">Title: {{ post.title_text | safe}} </h2>
 
 	<br><br><br>
 	<h3>Tags:</h3>
@@ -51,7 +67,7 @@
 
 	<h4>Content: </h4>
 	<div align="center">
-		<p> {{ post.post_body }}</p>
+		<p> {{ post.post_body | safe }}</p>
 
 
 		{% if post.image1 %}			   
@@ -82,15 +98,7 @@
 	<br><br><br><br>
 
 
-<!-- 	<ul>
-	{% for c in comment %}
-		
-		<li>	User: {{c.user.first_name}} {{ c.user.last_name }} comments ->:  {{ c.comment_text }}  </li>
-		
-	{% endfor %}
 
-	</ul>
- -->
 
 
 
@@ -103,7 +111,7 @@
 
 	{% if request.user.is_authenticated %}
 		<h4>Add new comment</h4>
-		<input id='comment'name='comment' type='textarea' placeholder="'Write a new comment' " width="100%"></input>
+		<input id='comment' name='comment' type='textarea' placeholder="'Write a new comment' " width="100%"></input>
 		<button id='bAddComment'>Add Comment</button>
 
 

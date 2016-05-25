@@ -22,9 +22,9 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 from django.contrib import auth                 
-from django.core.context_processors import csrf 
+# from django.core.context_processors import csrf 
 # from forms import MyRegistrationForm
-
+from  django.template.context_processors import csrf
 
 
 

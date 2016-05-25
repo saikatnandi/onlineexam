@@ -170,8 +170,8 @@ class Question_Set_Admin(admin.ModelAdmin):
     search_fields = ('question_set_text', )
     list_filter = ('pub_date', 'edit_date', 'is_free',)
     list_display = ('id','question_set_text', 'uploader', 'is_free','pub_date', 'edit_date')
-    filter_horizontal = ('mcq_question', 'subscription_plan', 'special_plan')
-    raw_id_fields = ('question_topic', 'reading_content', 'subtopic1', 'reading_topic', )
+    filter_horizontal = ('mcq_question', 'subscription_plan', 'reading_content')
+    raw_id_fields = ('question_topic', 'subtopic1', 'reading_topic', )
     exclude = ('pub_date', 'edit_date')
 
     # def get_queryset(self, request):
@@ -195,7 +195,7 @@ class Question_Set_Admin(admin.ModelAdmin):
 
          (
           '(If It Is A Topic Wise Test)Select Parent Category(Under Which Question Category This Question Set Exists) Of This Question Set: ', 
-           {'fields': ['reading_content', 'subtopic1', 'reading_topic']}
+           {'fields': [ 'subtopic1', 'reading_topic', 'reading_content']}
           ),
 
           (
@@ -212,10 +212,10 @@ class Question_Set_Admin(admin.ModelAdmin):
             {'fields': ['subscription_plan']}
           ),
 
-         (
-          'IF Question Set Not Free Then Choose Special  Plan Users Who Will Be Able To Enjoy It Free: ',
-            {'fields': ['special_plan']}
-          ),
+         # (
+         #  'IF Question Set Not Free Then Choose Special  Plan Users Who Will Be Able To Enjoy It Free: ',
+         #    {'fields': ['special_plan']}
+         #  ),
 
 
 

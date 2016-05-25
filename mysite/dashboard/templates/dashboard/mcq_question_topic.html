@@ -9,19 +9,15 @@
 {% include 'readingmaterial/include/menubar.html' %}
 
 	<h1 align="center"> Dashboard </h1>
-
 	{% for rt in reading_topic %}		   
-		<a href="{% url 'dashboard:mcq_question_topic' rt.id %} "><button class="btn" value="{{rt.id}}">{{ rt.reading_topic_text }}</button></a>
-		
+		<a href="{% url 'dashboard:mcq_question_topic' rt.id %} "><button class="btn" value="{{rt.id}}">{{ rt.reading_topic_text }}</button></a>		
 	{% endfor %}
 
+	<a href="{% url 'dashboard:mcq_question_topic' 5555 %} "><button class="btn" value=""> All </button></a>	
 
 
 
 
-
-	<button class="btn" id="bshowall">Show All Answer</button>
-	<button class="btn" id="bcloseall">Close All Answer</button>
 
 	<script>
 	$(document).ready(function(){
@@ -44,6 +40,8 @@
 
 	{% include 'readingmaterial/include/paging_option.html' %}
 
+	<button class="btn" id="bshowall">Show All Answer</button>
+	<button class="btn" id="bcloseall">Close All Answer</button>
 
 	
    {% include 'readingmaterial/include/mcq_question_complete.html' %}

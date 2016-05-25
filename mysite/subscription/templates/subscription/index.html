@@ -12,44 +12,53 @@
 
 
 
-	<ul  class="list-group">
-		{% for s in subscription %}
-			<li class="list-group-item">
-			    <div align="center">
-				<h2><a href="topic/{{ nt.id }}"> {{ s.subscription_plan_title }} </a></h2>
-				<h4>
-				{% ifequal  s.no_of_exam_per_day -1 %}
-					Unlimited	
-				{% else %}
-				{{s.no_of_exam_per_day}}	
-				{% endifequal %}
-				Exams Per Day
-				</h4>
+<ul  class="list-group">
+{% for s in subscription %}
+	<li class="list-group-item">
+	    <div align="center">
+		  <h2><a href="topic/{{ nt.id }}"> {{ s.subscription_plan_title }} </a></h2>
+		<h4>
+		{% ifequal  s.no_of_exam_per_day -1 %}
+			Unlimited	
+		{% else %}
+		{{s.no_of_exam_per_day}}	
+		{% endifequal %}
+		Exams Per Day
+		</h4>
 
 
 
-				<h4>
-				{% ifequal  s.subscription_duration -1 %}
-					Unlimited	
-				{% else %}
-				{{s.subscription_duration}}	
-				{% endifequal %}
-				 Days
-				</h4>
-				<h4>{{s.no_of_random_question}} Random Question</h4>
+		<h4>
+		{% ifequal  s.subscription_duration -1 %}
+			Unlimited	
+		{% else %}
+		{{s.subscription_duration}}	
+		{% endifequal %}
+		 Days
+		</h4>
+		<h4>
+
+		{% ifequal  s.no_of_random_question -1 %}
+			Unlimited	
+		{% else %}
+		{{s.no_of_random_question}}	
+		{% endifequal %}
+
+		Random Question
+
+		</h4>
+
+		<h4> Taka: {{s.subscription_fee}}</h4>
+		<a href="{% url 'subscription:subscribe' s.id %}"><button class="btn">Subscribe Now</button></a>
+
+		</div>
 
 
 
-				<a href="{% url 'subscription:subscribe' s.id %}"><button class="btn">Subscribe Now</button></a>
+	</li>
 
-				</div>
-
-
-
-			</li>
-
-		{% endfor %}
-	</ul>
+{% endfor %}
+</ul>
 
 
 

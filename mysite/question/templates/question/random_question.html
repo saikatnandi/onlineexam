@@ -109,9 +109,9 @@
 {% endfor %}
 
 
-<h1 style="margin:150px 0 50px 0;">jQuery Checktree Plugin Demo</h1>
+<!-- <h1 style="margin:150px 0 50px 0;">jQuery Checktree Plugin Demo</h1>
 <p>When any parent within the hierarchy is selected, their children become selected.</p>
-
+ -->
 
 
 <form action="" method="post" >
@@ -124,7 +124,7 @@
 <ul class="topic">
 <li>
 	<label>
-	<input class="mycheck" type="checkbox"  name="topic[]" value="{{rt.reading_topic_text}}" />
+	<input class="mycheck" type="checkbox"  name="topic[]" value="{{rt.id}}" />
 	{{rt.reading_topic_text}}
 	</label>
 	{% for st in subtopic1 %}
@@ -132,7 +132,7 @@
 		  <ul class="subtopic1">
 			<li>
 			<label>
-			<input class="mycheck" type="checkbox" name="subtopic1[]" value="{{st.subtopic1_text}}"/>
+			<input class="mycheck" type="checkbox" name="subtopic1[]" value="{{st.id}}"/>
 			{{st.subtopic1_text}}
 			</label>
 
@@ -142,7 +142,7 @@
 				  <ul>
 					<li>
 					<label class="reading_content">
-					<input class="mycheck" type="checkbox" name="content[]" value="{{rc.content_title}}"/>
+					<input class="mycheck" type="checkbox" name="content[]" value="{{rc.id}}"/>
 					{{rc.content_title}}
 					</label>
 

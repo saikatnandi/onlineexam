@@ -1,0 +1,27 @@
+
+<br><br><br><br>
+
+<h2 align="center"> List Of Question Sets </h2>
+
+
+<ul id='' class="list-group">
+    {% for qs in question_set %}
+    <div class="row" id="">
+    	<div align="left" class="col-sm-8">
+			<li class="list-group-item">
+				 {{ qs.question_set_text }}
+		    <div align="right">
+				  <a href="{% url 'question:question' qs.id %}" target="_blank"><button>Start Exam</button></a>
+				  <a href="{% url 'question:result' qs.id %}" target="_blank"><button>Show Question</button></a>			    	
+
+		    </div>
+
+
+			</li>
+		</div>
+		
+	</div>
+	{% endfor %}
+	</ul>
+
+<br><br><br><br>

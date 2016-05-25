@@ -1,6 +1,6 @@
-git add .
+git add -A .
 git commit -m "Routine Update"
 git push -u origin master
 
-
-read -p "\n\n ********* Uploaded to GitHub Finished ********\n\n  " a
+echo e "\n\n\n\n"
+read -p "********* Uploaded to GitHub Finished ********" a

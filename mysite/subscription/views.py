@@ -91,7 +91,7 @@ def subscribe_request(request, plan_id):
 
 
     return render(request, 'subscription/subscribe.html', {
-        'subscription': subscription_request,
+        'subscription': subscription_request,  
  
 
         })
@@ -105,7 +105,7 @@ def subscribe_request(request, plan_id):
 
 
 
-# def  my_send_mail(request):
+# def  my_send_mail(request ):
 
 #     send_mail('Testing Mail', 'Here is the message.', 'abc@gmail.com',
 #     ['mdabdullahalalaminp@gmail.com'], fail_silently=False)

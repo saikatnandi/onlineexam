@@ -3,4 +3,4 @@ git commit -m "Routine Update"
 git push -u origin master
 
 
-read -p "Uploaded to GitHub  " a
+read -p "\n\n ********* Uploaded to GitHub Finished ********\n\n  " a

@@ -45,7 +45,7 @@ class Post(models.Model):
         self.save() 
 
     def __unicode__(self):
-        return make_safe(self.title_text) 
+        return (self.title_text) 
 
 
 

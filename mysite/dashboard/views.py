@@ -287,9 +287,6 @@ def finished_content(request):
 
 @login_required(login_url="/login/")
 def mysubscription(request):
-
-    # print (plan_id)
-
     subscription = Subscription.objects.filter(user=request.user, is_valid=True)
     subscription = subscription.order_by( "-start_date")
 

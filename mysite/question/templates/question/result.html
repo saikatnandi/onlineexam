@@ -29,14 +29,16 @@
 
 	{% endif %}
 
-	<h3>Solution Of Question: </h3>
+	<h3 align="center">Solution Of Question: {{ question_set }}</h3>
 
 
 
-
+    <div align="center">
 	<button class="btn" id="bshowall">Show All Answer</button>
 	<button class="btn" id="bcloseall">Close All Answer</button>
+	<a href="{% url 'question:exam_result' question_set.id %}" target="_blank"><button class="btn">Show Results</button></a>
 
+    </div>
 	<script>
 	$(document).ready(function(){
 
@@ -67,6 +69,7 @@
 
     <div id='page_navigation'></div>
 
+   <br><br><br>   <br><br><br>
 
 
 

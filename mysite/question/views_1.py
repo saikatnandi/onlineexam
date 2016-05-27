@@ -24,8 +24,6 @@ from django.http import HttpResponseRedirect
 
 
 
-
-
 def getString(title):
     try:
         title = str(title)
@@ -236,7 +234,7 @@ def reading_content_question(request, reading_content_id):
 def check_eligibility(request,  question_set_id):
 
 
-    question_set = Question_Set.objects.get(id = question_set_id)
+    question_set = Question_Set.objects.filter(id = question_set_id).first()
     subscription_plan = []
     special_plan = []
 
@@ -280,7 +278,7 @@ def question_subscription(request, question_set_id):
 
     # print ("\n*******question set id: ")
     # print (question_set_id)
-    question_set = Question_Set.objects.get(id = question_set_id)
+    question_set = Question_Set.objects.filter(id = question_set_id).first()
     # print (question_set)
     subscription_plan = ""
     if (not question_set.is_free):
@@ -327,7 +325,7 @@ def question(request, question_set_id):
 
 
     mcq_question_list = Mcq_Question.objects.filter(question_set__id=question_set_id)
-    question_set = Question_Set.objects.get(id = question_set_id)
+    question_set = Question_Set.objects.filter(id = question_set_id).first()
     if (question_set):
         total_time =  len(mcq_question_list) * question_set.individual_mcq_time
         # total_time = 5
@@ -390,6 +388,30 @@ def question(request, question_set_id):
 
 
 
+def result2(request, question_set_id):
+
+
+    # return HttpResponse("result method")
+    question_set = Question_Set.objects.filter(id = question_set_id)
+    # question_set2 = Question_Set.objects.all()
+    # question_set = question_set[0]
+    # print (question_set)
+    # print ("\n\n **** question set has been printed")
+    # print (question_set2)
+    return render(request, 'question/result.html',
+                 {
+
+                 # 'mcq_question':mcq_question, 
+                 # 'score' : score,
+                 # 'total_marks': total_marks,
+                 # 'marked_mcq_str': marked_mcq_str,
+                 # 'position': pos, 
+                 # 'question_set': question_set,
+
+                 }
+
+                 )
+
 
 
 
@@ -397,15 +419,28 @@ def question(request, question_set_id):
     
 
 def result(request, question_set_id):
+    print (question_set_id)
+    question_set = Question_Set.objects.filter(pk = int(question_set_id)).first()
+
+    # print (question_set)
+
+    if (not question_set):
+        print ("*********** about to redirect")
+        url = reverse('question:index')
+        return HttpResponseRedirect(url)
+
+
     ce = check_eligibility(request, question_set_id)
     if (not ce):
         url = reverse('question:question_subscription', args=(question_set_id,))
         return HttpResponseRedirect(url)
 
+
+
         
     mcq_question_list = Mcq_Question.objects.filter(question_set__id=int(question_set_id))
      
-    question_set = Question_Set.objects.get(pk = int(question_set_id))
+
     individual_mcq_mark = question_set.individual_mcq_marks
     negative_marking_percentage = question_set.negative_marking_percentage
 
@@ -472,8 +507,8 @@ def result(request, question_set_id):
 
 
         if (res_id != -1):
-            question_set_result = Question_Set_Result.objects.get(user=request.user,
-             pk=res_id, question_set = question_set_id)
+            question_set_result = Question_Set_Result.objects.filter(user=request.user,
+             pk=res_id, question_set = question_set_id).first()
 
             if (question_set_result):
                 now = timezone.now()
@@ -509,6 +544,10 @@ def result(request, question_set_id):
                  }
 
                  )
+
+
+
+
 
 
 def checkAnswer(q, ans):

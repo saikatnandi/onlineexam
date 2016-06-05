@@ -1,6 +1,7 @@
 {% include 'readingmaterial/include/head1' %}
 
 
+{% include 'readingmaterial/include/js/paging.html' %}
 
 </head>
 
@@ -14,33 +15,63 @@
 
 
 
-		<h1 align="center"> Subtopic List </h1>
+	<h1 align="center" style="color:red"> {{current_topic}}'s  Subtopic List </h1>
 
 
-		<ul  class="list-group">
-		{% for st1 in subtopic1 %}
+	<ul  class="list-group">
+	{% for st1 in subtopic1 %}
+		<li class="list-group-item">
+			<h4><a href="{% url 'readingmaterial:readingcontentlist' st1.id %}"> {{ st1.subtopic1_text }} </a></h4>
+
+		</li>
+	{% endfor %}
+	</ul>
+
+
+    {% if readingcontent %}
+
+
+
+    <br><br><br><br>
+	<h2 align="center"> Reading Materials Are </h1>		
+	<ul  class="list-group">
+		{% for rc in readingcontent %}
 			<li class="list-group-item">
-				<h4><a href="{% url 'readingmaterial:readingcontentlist' st1.id %}"> {{ st1.subtopic1_text }} </a></h4>
-
+				<a href="{% url 'readingmaterial:content' rc.id %}"><p> {{ rc.content_title }} </p></a>
 			</li>
 		{% endfor %}
-		</ul>
+	</ul>
+	{% endif %}
 
 
-        {% if readingcontent %}
+    <br><br>
+    <h2>MCQ Question: </h2>
+	<a href="{% url 'readingmaterial:subtopic1_mcq' current_topic.id 1 %} " target="_blank"><button class="btn" >Show All Mcq</button></a>	
+	<a href="{% url 'readingmaterial:subtopic1_mcq' current_topic.id 2 %} " target="_blank"><button class="btn" >Subtopic's Mcq</button></a>	
+	<a href="{% url 'readingmaterial:subtopic1_mcq' current_topic.id 3 %} " target="_blank"><button class="btn" >Other Mcqs</button></a>
 
 
 
-        <br><br><br><br>
-		<h2 align="center"> Reading Materials Are </h1>		
-		<ul  class="list-group">
-			{% for rc in readingcontent %}
-				<li class="list-group-item">
-					<a href="{% url 'readingmaterial:content' rc.id %}"><p> {{ rc.content_title }} </p></a>
-				</li>
-			{% endfor %}
-		</ul>
-		{% endif %}
+
+
+
+
+	{% if mcq_question %}
+	<br><br><br><br><br><br>
+
+    
+    {% include 'readingmaterial/include/mcq_question_explanation.html' %}
+
+    {% include 'readingmaterial/include/paging_option.html' %}
+
+   {% include 'readingmaterial/include/mcq_question_complete.html' %}
+
+		<input type='hidden' id='current_page' />
+        <input type='hidden' id='show_per_page' />
+		<div id='page_navigation'></div>
+
+
+	{% endif %}
 
 
 </div>

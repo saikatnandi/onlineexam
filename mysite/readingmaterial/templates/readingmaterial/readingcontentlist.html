@@ -9,7 +9,7 @@
 {% include 'readingmaterial/include/menubar.html' %}
 {% include 'readingmaterial/include/topic_list.html' %}
 
-		<h1 align="center"> Reading Material Reading Content List </h1>
+		<h1 align="center" style="color:green"> {{current_sub_topic.topic}} >> {{current_sub_topic}}'s Reading Content List</h1>
 
 
 		<ul  class="list-group">
@@ -20,6 +20,15 @@
 			</li>
 		{% endfor %}
 		</ul>
+
+
+    <br><br>
+    <div align="center">
+    <h2 >MCQ Question: </h2>
+	<a href="{% url 'readingmaterial:readingcontentlist_mcq' current_sub_topic.id 1 %} " target="_blank"><button class="btn" >Show All Mcq</button></a>	
+	<a href="{% url 'readingmaterial:readingcontentlist_mcq' current_sub_topic.id 2 %} " target="_blank"><button class="btn" >Sub Contents's Mcq</button></a>	
+	<a href="{% url 'readingmaterial:readingcontentlist_mcq' current_sub_topic.id 3 %} " target="_blank"><button class="btn" >Other Mcqs</button></a>
+	</div>
 	
 
 

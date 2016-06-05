@@ -16,7 +16,7 @@
 
 
 
-
+{% load humanize %}
 
 <table id='table_comment' class="table table-bordered" >
 	    <thead>
@@ -35,7 +35,7 @@
 			    <tr id="rowComment{{c.id}}">
 			    	<td> {{c.user.first_name}}  {{ c.user.last_name }}</td>
 			    	<td> {{ c.comment_text }} </td>
-			    	<td>  {{ c.edit_date }}</td>
+			    	<td>  {{ c.edit_date|naturaltime }}</td>
 
 			    	<td>
 

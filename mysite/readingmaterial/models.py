@@ -55,7 +55,8 @@ class ReadingContent(models.Model):
 
     # mcq_question = models.ManyToManyField(Mcq_Question, blank=True, null=True)
     # mcq_question = models.ManyToManyField(Mcq_Question, blank=True, null=True)
-    subtopic1 = models.ForeignKey(SubTopic1, blank=True, null=True, verbose_name="Sub Topic Name")
+    subtopic1 = models.ForeignKey(SubTopic1, blank=True, null=True, 
+        verbose_name="Sub-Topic")
     stid = models.IntegerField("Sub Topic Id", blank=True, null=True) 
 
 	# subtopic2 = models.ForeignKey(SubTopic2, blank=True, null=True)
@@ -73,7 +74,8 @@ class ReadingContent(models.Model):
 
 
     # def save(self, *args, **kwargs):    
-    #     super(ReadingContent, self).save(*args, **kwargs) # Call the "real" save() method.
+    #     super(ReadingContent, self).save(*args, **kwargs) # Call the "real"
+     # save() method.
 
     #     mcq = Mcq_Question.objects.filter(readingcontent__id = self.id)
     #     print ("these mcqs tag_content will be updated: \n")
@@ -84,7 +86,8 @@ class ReadingContent(models.Model):
 
     # @receiver(post_save, sender=SignaledModel)
     # def model_post_save(sender, **kwargs):
-    #     print('*****************************Saved an instance with type: {}'.format(sender))
+    #     print('*****************************Saved an instance with type: {}'.
+    # format(sender))
 
     def update_date(self):
         if (not self.pub_date):

@@ -312,15 +312,17 @@ def myresult(request):
     # print (plan_id)
 
     myresult = Question_Set_Result.objects.filter(user=request.user)
-    myresult = myresult.order_by('-finish_date')
+    myresult = myresult.order_by('-start_date')
 
     for mr in myresult:
         pos = Question_Set_Result.objects.filter(question_set = mr.question_set)
         pos = pos.filter(marks__gt=mr.marks).count()
-        print (type(pos))
+        # print (type(pos))
         # mr.marks = 12
         mr.position = pos+1
         mr.save()
+
+        mr.update_can_publish()
 
         print ("updated position ")
 

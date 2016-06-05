@@ -6,7 +6,7 @@
 
 <a href="{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ '/readingmaterial/mcq/'}}{{mcq.id}}{{"/"}}">
 <h4 align="left">
-Question  {{ forloop.counter }} :   {{ mcq.question_text }}
+Question  {{ forloop.counter }} :   {{ mcq.question_text|safe }}
 </h4>
 </a>
 				

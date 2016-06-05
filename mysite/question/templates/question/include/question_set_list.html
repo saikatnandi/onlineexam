@@ -4,32 +4,37 @@
 <h2 align="center"> List Of Question Sets </h2>
 
 {% endif %}
-<!-- 
-<ul id='' class="list-group">
-    {% for qs in question_set %}
-    <div class="row" id="">
-    	<div align="left" class="col-sm-8">
-			<li class="list-group-item" style=" display:table">
-			<div style="display: table-cell;width: 100%;"> {{ qs.question_set_text }} </div>
-		    <div style="display: table-cell;">
-				  <a href="{% url 'question:question' qs.id %}" target="_blank"><button>Start Exam</button></a>
-				  <a href="{% url 'question:result' qs.id %}" target="_blank"><button>Show Question</button></a>			    	
-
-		    </div>
 
 
-			</li>
-		</div>
-		
-	</div>
-	{% endfor %}
-	</ul> -->
 
 
+{% load humanize %}
 
 
 
 <table id='' class="table table-bordered" >
+
+
+<thead>
+  <tr>
+
+
+    <th>Question Title</th>
+    <th>Start Exam</th>
+    <th>Solution</th>
+    <th>Full Result </th>    
+
+
+    <th>Marks</th>
+    <th>Position</th>
+    <th>Date</th>
+
+    
+   </tr>
+</thead>
+
+
+
 
 <tbody>
 
@@ -37,17 +42,45 @@
     <div class="row" id="">
     	<div align="left" class="col-sm-8">
 			<tr>
-			<td width="70%"> <h4>{{ qs.question_set_text }} </h4></td>
+			<td width="50%"> <h4>{{ qs.question_set_text|title }} </h4></td>
 		    <td style="display: table-cell;">
 				  <a href="{% url 'question:question' qs.id %}" target="_blank"><button>Start Exam</button></a>
 		    </td>
 		    <td>
-				  <a href="{% url 'question:result' qs.id %}" target="_blank"><button>Show Solution</button></a>
+				  <a href="{% url 'question:result' qs.id 0 %}" target="_blank"><button>Show Solution</button></a>
 			</td>	
 
 		    <td>
 				  <a href="{% url 'question:exam_result' qs.id %}" target="_blank"><button>Show Result</button></a>
-			</td>			    	
+			</td>
+
+			{% if request.user.is_authenticated %}
+
+			    {% for qsr in qs.question_set_result_set.all %}
+
+
+			      {% ifequal qsr.user request.user %}
+			         <td> {{ qsr.marks }} </td>
+			         <td> {{ qsr.position }} </td>
+			         <td> {{ qsr.start_date|naturaltime }} </td>
+				     
+
+			      {% endifequal %}
+
+
+
+			    {% endfor %}
+
+
+				
+
+             
+			{% endif %}
+
+<!-- 
+			<td> {{ qs.get_marks }} </td> -->
+
+
 
 		    
 

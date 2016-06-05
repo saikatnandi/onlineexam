@@ -69,7 +69,7 @@
 
 
 
-	<form action="{% url 'question:result'  question_set_id %}" method="post" >
+	<form action="{% url 'question:result'  question_set_id 1 %}" method="post" >
 	{% csrf_token %}
 		<ol class="list-group">
 
@@ -93,9 +93,8 @@
 			</div>
 		</ol>
 
-			<input type='hidden' id='current_page' />
-	        <input type='hidden' id='show_per_page' />
-
+	    <input type='hidden' id='current_page' />
+	    <input type='hidden' id='show_per_page' />
 		<div id='page_navigation'></div>
 
 

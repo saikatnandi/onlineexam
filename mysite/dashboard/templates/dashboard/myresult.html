@@ -17,43 +17,63 @@
 
 
 
+{% load humanize %}
+<table id='table_myresult' class="table table-bordered" >
+<thead>
+  <tr>
+    <th>Question Title</th>
 
-	<table id='table_myresult' class="table table-bordered" >
-		    <thead>
-		      <tr>
-		        <th>Question Title</th>
+    <th>Date</th>
+    <th>Marks</th>
+    <th>Position</th>
+    <th>Full Result</th>
+    <th>Retake Exam </th>
 
-		        <th>Date</th>
-		        <th>Marks</th>
-		        <th>Position</th>
-		            
-		        
-			   </tr>
-			</thead>
-
-
-			    <tbody>
-				{% for mr in myresult %}
-				    <tr>
-				    	<td> <a href="{% url 'question:exam_result' mr.question_set.id %}"><h4>{{   mr.question_set }} </h4></a>
-				    	</td>
-				    	
-				    	<td> {{ mr.finish_date }} </td>
-				    	<td> {{ mr.marks }} </td>
-				    	<td> {{ mr.position }} </td>
-				    
+        
+    
+   </tr>
+</thead>
 
 
+<tbody>
+{% for mr in myresult %}
+<tr>
+	<td> <h4>{{   mr.question_set|title }} </h4>
+	</td>
+	
+	<td> {{ mr.start_date|naturaltime }} </td>
+    
+    {% if mr.can_publish %}
 
-				    </tr>
+		<td> {{ mr.marks }} </td>
+		<td> {{ mr.position }} </td>
+		<td> <a href="{% url 'question:exam_result' mr.question_set.id %}" target="_blank"><button >Show</button> </a></td>
+    {% else %}
 
-				{% endfor %}
+		<td> Pending </td>
+		<td> Pending </td>
+		<td> Pending </td>
+
+	{% endif %}
 
 
 
 
-			    </tbody>
-	 </table>
+	<td> <a href="{% url 'question:question' mr.question_set.id %}"  target="_blank"><button >Retake</button> </a></td>
+	
+
+
+
+
+</tr>
+
+{% endfor %}
+
+
+
+
+    </tbody>
+ </table>
 
 
 

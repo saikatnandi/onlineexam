@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     # 'django_comments',
     'django_wysiwyg',
     'ckeditor',
-
+    # 'filemanager',
 
     'polls.apps.PollsConfig',
     'django.contrib.admin',
@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
 
     'django.contrib.sites',
 
@@ -188,4 +189,46 @@ EMAIL_USE_TLS = True
 DJANGO_WYSIWYG_FLAVOR = "ckeditor"
 CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
 CKEDITOR_MEDIA_URL = '/static/third-party/ckeditor'
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_IMAGE_BACKEND = "pillow"
+
+CKEDITOR_CONFIGS = {
+    'awesome_ckeditor': {
+        'toolbar': 'Basic',
+    },
+
+    'default': {
+        'toolbar': 'basic',
+        'height': 300,
+        'width': '100%',
+        # # 'styles': { 'background-color': 'red' },
+        #  'skin': 'office2013',
+    },
+
+    'text_field': {
+        'toolbar': 'basic',
+        'height': 100,
+        'width': '100%',
+        # # 'styles': { 'background-color': 'red' },
+        #  'skin': 'office2013',
+    },
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))
 # MEDIA_ROOT = "/mnt/02C8B1A8C8B199FD/programme/python/linux/pro1/mysite/"

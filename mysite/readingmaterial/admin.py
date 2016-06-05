@@ -93,13 +93,28 @@ def manage_notification(obj, request, form, change):
     notification.save()
 
 
+class ReadingContent_Form(forms.ModelForm):
+    """Replace the default description field, with one that uses a custom widget."""
 
+    content_title = forms.CharField(widget=CKEditorWidget(config_name='text_field'))
+    # explanation_text = forms.Textarea(attrs={'class':'ckeditor'})
+
+    class Meta:
+        model = ReadingContent
+        exclude = ['']
+        # widgets = { 
+        #    'explanation_text' : forms.Textarea(attrs={'class':'ckeditor'}),
+           
+        # }
 
 
 
 class ReadingContent_Admin(admin.ModelAdmin):
     # filter_horizontal = ('mcq_question', )
+    form = ReadingContent_Form
     list_display = ('id', 'content_title','reading_topic' , 'tid', 'subtopic1', 'stid', 'uploader' , 'pub_date', 'edit_date')
+    list_display_links = ('id', 'content_title',)
+
     list_filter = ('pub_date', 'edit_date', 'reading_topic', 'subtopic1')
     # filter_horizontal = ('mcq_question', )
     raw_id_fields = ('subtopic1', 'reading_topic', )

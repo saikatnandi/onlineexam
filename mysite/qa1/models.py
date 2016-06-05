@@ -29,7 +29,6 @@ class Question_Topic(models.Model):
 
 
 class Mcq_Question(models.Model):
-
     # question_set = models.ManyToManyField(Question_Set, blank=True, null=True) 
     # subject_set = models.ManyToManyField(Subject, blank=True, null=True)
     # tag_set = models.ManyToManyField(Tag, blank=True, null=True)
@@ -72,8 +71,13 @@ class Mcq_Question(models.Model):
 
     uploader = models.ForeignKey(User, blank=True, null=True)
 
-    subtopic1 = models.ForeignKey(SubTopic1, blank=True, null=True)
-    reading_topic = models.ForeignKey(ReadingTopic, blank=True, null=True)
+    subtopic1 = models.ForeignKey(SubTopic1, blank=True, null=True,
+        verbose_name='Sub-Topic')
+    reading_topic = models.ForeignKey(ReadingTopic, blank=True, null=True,
+        verbose_name='Topic ')
+
+    reading_content = models.ForeignKey(ReadingContent, blank=True, null=True,
+        verbose_name='Reading Content  ')
 
 
     def update_date(self):
@@ -120,6 +124,11 @@ class Question_Set(models.Model):
     pub_date = models.DateTimeField('Publishing Date: ', blank=True, null=True)
     edit_date = models.DateTimeField('Editing Date: ', blank=True, null=True)
 
+    start_date = models.DateTimeField('Exam Start Date: ', blank=True, null=True)
+    end_date = models.DateTimeField('Exam End Date: ', blank=True, null=True)
+
+
+
     uploader = models.ForeignKey(User, blank=True, null=True)
 
     individual_mcq_marks = models.IntegerField("Individual Mcq Question Marks: ", default=1) 
@@ -139,8 +148,34 @@ class Question_Set(models.Model):
             self.pub_date = timezone.now()
 
         self.edit_date = timezone.now()
-
         self.save() 
+
+    def can_publish(self):
+
+        if (self.start_date):                
+            now = timezone.now()
+            if (now < self.end_date):
+                return False
+        return True
+
+
+    # def get_marks(self):
+    #     print ("****** get marks method")
+    #     result = Question_Set_Result.objects.filter(question_set=self).first()
+    #     print (self.user)
+    #     # print (request.user)
+
+    #     print ("****** users printed")
+
+
+
+    #     # return result.marks
+
+
+
+    #     return 3
+        
+
 
         
     def __unicode__(self):
@@ -185,6 +220,7 @@ class Question_Set_Result(models.Model):
 
     start_date = models.DateTimeField('Publishing Date: ')
     finish_date = models.DateTimeField('Editing Date: ')
+    can_publish = models.BooleanField("Can Pulbish Result Now: ",default=True)
 
     marks =  models.FloatField(blank=True, null=True)
     position  =  models.IntegerField("Position", default=0) 
@@ -197,16 +233,23 @@ class Question_Set_Result(models.Model):
         # self.edit_date = timezone.now()
 
         self.save() 
-    # def update_position(self):
-    #     pos = Question_Set_Result.objects.filter(question_set = self.question_set)
-    #     pos = pos.filter(marks__gt=self.marks).count()
 
-    #     print ("positon is: ")
-    #     print (pos)
-    #     self.positon = (pos+1)
-    #     print (self.positon)
-    #     self.save()
+    def update_can_publish(self):
+        if (self.question_set.start_date):
+            now = timezone.now()
+            # print (self.question_set.end_date)
 
+            if (now >= self.question_set.end_date):
+                self.can_publish = True                 
+            else:
+                self.can_publish = False
+            self.save()
+
+
+
+        # self.edit_date = timezone.now()
+
+        # self.save() 
 
 
         

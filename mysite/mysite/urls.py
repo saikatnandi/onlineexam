@@ -58,6 +58,8 @@ urlpatterns = [
 
 
     url(r'^$', readingmaterial_views.index, name= 'homepage'),
+    url(r'^google6bac80d6112145d3.html/$', readingmaterial_views.varification, name= 'varification'),
+
 
     url(r'^links/', include('links.urls',  namespace="links")),
     url(r'^notice/', include('notice.urls',  namespace="notice")),
@@ -67,7 +69,7 @@ urlpatterns = [
 
     # url(r'^comments/', include('django_comments.urls')),
     
-
+    url(r'^ckeditor/', include('ckeditor_uploader.urls')),
     
 
     

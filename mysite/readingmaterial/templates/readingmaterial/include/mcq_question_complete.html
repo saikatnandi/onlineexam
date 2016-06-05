@@ -1,6 +1,120 @@
 {% include 'readingmaterial/include/mcq_question_javascript.html' %}
 
 
+
+<script>
+
+    var mcq_id ;
+    var question_id;
+    function getCookie(c_name)
+	{
+	    if (document.cookie.length > 0)
+	    {
+	        c_start = document.cookie.indexOf(c_name + "=");
+	        if (c_start != -1)
+	        {
+	            c_start = c_start + c_name.length + 1;
+	            c_end = document.cookie.indexOf(";", c_start);
+	            if (c_end == -1) c_end = document.cookie.length;
+	            return unescape(document.cookie.substring(c_start,c_end));
+	        }
+	    }
+	    return "";
+	 }
+
+	function onSuccess_report_mcq(data, status, xhr)
+	{
+		// with our success handler, we're just logging the data...
+		console.log(data, status, xhr);
+		// but you can do something with it if you like - the JSON is deserialised into an object
+		console.log(String(data.value).toUpperCase());
+	//	$("#div1").text("value form ajax: " + String(data.value));
+		// alert ("ajax successful");
+		if (data == 'reportmcq'){
+			alert ("This Question Has Been Reported")
+
+		}
+
+	}
+
+
+	$(document).ready(function(){
+		// alert ("still okay");
+		$(function () {
+		    $.ajaxSetup({
+		        headers: { "X-CSRFToken": getCookie("csrftoken") }
+		    });
+		});
+
+		$(".breportmcq").click(function(){	
+			question_id = (this.id);
+			console.log (question_id);
+			question_id = question_id.substring(9, question_id.length);
+
+			console.log (question_id);
+			// var reading_content_id = $('#reading_content_id').val();
+
+			// if (!isNaN(question_id)) {
+			//  $.post('/readingmaterial/ajax/reportmcq/', { 'qid'  : question_id}, onSuccess_report_mcq);
+
+			// } 
+	  		
+		});	
+
+
+		$("#bsend_report_mcq").click(function(){
+			if (!isNaN(question_id)) {
+			 var report = $('#report_text_mcq').val();
+			 console.log(report);
+			 console.log("report should be printed");
+			 $.post('/readingmaterial/ajax/reportmcq/', { 'qid'  : question_id, 'report_text': report}, onSuccess_report_mcq);
+
+			} 
+	  		
+		});	
+
+
+
+
+	});
+
+    
+</script>
+
+
+
+
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h6 class="modal-title">Report Question</h6>
+      </div>
+      <div class="modal-body">
+        <p>This message will be sent to : </p>
+         Enter something: <input id="report_text_mcq" type='textarea' placeholder="Report This Question">
+		<button id="bsend_report_mcq" data-dismiss="modal" >Send Messege</button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
 <br><br><br>
 <input id='my_mcq' value="{{marked_mcq_str}}" type='hidden'>  </input>
 
@@ -25,6 +139,7 @@
 
 
 	 </li>
+	 
 
 
 
@@ -35,3 +150,6 @@
 	</div>
 </ol>
 		
+
+
+

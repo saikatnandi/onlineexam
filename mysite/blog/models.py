@@ -4,9 +4,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.contrib import admin
-from ckeditor.fields import RichTextField
+from ckeditor.fields import *
 from django.utils.safestring import SafeUnicode
-
+from ckeditor_uploader.fields import *
 # Create your models here.
 
 
@@ -24,7 +24,12 @@ class Tag(models.Model):
 
 class Post(models.Model):
     title_text = models.CharField("Title: ",max_length=200)
-    post_body = RichTextField("Body Of Post", blank=True, null=True)
+    # post_body = RichTextField("Body Of Post", blank=True, null=True)
+    # post_body = RichTextField("Body Of Post", blank=True, null=True)
+
+    post_body = RichTextUploadingField("Body Of Post", blank=True, null=True)
+
+
     # post_body2 = RichTextField(blank=True, null=True)
 
     user = models.ForeignKey(User)

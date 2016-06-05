@@ -28,7 +28,7 @@ urlpatterns = [
     url(r'^questionset/(?P<question_set_id>[0-9]+)/$', 
         views.question, name='question'),
 
-    url(r'^questionset/(?P<question_set_id>[0-9]+)/result/$', 
+    url(r'^questionset/(?P<question_set_id>[0-9]+)/result/(?P<is_exam>[0-9]+)/$', 
         views.result, name='result'),
 
 

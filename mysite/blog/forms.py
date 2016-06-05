@@ -3,14 +3,15 @@ from django.forms import CharField, Form, PasswordInput
 
 from .models import *
 from django.forms import ModelForm
-from ckeditor.widgets import CKEditorWidget
-
-
+from ckeditor.widgets import *
+from ckeditor.fields import *
+from ckeditor_uploader.fields import *
 
 
 
 class Writepost_Form(ModelForm):
     # title = forms.CharField(widget=CKEditorWidget())
+    # title2 = forms.CharField()
 
     class Meta:
         model = Post
@@ -20,6 +21,7 @@ class Writepost_Form(ModelForm):
         widgets = {
             'title_text': CKEditorWidget(),
             'tag': forms.CheckboxSelectMultiple,
+            # 'title2':  CKEditorWidget(),
         }
 
     # def get_initial(self):

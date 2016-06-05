@@ -50,9 +50,8 @@ class Message(models.Model):
 
 
 
-
-class Report(models.Model):  
-    report_text = models.CharField(max_length=200)       
+class Report_Mcq_Question(models.Model):  
+    report_text = models.CharField(max_length=200, blank=True, null=True)    
     # url = models.CharField(max_length=200, blank=True, null=True)       
 
 
@@ -62,8 +61,41 @@ class Report(models.Model):
 
 
     user = models.ForeignKey(User)
+    mcq_question = models.ForeignKey(Mcq_Question)
+    # link = models.ForeignKey(Link, blank=True, null=True)
+  
+    def update_date(self):
+        if (not self.pub_date):
+            self.pub_date = timezone.now()
 
-    quick_question = models.ForeignKey(Quick_Question, blank=True, null=True)
+        self.edit_date = timezone.now()
+
+        self.save() 
+
+
+
+
+        
+    def __unicode__(self):
+        return self.report_text
+
+    class Meta:
+        verbose_name="Report/Correction From User For MCQ"
+        unique_together = ('user', 'mcq_question', )
+
+
+
+
+class Report_Quick_Question(models.Model):  
+    report_text = models.CharField(max_length=200, blank=True, null=True)    
+    pub_date = models.DateTimeField('Publishing Date: ', blank=True, null=True)
+    edit_date = models.DateTimeField('Editing Date: ', blank=True, null=True)
+    # is_forall = models.BooleanField("For All User",default=True)
+
+
+    user = models.ForeignKey(User)
+
+    quick_question = models.ForeignKey(Quick_Question)
     # reading_content = models.ForeignKey(ReadingContent, blank=True, null=True)
     mcq_question = models.ForeignKey(Mcq_Question, blank=True, null=True)
     # link = models.ForeignKey(Link, blank=True, null=True)
@@ -84,6 +116,7 @@ class Report(models.Model):
         return self.report_text
 
     class Meta:
-        verbose_name="Report/Correction Suggestion From User"
+        verbose_name="Report/Correction  From User Quick Question"
+        unique_together = ('user', 'quick_question', )
 
 

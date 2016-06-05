@@ -150,6 +150,12 @@ def exam_result(request, question_set_id):
 
 def question_set(request, question_topic_id):
     question_set = Question_Set.objects.filter(question_topic = question_topic_id)
+
+    # question_set = question_set.filter(question_set_result__id__gte=0).distinct()
+
+    # print (question_set)
+    # print (question_set[0].question_set_result_set.filter(user=request.user).first().position)
+
     return render(request, 'question/question_set.html', {'question_set': question_set})
 
 
@@ -346,17 +352,20 @@ def question(request, question_set_id):
     if (request.user.is_authenticated()):
 
         question_set_result = Question_Set_Result.objects.filter(user= request.user,
-                      question_set = question_set_id)
+                      question_set = question_set_id).first()
         if (not question_set_result):
             question_set_result = Question_Set_Result(question_set_id = question_set_id)
             question_set_result.user = request.user
-        else:
-            question_set_result = question_set_result[0]
+        # else:
+        #     question_set_result = question_set_result[0]
 
         now = timezone.now()
 
         question_set_result.start_date = now
         question_set_result.finish_date = now + timezone.timedelta(seconds=total_time + 60)
+        question_set_result.marks = 0
+        
+        question_set_result.can_publish = question_set.can_publish()
 
         question_set_result.save()
 
@@ -388,37 +397,12 @@ def question(request, question_set_id):
 
 
 
-def result2(request, question_set_id):
-
-
-    # return HttpResponse("result method")
-    question_set = Question_Set.objects.filter(id = question_set_id)
-    # question_set2 = Question_Set.objects.all()
-    # question_set = question_set[0]
-    # print (question_set)
-    # print ("\n\n **** question set has been printed")
-    # print (question_set2)
-    return render(request, 'question/result.html',
-                 {
-
-                 # 'mcq_question':mcq_question, 
-                 # 'score' : score,
-                 # 'total_marks': total_marks,
-                 # 'marked_mcq_str': marked_mcq_str,
-                 # 'position': pos, 
-                 # 'question_set': question_set,
-
-                 }
-
-                 )
-
-
 
 
 
     
 
-def result(request, question_set_id):
+def result(request, question_set_id, is_exam):
     print (question_set_id)
     question_set = Question_Set.objects.filter(pk = int(question_set_id)).first()
 
@@ -434,6 +418,12 @@ def result(request, question_set_id):
     if (not ce):
         url = reverse('question:question_subscription', args=(question_set_id,))
         return HttpResponseRedirect(url)
+    
+    can_publish = question_set.can_publish()
+    # if (question_set.start_date):
+    #     now = timezone.now()
+    #     if (now < question_set.end_date):
+    #         can_publish = False
 
 
 
@@ -516,14 +506,15 @@ def result(request, question_set_id):
                 if (now <= question_set_result.finish_date):
                     question_set_result.marks = score
                     print ("About to update marks")
+                    question_set.can_publish = can_publish
                     question_set_result.save()                
 
                     pos = Question_Set_Result.objects.filter(question_set = question_set)
                     pos = pos.filter(marks__gt=score).count()
                     pos = pos + 1
 
-                    print ("******* position is: ")
-                    print (pos)
+                    # print ("******* position is: ")
+                    # print (pos)
 
         else:
             pos = Question_Set_Result.objects.filter(question_set = question_set)
@@ -533,13 +524,22 @@ def result(request, question_set_id):
 
 
 
+    if (not can_publish):
+        url = reverse('dashboard:myresult')
+        return HttpResponseRedirect(url)
+
+
+
+
     return render(request, 'question/result.html',
-                 {'mcq_question':mcq_question, 
+                 {
+                 'mcq_question':mcq_question, 
                  'score' : score,
                  'total_marks': total_marks,
                  'marked_mcq_str': marked_mcq_str,
                  'position': pos, 
                  'question_set': question_set,
+                 'is_exam': is_exam,
 
                  }
 

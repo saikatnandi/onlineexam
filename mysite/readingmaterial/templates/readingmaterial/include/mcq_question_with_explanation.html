@@ -14,4 +14,24 @@
 
 		</div>
 
+
+
+
+
+
+        {% if request.user.is_authenticated %}
+		<button class='breportmcq' data-toggle="modal" class="" data-target="#myModal" id="mcqreport{{mcq.id}}"> Report This </button>
+        {% endif  %}
+
+
+
+
+
+
+
+
+
+
+
+
 	</div>

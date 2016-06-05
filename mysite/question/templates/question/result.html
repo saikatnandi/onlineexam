@@ -17,7 +17,7 @@
 
 
 
-   {% if position %}
+   {% if is_exam != '0' %}
 	<h1 align="center"> Exam Result  Page </h1>
 
 	<h5>Total Marks : {{ total_marks }}</h5>
@@ -29,37 +29,16 @@
 
 	{% endif %}
 
+	{% if question_set %}
+
 	<h3 align="center">Solution Of Question: {{ question_set }}</h3>
+    {% endif %}
 
 
-
-    <div align="center">
-	<button class="btn" id="bshowall">Show All Answer</button>
-	<button class="btn" id="bcloseall">Close All Answer</button>
-	<a href="" target="_blank"><button class="btn">Show Results</button></a>
-<!-- url 'question:exam_result' question_set.id  -->
-    </div>
-	<script>
-	$(document).ready(function(){
-
-
-	    $("#bshowall").click(function(){
-	    	// console.log("button has been pressed");
-	  		$('.explanation').show();
-	    });
-
-		$("#bcloseall").click(function(){
-			// console.log("button has been pressed");
-			$('.explanation').hide();
-		});
-
-
-	});
-	</script>
-
+   {% if mcq_question %}
+   {% include 'readingmaterial/include/mcq_question_explanation.html' %}
 
 	{% include 'readingmaterial/include/paging_option.html' %}
-
 
 	
    {% include 'readingmaterial/include/mcq_question_complete.html' %}
@@ -70,6 +49,8 @@
     <div id='page_navigation'></div>
 
    <br><br><br>   <br><br><br>
+
+   {% endif %}
 
 
 

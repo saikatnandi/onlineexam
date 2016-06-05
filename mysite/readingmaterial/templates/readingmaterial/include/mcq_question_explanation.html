@@ -1,0 +1,25 @@
+<div align="center">
+<button class="btn" id="bshowall">Show All Answer</button>
+<button class="btn" id="bcloseall">Close All Answer</button>
+{% if question_set %}
+    <a href="{% url 'question:exam_result' question_set.id %}" target="_blank"><button class="btn">Show Results</button></a>
+{% endif %}
+<!-- url 'question:exam_result' question_set.id  -->
+</div>
+<script>
+$(document).ready(function(){
+
+
+    $("#bshowall").click(function(){
+    	// console.log("button has been pressed");
+  		$('.explanation').show();
+    });
+
+	$("#bcloseall").click(function(){
+		// console.log("button has been pressed");
+		$('.explanation').hide();
+	});
+
+
+});
+</script>

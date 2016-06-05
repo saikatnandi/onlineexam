@@ -52,19 +52,38 @@ def DoSomeTask(modeladmin, request, queryset):
         obj.update_date()
 
 
+class Mcq_Question_Form(forms.ModelForm):
+    """Replace the default description field, with one that uses a custom widget."""
 
+    question_text = forms.CharField(widget=CKEditorWidget())
+    # explanation_text = forms.Textarea(attrs={'class':'ckeditor'})
+
+    class Meta:
+        model = Mcq_Question
+        exclude = ['']
+        widgets = { 
+           'explanation_text' : forms.Textarea(attrs={'class':'ckeditor'}),
+           
+        }
         
 class Mcq_Question_Admin(admin.ModelAdmin):
-    list_display = ('id','question_text', 'uploader', 'tag5', 'tag_content', 'mcq_answer','pub_date', 'edit_date')
+    form = Mcq_Question_Form
+    list_display = ('id','question_text','reading_content', 'subtopic1', 
+      'reading_topic', 'uploader', 'tag5', 'pub_date', 'edit_date')
+    list_display_links = ('id', 'question_text',)
+
+
     list_filter = ( 'pub_date', 'edit_date','tag_topic', 'tag_sub_topic', 
                    'tag_content','tag1','tag2','tag3', 'tag4', 'tag5' )
 #    search_fields = ('tag_set__tag_text','question_text')
-    search_fields = ( 'id', 'tag_topic', 'tag_sub_topic', 'tag_content','question_text',
+    search_fields = ( 'id', 'tag_topic', 'tag_sub_topic', 'tag_content',
+      'question_text',
                     'tag1', 'tag2', 'tag3', 'tag4', 'tag5')
 
-    raw_id_fields = ('subtopic1', 'reading_topic', )    
+    raw_id_fields = ('subtopic1', 'reading_topic','reading_content', )    
 
-    actions = [Update_published_time, Update_Uploader_Information, Fix_Problem_None_Of_choice_ef]
+    actions = [Update_published_time, Update_Uploader_Information, 
+              Fix_Problem_None_Of_choice_ef]
 
 
 
@@ -74,14 +93,25 @@ class Mcq_Question_Admin(admin.ModelAdmin):
     fieldsets = [
 
          (
-          'MCQ Topic(If You Select SubTopic Then Skip): ',  
-          {'fields': ['reading_topic']}
+          'MCQ Reading Content',  
+          {'fields': ['reading_content']}
           ),
 
          (
-          'MCQ Sub Topic',  
+          'MCQ Sub-Topic(If You Have Selected Reading Content Then Skip)',  
           {'fields': ['subtopic1']}
           ),
+
+
+
+         (
+          'MCQ Topic(If You Have Select SubTopic Then Skip): ',  
+          {'fields': ['reading_topic']}
+          ),
+
+
+
+
          (
           'MCQ Question: ',  {'fields': ['question_text',
           'choice_a', 'choice_b', 'choice_c', 'choice_d']}
@@ -112,23 +142,42 @@ class Mcq_Question_Admin(admin.ModelAdmin):
         # ('Others: ', {'fields': ['pub_date']}),
     ]
 
+    # formfield_overrides = { models.CharField: {'widget': forms.Textarea(attrs={
+    #            'class':'ckeditor'})}, }
+
+    class Media:
+        js = ('ckeditor/ckeditor/ckeditor.js',)
+
     def get_queryset(self, request):
         qs = super(Mcq_Question_Admin, self).get_queryset(request)
         if request.user.is_superuser:
             return qs
         return qs.filter(uploader=request.user)
 
+
+
     def save_model(self, request, obj, form, change):
         print ("\n\n printing about obj " + str(obj))
         obj.update_date()
         if (not obj.uploader):
             obj.uploader = request.user
+
+        if (obj.reading_content):
+            obj.subtopic1 = obj.reading_content.subtopic1
+            try:
+                obj.reading_topic = obj.reading_content.subtopic1.topic
+            except Exception:
+                obj.reading_topic = obj.reading_content.reading_topic
+
+        elif (obj.subtopic1):
+            obj.reading_topic = obj.subtopic1.topic
         obj.save()
         # if (not obj.pub_date):
         #     obj.pub_date = timezone.now()
 
         # obj.edit_date = timezone.now()
         # obj.save()
+
 
 
 
@@ -191,7 +240,10 @@ def manage_notification(request, obj, form, change):
 class Question_Set_Admin(admin.ModelAdmin):
     search_fields = ('question_set_text', )
     list_filter = ('pub_date', 'edit_date', 'is_free',)
-    list_display = ('id','question_set_text', 'uploader', 'is_free','pub_date', 'edit_date')
+    list_display = ('id','question_set_text', 'uploader', 'is_free','pub_date', 'edit_date','start_date', 'end_date',)
+    list_display_links = ('id', 'question_set_text',)
+
+
     filter_horizontal = ('mcq_question', 'subscription_plan', 'reading_content')
     raw_id_fields = ('question_topic', 'subtopic1', 'reading_topic', )
     exclude = ('pub_date', 'edit_date')
@@ -228,6 +280,11 @@ class Question_Set_Admin(admin.ModelAdmin):
           'Is This Question Set Free: ',  {'fields': ['is_free',]}
           ),
 
+         (
+          'Select  Question Set Starting And Ending Time: ',  {'fields': ['start_date','end_date']}
+          ),
+
+
 
          (
           'IF Question Set Not Free Then Choose Subscription Plan Users Who Will Be Able To Enjoy It Free: ',
@@ -238,6 +295,8 @@ class Question_Set_Admin(admin.ModelAdmin):
          #  'IF Question Set Not Free Then Choose Special  Plan Users Who Will Be Able To Enjoy It Free: ',
          #    {'fields': ['special_plan']}
          #  ),
+
+
 
 
 

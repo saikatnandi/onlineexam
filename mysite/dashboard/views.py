@@ -30,6 +30,27 @@ from announcement.models import *
 from feedback.models import *
 from subscription.models import *
 from django.db.models import Q
+from functools import wraps
+
+from ckeditor_uploader import views as ckeditor_views
+
+
+
+
+@login_required(login_url="/login/")
+def my_ckeditor_upload(request):
+    print ("\n\n**********my my_ckeditor_upload method")
+    response = ckeditor_views.upload(request)
+
+    print ("************* just got reposnse")
+
+    return response
+
+    return render(request, 'dashboard/index.html', {
+        'data': "alamin",
+
+        })
+
 
 
 @login_required(login_url="/login/")

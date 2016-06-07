@@ -48,7 +48,11 @@ INSTALLED_APPS = [
     # 'django_comments',
     'django_wysiwyg',
     'ckeditor',
+    'ckeditor_uploader',
     # 'filemanager',
+    'social.apps.django_app.default',
+
+
 
     'polls.apps.PollsConfig',
     'django.contrib.admin',
@@ -87,6 +91,11 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'social.apps.django_app.context_processors.backends',
+                'social.apps.django_app.context_processors.login_redirect',
+                # "social_auth.context_processors.social_auth_by_type_backends",
+
             ],
         },
     },
@@ -164,9 +173,18 @@ USE_TZ = True
 LOGIN_REDIRECT_URL='/login/'
 
 AUTHENTICATION_BACKENDS = (
+    'social.backends.google.GoogleOAuth2',
+    'social.backends.open_id.OpenIdAuth',
+    'social.backends.google.GoogleOpenId',
+
+    'social.backends.google.GoogleOAuth',
+    'social.backends.twitter.TwitterOAuth',
+    'social.backends.yahoo.YahooOpenId',
+    'social.backends.facebook.FacebookOAuth2',
     'django.contrib.auth.backends.ModelBackend', # default
    
 )
+
 
 ANONYMOUS_USER_ID = -1
 
@@ -191,6 +209,14 @@ CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.j
 CKEDITOR_MEDIA_URL = '/static/third-party/ckeditor'
 CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_IMAGE_BACKEND = "pillow"
+
+
+CKEDITOR_BROWSE_SHOW_DIRS = True
+CKEDITOR_RESTRICT_BY_USER = True
+CKEDITOR_REQUIRE_STAFF=False
+AWS_QUERYSTRING_AUTH = False
+
+
 
 CKEDITOR_CONFIGS = {
     'awesome_ckeditor': {
@@ -220,10 +246,42 @@ CKEDITOR_CONFIGS = {
 
 
 
+    
+SOCIAL_AUTH_ENABLED_BACKENDS = ('google', 'github')
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.contrib.messages.context_processors.messages',
+    'social.apps.django_app.context_processors.backends',
+)
+
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/dashboard/'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '346364116120-lq8uvhk84h94e9klb727cr6tdlc1epso.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'pY6fhZZT-tCW8y2iZZO9QpG4'
+
+
+# for onlinebce
+# SOCIAL_AUTH_FACEBOOK_KEY = '1802984556596131'
+# SOCIAL_AUTH_FACEBOOK_SECRET = 'd8d9981a8e7ff3ca094997c6fd1e0097'
+
+#for test account
+
+# SOCIAL_AUTH_FACEBOOK_KEY = '1802989976595589'
+# SOCIAL_AUTH_FACEBOOK_SECRET = 'b300ea443357a3a344cbbf4539e3e5a6'
+
+
+SOCIAL_AUTH_FACEBOOK_KEY = '1803116059916314'
+SOCIAL_AUTH_FACEBOOK_SECRET = 'b2399b031ed324083634f1edd83e9173'
 
 
 
 
+
+# FACEBOOK_APP_ID='1802984556596131'
+# FACEBOOK_API_SECRET='d8d9981a8e7ff3ca094997c6fd1e0097'
 
 
 

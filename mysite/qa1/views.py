@@ -43,6 +43,9 @@ def mylogin(request):
         uname = request.POST.get('username', "")
         pword = request.POST.get('password',"")
 
+        print ("***********in my loging method*********\n")
+        print (request.user.is_authenticated())
+
         user = authenticate(username= uname, password= pword)
 
         print ("******** trying to authenticate user with ")

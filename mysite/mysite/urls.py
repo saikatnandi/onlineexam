@@ -25,7 +25,11 @@ from django.contrib.auth import views as auth_views
 # from qa1.views import register as qa1_register
 from qa1 import views as qa1_views
 from readingmaterial import views as readingmaterial_views
+from dashboard import views as dashboard_views
 
+
+from ckeditor_uploader import views as ckeditor_views
+from django.views.decorators.cache import never_cache
 
 
 urlpatterns = [
@@ -68,10 +72,14 @@ urlpatterns = [
 
 
     # url(r'^comments/', include('django_comments.urls')),
-    
+    # url(r'^ckeditor/upload/$', dashboard_views.my_ckeditor_upload, name="ckeditor_upload"),  
+
+    url(r'^ckeditor/upload/', ckeditor_views.upload, name='ckeditor_upload'),
+    url(r'^ckeditor/browse/', never_cache(ckeditor_views.browse), name='ckeditor_browse'),
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),
     
-
-    
+    url('', include('social.apps.django_app.urls', namespace='social'))
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+SOCIAL_AUTH_URL_NAMESPACE = 'social'

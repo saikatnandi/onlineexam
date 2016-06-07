@@ -1,6 +1,9 @@
 cp db.sqlite3 db_test.sqlite3 ;
 
-python manage.py test question --keepdb ;
+python manage.py test question blog --keepdb ;
+# python manage.py test blog --keepdb ;
+
+
 
 
 

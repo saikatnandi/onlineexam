@@ -28,6 +28,9 @@ from django.db import connections
 
 
 
+# def urls()
+
+
 class SimpleTest(TestCase):
 
     # @classmethod
@@ -49,7 +52,7 @@ class SimpleTest(TestCase):
 
         # print ("****** test details method")
 
-        request = self.factory.get('/question/questionset/2/result')
+        request = self.factory.get('/question/questionset/2/result/0/')
 
         # # Recall that middleware are not supported. You can simulate a
         # # logged-in user by setting request.user manually.
@@ -61,10 +64,12 @@ class SimpleTest(TestCase):
 
 
         # Test my_view() as if it were deployed at /customer/details
-        response = result(request,1)
+        response = result(request,1,0)
         # Use this syntax for class-based views.
         # response = MyView.as_view()(request)
         self.assertEqual(response.status_code, 200)
+
+
 
 
   
@@ -73,16 +78,32 @@ class SimpleTest(TestCase):
         request.user =  User.objects.get(username='a2')
 
 
+
+
         # Test my_view() as if it were deployed at /customer/details
-        response = result(request,1)
-        # Use this syntax for class-based views.
-        # response = MyView.as_view()(request)
+        response = result(request,1,0)
         self.assertEqual(response.status_code, 200)
 
 
+        response = result(request,17,0)
+        self.assertEqual(response.status_code, 302)
 
 
 
+
+
+    def test_admin(self):
+        request = self.factory.get('/')
+        request.user =  User.objects.get(username='admin')
+
+
+        # Test my_view() as if it were deployed at /customer/details
+        response = result(request,1,0)
+        self.assertEqual(response.status_code, 200)
+
+
+        response = result(request,17,0)
+        self.assertEqual(response.status_code, 200)
 
 
 

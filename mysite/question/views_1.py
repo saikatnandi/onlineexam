@@ -244,7 +244,7 @@ def check_eligibility(request,  question_set_id):
     subscription_plan = []
     special_plan = []
 
-    if (question_set.is_free):
+    if (question_set.is_free | request.user.is_superuser):
         return True
 
 
